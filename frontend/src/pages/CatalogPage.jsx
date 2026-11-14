@@ -27,6 +27,7 @@ import { CATEGORIAS_VISUAIS } from "../utils/categoriasVisuais"
 import { mesclarCatalogo } from "../utils/mesclarCatalogo"
 import { urlPublica } from "../utils/urlPublica"
 import { aplicarAlteracoes, criarRegistroDeAlteracoes, registrarAlteracao } from "../utils/alteracoesFavoritos"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 const MARKET_LOGOS = {
   fort: logoFort,
@@ -1122,6 +1123,7 @@ function CategoryShelf({
 // -----------------------------------------------------------------------------
 // O catálogo (data.js) é carregado sob demanda; a tela só monta com os produtos em mãos.
 export default function CatalogPage() {
+  useTituloDaPagina("Catálogo")
   return <ComCatalogo>{(produtos) => <CatalogPageConteudo produtos={produtos} />}</ComCatalogo>;
 }
 

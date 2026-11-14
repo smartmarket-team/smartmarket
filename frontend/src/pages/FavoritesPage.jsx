@@ -15,6 +15,7 @@ import logoRissul from "../../logo/logo-rissul,.png"
 import logoZaffari from "../../logo/zaffari-bourbon-logo.png"
 import logoMaster from "../../logo/mastersupermercados-logo.png"
 import { CATEGORIAS_VISUAIS } from "../utils/categoriasVisuais"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 // Preço alvo sugerido ao criar um alerta: 10% abaixo do menor preço. Um único valor para o modal,
 // o configurador e o atalho "-10% de desconto" (antes o configurador sugeria 8%).
@@ -217,6 +218,7 @@ function evaluateAlertForProduct(product, alertEntry, favMarketIds = []) {
 
 // O catálogo (data.js) é carregado sob demanda; a tela só monta com os produtos em mãos.
 export default function FavoritesPage() {
+  useTituloDaPagina("Favoritos")
   return <ComCatalogo>{(produtos) => <FavoritesPageConteudo produtos={produtos} />}</ComCatalogo>
 }
 

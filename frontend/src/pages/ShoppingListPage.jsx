@@ -14,6 +14,7 @@ import logoZaffari from "../../logo/zaffari-bourbon-logo.png";
 import logoMaster from "../../logo/mastersupermercados-logo.png";
 import { mesclarCatalogo } from "../utils/mesclarCatalogo"
 import { urlPublica } from "../utils/urlPublica"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 const MARKET_LOGOS = {
   fort: logoFort,
@@ -162,6 +163,7 @@ function compareMarkets(list, products, markets) {
 
 // O catálogo (data.js) é carregado sob demanda; a tela só monta com os produtos em mãos.
 export default function ShoppingListPage() {
+  useTituloDaPagina("Minha Lista de Compras")
   return <ComCatalogo>{(produtos) => <ShoppingListPageConteudo produtos={produtos} />}</ComCatalogo>;
 }
 

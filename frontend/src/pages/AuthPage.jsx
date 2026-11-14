@@ -8,6 +8,7 @@ import logoImg from "../assets/logo.png"
 import { MARKETS, REDES_COM_PRODUTOS } from "../catalogoResumo"
 import { cepValido, mascararCep, somenteDigitosCep } from "../utils/cep"
 import { listarNomes, nomeCurtoRede, redesComProdutos } from "../utils/redesDoCatalogo"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 // Só as redes que têm produtos no catálogo (o Carrefour, por exemplo, tem 0 hoje).
 const NOMES_DAS_REDES = listarNomes(redesComProdutos(MARKETS, REDES_COM_PRODUTOS).map(nomeCurtoRede))
@@ -53,6 +54,7 @@ function PasswordStrengthIndicator({ password }) {
 }
 
 export default function AuthPage() {
+  useTituloDaPagina("Entrar")
   const navigate = useNavigate()
   const location = useLocation()
   const { login, register, isLoading } = useAuth()

@@ -14,6 +14,7 @@ import {
   ModalFooter,
   ProductImage,
 } from "../components/ui"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 // Só dados que a API confirmou podem ser alterados: o catálogo/mercados locais (ids textuais, ex. "p1" e
 // "fort") existem apenas no front quando a API não responde, então não há o que gravar.
@@ -38,6 +39,7 @@ function converterUsuarios(usersData) {
 
 // O catálogo (data.js) é carregado sob demanda; a tela só monta com os produtos em mãos.
 export default function AdminPage() {
+  useTituloDaPagina("Painel Administrativo")
   return <ComCatalogo>{(produtos) => <AdminPageConteudo produtos={produtos} />}</ComCatalogo>
 }
 
