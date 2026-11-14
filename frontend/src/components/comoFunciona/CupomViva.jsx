@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { TrendingDown } from "lucide-react"
+import { urlAsset } from "../../utils/urlAssets"
 import { urlPublica } from "../../utils/urlPublica"
 import { PRODUTOS_DEMO, brl, indiceMenor } from "./comoFuncionaDados"
 
@@ -177,7 +178,7 @@ function Cupom({ passo, entrou }) {
           return (
             <div key={p.id} className="sm-cupom__linha sm-cupom__item" style={{ "--i": i }}>
               <span className="sm-cupom__produto">
-                <img src={urlPublica(p.foto)} alt="" width="36" height="36" loading="lazy" decoding="async" />
+                <img src={urlPublica(urlAsset(p.foto))} alt="" width="36" height="36" loading="lazy" decoding="async" />
                 <span>
                   <strong>{p.nome}</strong>
                   <small>1 un</small>
