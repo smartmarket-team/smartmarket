@@ -2,6 +2,14 @@
 
 Comparador de preços entre supermercados — Grupo 40, Trilha Dev Full Stack 2026.
 
+## Em palavras simples
+
+Robôs anotam os preços dos supermercados do Rio Grande do Sul, o servidor guarda tudo num banco de dados e o site mostra, para cada produto, **onde ele está mais barato** e **qual loja fica mais perto de você**.
+
+- **Primeira vez aqui?** Leia o [guia em palavras simples](docs/GUIA-PARA-INICIANTES.md): as peças do projeto, o caminho de um preço, o que não mexer e como pedir coisas ao Claude.
+- **Prefere ver?** Abra o [mapa do projeto](docs/mapa-smartmarket.html) no navegador (arquivo único, funciona sem internet).
+- **Precisa dos detalhes técnicos?** Continue lendo este arquivo e o [`CLAUDE.md`](CLAUDE.md).
+
 ## Estrutura
 
 - `/frontend` — React 19 + Tailwind CSS v4 + Vite (catálogo com ~9,4 mil produtos; fotos e catálogo vêm do Neon Object Storage em produção)
