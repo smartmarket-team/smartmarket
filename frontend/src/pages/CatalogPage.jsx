@@ -978,16 +978,17 @@ function CategoryShelf({
     cor: C.navy,
   };
 
-  const updateScrollButtons = () => {
+  const totalProdutos = products.length;
+  const updateScrollButtons = useCallback(() => {
     if (!scrollRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
     setCanScrollLeft(scrollLeft > 8);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 8);
     // Carrega o próximo lote de cards ao chegar perto do fim da prateleira.
     setLimite((atual) =>
-      proximoLimite({ limite: atual, total: products.length, scrollLeft, scrollWidth, clientWidth }),
+      proximoLimite({ limite: atual, total: totalProdutos, scrollLeft, scrollWidth, clientWidth }),
     );
-  };
+  }, [totalProdutos]);
 
   // useLayoutEffect: mede a prateleira e libera o próximo lote antes da pintura (sem piscar cards).
   useLayoutEffect(() => {
@@ -1001,7 +1002,7 @@ function CategoryShelf({
         window.removeEventListener("resize", updateScrollButtons);
       };
     }
-  }, [products, limite]);
+  }, [products, limite, updateScrollButtons]);
 
   const scroll = (direction) => {
     if (!scrollRef.current) return;
