@@ -8,6 +8,8 @@ Apresentação interativa de 8 slides (cerca de 4 min 25 s) para a banca. É **u
 | [`01-auditoria-smartmarket.md`](01-auditoria-smartmarket.md) | Fonte de verdade: o que existe, o que é parcial, o que é proposto |
 | [`02-roteiro-de-fala.md`](02-roteiro-de-fala.md) | O que dizer em cada slide, com tempos |
 | [`03-perguntas-banca.md`](03-perguntas-banca.md) | Perguntas difíceis e respostas fundamentadas |
+| [`SmartMarket-defesa.pdf`](SmartMarket-defesa.pdf) | Versão em PDF, 8 páginas, mesmo visual (sem demo ao vivo) |
+| [`SmartMarket-defesa.pptx`](SmartMarket-defesa.pptx) | Versão para PowerPoint, com o roteiro nas notas do apresentador |
 | [`assets/`](assets/) | Capturas reais do site publicado (plano B offline) |
 
 ## Como iniciar
@@ -60,3 +62,10 @@ Validada em Chrome, em 1920×1080: navegação por teclado, visão geral, demo a
 ## Se a identidade visual ou os números mudarem
 
 Os números do site (4 redes, 9.277 anúncios, 191 produtos em 2 ou mais redes) são de 15/11/2026. Se o catálogo mudar, atualize o slide 6 e o roteiro, e refaça as capturas de `assets/`.
+
+## Versões em PDF e PowerPoint
+
+- **PDF:** abra `SmartMarket-defesa.pdf`. É a apresentação impressa, um slide por página, e serve de reserva se o navegador falhar.
+- **PowerPoint:** abra `SmartMarket-defesa.pptx`. Cada slide é uma **imagem** de alta resolução, então o visual é idêntico, mas **o texto não é editável**. As **notas do apresentador** já trazem a fala de cada slide (modo apresentador: `Alt+F5`). Não há demo ao vivo nem visão geral: para a demo, use o `index.html` ou o botão da aba do site.
+- **Se editar o texto do `index.html`**, gere os dois de novo: o PDF vem da impressão do próprio `index.html` pelo Chrome (`--print-to-pdf`), e o PowerPoint é montado a partir das páginas do PDF.
+- Quer um PowerPoint **com texto editável**? É possível, mas exige refazer cada slide no PowerPoint e perde parte do acabamento visual (animações e o diagrama em SVG).

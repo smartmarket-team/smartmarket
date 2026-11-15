@@ -167,6 +167,17 @@ body:hover #hud,#hud:focus-within,body.hud #hud{opacity:1}
 #demo.cap .msg{display:none!important}
 #rot{display:none;position:fixed;left:16px;right:16px;top:14px;z-index:35;padding:12px 16px;border-radius:12px;background:#5eead4;color:#06291f;font:600 14px var(--mono);text-align:center}
 @media (max-width:700px) and (orientation:portrait){#rot{display:block}}
+/* impressão / PDF: um slide por página */
+@page{size:1920px 1080px;margin:0}
+@media print{
+  html,body{height:auto;overflow:visible;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #viewport{position:static;display:block}
+  #stage{width:1920px;height:auto;transform:none!important;margin:0!important;overflow:visible;background:none}
+  .slide{position:relative;inset:auto;width:1920px;height:1080px;opacity:1!important;visibility:visible!important;transform:none!important;transition:none!important;break-after:page;page-break-after:always;overflow:hidden}
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  .reveal>*{opacity:1!important;transform:none!important;transition:none!important}
+  #hud,#ov,#demo,#prog,#rot{display:none!important}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.reveal>*{opacity:1;transform:none}}
 </style>
 </head>
