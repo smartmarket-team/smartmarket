@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import BotaoNavegar from './BotaoNavegar'
 
 const LAT = -30.03
@@ -401,6 +401,122 @@ describe('BotaoNavegar', () => {
       const links = screen.getAllByRole('link')
       expect(links.map((link) => link.textContent)).toEqual(['Google Maps', 'Waze'])
       expect(links[0]).toHaveFocus()
+    })
+  })
+
+  describe('teclado: Tab e Shift+Tab (o popover fica no fim do body, fora da ordem natural)', () => {
+    // Botão, dois controles que vêm DEPOIS dele no documento e um escondido entre eles.
+    const comVizinhos = () =>
+      render(
+        <div>
+          <button>Antes</button>
+          <BotaoNavegar latitude={LAT} longitude={LON} nomeLoja="Carrefour Centro" />
+          <button hidden>Escondido</button>
+          <button disabled>Desabilitado</button>
+          <button tabIndex={-1}>Fora da ordem do Tab</button>
+          <button>Depois</button>
+          <a href="#fim">Último</a>
+        </div>,
+      )
+
+    // Só os links do popover (a página dos vizinhos também tem um link).
+    const linksDoPopover = () => within(screen.getByRole('group')).getAllByRole('link')
+
+    it('Shift+Tab a partir do PRIMEIRO link devolve o foco ao botão e fecha o popover', () => {
+      comVizinhos()
+      abrir()
+      const [primeiro] = linksDoPopover()
+      expect(primeiro).toHaveFocus()
+
+      const seguiuONavegador = fireEvent.keyDown(primeiro, { key: 'Tab', shiftKey: true })
+
+      expect(seguiuONavegador).toBe(false) // preventDefault: o foco é movido por nós
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+      expect(gatilho()).toHaveFocus()
+    })
+
+    it('Tab a partir do ÚLTIMO link fecha e leva o foco ao próximo focável DEPOIS do botão', () => {
+      comVizinhos()
+      abrir()
+      const links = linksDoPopover()
+      links[1].focus()
+
+      const seguiuONavegador = fireEvent.keyDown(links[1], { key: 'Tab' })
+
+      expect(seguiuONavegador).toBe(false)
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Depois' })).toHaveFocus()
+    })
+
+    it('o próximo focável ignora o escondido, o desabilitado e o tabindex -1, e nunca é "Antes"', () => {
+      comVizinhos()
+      abrir()
+      const links = linksDoPopover()
+      links[1].focus()
+
+      fireEvent.keyDown(links[1], { key: 'Tab' })
+
+      expect(document.activeElement).toHaveTextContent('Depois')
+      expect(document.activeElement).not.toHaveTextContent('Antes')
+    })
+
+    it('sem nenhum focável depois do botão, o foco volta ao botão (não se perde no body)', () => {
+      render(<BotaoNavegar latitude={LAT} longitude={LON} nomeLoja="Carrefour Centro" />)
+      abrir()
+      const links = linksDoPopover()
+      links[1].focus()
+
+      fireEvent.keyDown(links[1], { key: 'Tab' })
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+      expect(gatilho()).toHaveFocus()
+    })
+
+    it('Tab do primeiro para o segundo link segue a ordem natural: não fecha nem interfere', () => {
+      comVizinhos()
+      abrir()
+      const [primeiro] = linksDoPopover()
+
+      const seguiuONavegador = fireEvent.keyDown(primeiro, { key: 'Tab' })
+
+      expect(seguiuONavegador).toBe(true)
+      expect(screen.getByRole('group')).toBeInTheDocument()
+    })
+
+    it('Shift+Tab do segundo para o primeiro link também segue a ordem natural', () => {
+      comVizinhos()
+      abrir()
+      const links = linksDoPopover()
+      links[1].focus()
+
+      const seguiuONavegador = fireEvent.keyDown(links[1], { key: 'Tab', shiftKey: true })
+
+      expect(seguiuONavegador).toBe(true)
+      expect(screen.getByRole('group')).toBeInTheDocument()
+    })
+
+    it('outras teclas nos links não fecham nem são interceptadas', () => {
+      comVizinhos()
+      abrir()
+      const [primeiro] = linksDoPopover()
+
+      const seguiuONavegador = fireEvent.keyDown(primeiro, { key: 'ArrowDown' })
+
+      expect(seguiuONavegador).toBe(true)
+      expect(screen.getByRole('group')).toBeInTheDocument()
+    })
+
+    it('o foco movido por Tab e Shift+Tab usa preventScroll (não rola a página)', () => {
+      comVizinhos()
+      abrir()
+      const links = linksDoPopover()
+      links[1].focus()
+      const foco = jest.spyOn(HTMLElement.prototype, 'focus')
+
+      fireEvent.keyDown(links[1], { key: 'Tab' })
+
+      expect(foco).toHaveBeenCalledWith({ preventScroll: true })
+      foco.mockRestore()
     })
   })
 })

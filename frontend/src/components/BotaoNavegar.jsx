@@ -25,6 +25,33 @@ const Chevron = () => (
 // Quem está com o popover aberto (no máximo um): abrir outro fecha este.
 let fecharOAberto = null
 
+// O que o Tab alcança.
+const SELETOR_FOCAVEIS = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled]):not([type='hidden'])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  "[tabindex]:not([tabindex='-1'])",
+].join(",")
+
+// O popover fica no fim do body, então o Tab natural a partir dele sairia do lugar. O próximo elemento
+// focável "de verdade" é o primeiro, na ordem do documento, que vem depois do botão, fora do próprio popover
+// e visível. `null` quando não há nenhum.
+function proximoFocavelDepois(gatilho, popover) {
+  const candidatos = Array.from(document.querySelectorAll(SELETOR_FOCAVEIS))
+  return (
+    candidatos.find(
+      (el) =>
+        !gatilho.contains(el) &&
+        !popover.contains(el) &&
+        !el.closest("[hidden],[aria-hidden='true']") &&
+        el.getAttribute("tabindex") !== "-1" &&
+        Boolean(gatilho.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING),
+    ) ?? null
+  )
+}
+
 /**
  * Botão "Navegar": ao clicar, abre uma escolha entre Google Maps e Waze, que são só links (outra aba, sem
  * referrer, sem API paga, sem mapa embutido). O destino é sempre a coordenada da LOJA, nunca a posição do
@@ -107,6 +134,26 @@ export default function BotaoNavegar({ latitude, longitude, nomeLoja = "", compa
     refGatilho.current?.focus({ preventScroll: true })
   }
 
+  // Teclado dentro do popover. Entre os dois links o Tab natural já serve. Nas pontas ele sairia do lugar
+  // (o popover está no fim do body): Shift+Tab no primeiro link volta ao botão; Tab no último segue para o
+  // próximo focável depois do botão (ou, se não houver, fica no botão). Nos dois casos o popover fecha.
+  function aoPressionarTecla(evento) {
+    if (evento.key !== "Tab") return
+    const links = refPopover.current.querySelectorAll("a")
+    const primeiro = links[0]
+    const ultimo = links[links.length - 1]
+    if (evento.shiftKey && evento.target === primeiro) {
+      evento.preventDefault()
+      setPosicao(null)
+      refGatilho.current.focus({ preventScroll: true })
+    } else if (!evento.shiftKey && evento.target === ultimo) {
+      evento.preventDefault()
+      const proximo = proximoFocavelDepois(refGatilho.current, refPopover.current)
+      setPosicao(null)
+      ;(proximo ?? refGatilho.current).focus({ preventScroll: true })
+    }
+  }
+
   function alternar(evento) {
     // O clique no botão não pode subir ao cartão (que abriria o detalhe do produto).
     evento.stopPropagation()
@@ -137,6 +184,7 @@ export default function BotaoNavegar({ latitude, longitude, nomeLoja = "", compa
             aria-label={rotuloDaLoja ?? "Navegar"}
             // O portal faz o clique subir pela árvore do React até o cartão: aqui ele para.
             onClick={(evento) => evento.stopPropagation()}
+            onKeyDown={aoPressionarTecla}
             style={{ position: "fixed", top: posicao.top, left: posicao.left, width: posicao.largura, zIndex: 60 }}
             className="rounded-xl border border-emerald-200 bg-white p-1 shadow-lg"
           >
