@@ -682,4 +682,18 @@ describe('CatalogPage', () => {
       expect(temCartao('Quinoa Real')).toBe(true)
     })
   })
+
+  describe('campos de formulário identificáveis (name) e sem id repetido', () => {
+    it('busca e os dois filtros têm name, autocomplete desligado e ids únicos', async () => {
+      await renderizar()
+
+      const campos = [...document.querySelectorAll('input, select')]
+      expect(campos.length).toBeGreaterThanOrEqual(3)
+      expect(campos.filter((c) => !c.getAttribute('name') && !c.id)).toHaveLength(0)
+      expect(campoBusca()).toHaveAttribute('name', 'busca')
+      expect(campoBusca()).toHaveAttribute('autocomplete', 'off')
+      const ids = [...document.querySelectorAll('[id]')].map((e) => e.id)
+      expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([])
+    })
+  })
 })

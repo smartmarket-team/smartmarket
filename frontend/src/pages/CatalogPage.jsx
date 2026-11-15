@@ -1457,6 +1457,9 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 <IconSearch />
               </div>
               <input
+                id="catalogo-busca"
+                name="busca"
+                autoComplete="off"
                 type="text"
                 placeholder="Buscar arroz, leite, café, marca ou categoria…"
                 value={search}
@@ -1478,6 +1481,9 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
             <div className="flex flex-wrap items-center gap-2">
               {/* Filtro por Supermercado */}
               <select
+                id="catalogo-rede"
+                name="rede"
+                autoComplete="off"
                 value={mktFilter}
                 onChange={(e) => setMktFilter(e.target.value)}
                 className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus:outline-none cursor-pointer"
@@ -1493,6 +1499,9 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
 
               {/* Ordenar */}
               <select
+                id="catalogo-ordem"
+                name="ordem"
+                autoComplete="off"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus:outline-none cursor-pointer max-w-full"

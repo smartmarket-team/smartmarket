@@ -510,4 +510,31 @@ describe('FavoritesPage', () => {
       expect(within(dialogo()).queryByText(/será avisado/i)).not.toBeInTheDocument()
     })
   })
+
+  describe('campos de formulário identificáveis (name) e sem id repetido', () => {
+    const semNome = () =>
+      [...document.querySelectorAll('input, select, textarea')].filter((c) => !c.getAttribute('name') && !c.id)
+    const idsRepetidos = () => {
+      const ids = [...document.querySelectorAll('[id]')].map((e) => e.id)
+      return ids.filter((id, i) => ids.indexOf(id) !== i)
+    }
+
+    it('a aba de produtos e o modal de alerta: todo campo tem name ou id', async () => {
+      await renderizar()
+      fireEvent.click(within(cartaoDe('Arroz Branco Tipo 1')).getByTitle('Definir alerta de preço'))
+
+      expect(document.querySelectorAll('input, select').length).toBeGreaterThan(1)
+      expect(semNome()).toHaveLength(0)
+      expect(idsRepetidos()).toEqual([])
+    })
+
+    it('a aba de alertas (configurador) também', async () => {
+      await renderizar()
+      fireEvent.click(abaAlertas())
+
+      expect(document.querySelectorAll('input, select').length).toBeGreaterThan(1)
+      expect(semNome()).toHaveLength(0)
+      expect(idsRepetidos()).toEqual([])
+    })
+  })
 })

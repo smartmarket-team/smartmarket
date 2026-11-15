@@ -529,6 +529,9 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
 
             <div className="relative flex-1 max-w-lg">
               <Input
+                id="favoritos-busca"
+                name="busca"
+                autoComplete="off"
                 isSearch
                 placeholder="Buscar em seus favoritos..."
                 value={search}
@@ -975,6 +978,9 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                 </label>
 
                 <Input
+                  id="alerta-busca-produto"
+                  name="busca-produto"
+                  autoComplete="off"
                   isSearch
                   placeholder="Pesquisar qualquer produto (ex: Arroz, Leite, Café, Chocolate em Pó)..."
                   value={alertSearchQuery}
@@ -1102,6 +1108,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                               Em quais mercados conferir este preço?
                             </label>
                             <select
+                              name="escopo-mercados"
+                              autoComplete="off"
                               value={inlineMarketScope}
                               onChange={(e) => setInlineMarketScope(e.target.value)}
                               className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs sm:text-sm font-bold text-brand-navy focus:outline-none focus:border-brand-green cursor-pointer"
@@ -1161,6 +1169,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
 
                           <div>
                             <Input
+                              name="preco-alvo"
+                              autoComplete="off"
                               label="Avisar quando o preço chegar em (R$):"
                               type="number"
                               step="0.01"
@@ -1437,6 +1447,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                     Onde monitorar este alerta?
                   </label>
                   <select
+                    name="escopo-mercados-modal"
+                    autoComplete="off"
                     value={modalMarketScope}
                     onChange={(e) => setModalMarketScope(e.target.value)}
                     className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs sm:text-sm font-bold text-brand-navy focus:outline-none focus:border-brand-green cursor-pointer"
@@ -1461,6 +1473,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                 </div>
 
                 <Input
+                  name="preco-alvo-modal"
+                  autoComplete="off"
                   label="Preço Alvo Desejado (R$)"
                   type="number"
                   step="0.01"
