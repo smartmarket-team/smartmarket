@@ -61,6 +61,15 @@ describe('Home: números e redes sem inflar', () => {
     }
   })
 
+  it('os links de navegação do rodapé têm altura de toque (py-1.5 sobre texto de 16 px, mínimo de 24 px do WCAG 2.5.8)', () => {
+    renderizar()
+
+    const rodape = screen.getByRole('contentinfo')
+    for (const nome of ['Catálogo de Produtos', 'Minha Lista de Compras', 'Comparador Inteligente', 'Meus Favoritos']) {
+      expect(within(rodape).getByRole('link', { name: nome })).toHaveClass('inline-block', 'py-1.5')
+    }
+  })
+
   it('a faixa de redes conta só as com coleta ativa (o Fort tem produtos, mas está suspenso no scraper)', () => {
     renderizar()
 

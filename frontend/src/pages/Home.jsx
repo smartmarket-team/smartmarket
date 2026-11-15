@@ -909,24 +909,24 @@ export function Home() {
             <h2 className="text-xs font-bold text-brand-navy uppercase tracking-wider">
               Navegação
             </h2>
-            <ul className="space-y-1.5">
+            <ul className="space-y-0">
               <li>
-                <Link to="/catalog" className="hover:text-brand-green transition-colors">
+                <Link to="/catalog" className="inline-block py-1.5 hover:text-brand-green transition-colors">
                   Catálogo de Produtos
                 </Link>
               </li>
               <li>
-                <Link to="/list" className="hover:text-brand-green transition-colors">
+                <Link to="/list" className="inline-block py-1.5 hover:text-brand-green transition-colors">
                   Minha Lista de Compras
                 </Link>
               </li>
               <li>
-                <Link to="/compare" className="hover:text-brand-green transition-colors">
+                <Link to="/compare" className="inline-block py-1.5 hover:text-brand-green transition-colors">
                   Comparador Inteligente
                 </Link>
               </li>
               <li>
-                <Link to="/favorites" className="hover:text-brand-green transition-colors">
+                <Link to="/favorites" className="inline-block py-1.5 hover:text-brand-green transition-colors">
                   Meus Favoritos
                 </Link>
               </li>
