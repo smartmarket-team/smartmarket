@@ -922,10 +922,13 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           )
                         })()}
 
-                        <div className="flex gap-2 pt-1" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex gap-2 pt-1">
                           <button
                             type="button"
-                            onClick={() => addToList(p.id)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              addToList(p.id)
+                            }}
                             className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-brand-green text-white hover:bg-brand-green-hover transition-all shadow-xs cursor-pointer"
                           >
                             + Adicionar à Minha Lista
@@ -935,7 +938,10 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                             size="sm"
                             className="px-3 rounded-xl"
                             title="Definir alerta de preço"
-                            onClick={() => openAlertModal(p)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              openAlertModal(p)
+                            }}
                           >
                             🔔
                           </Button>

@@ -537,4 +537,31 @@ describe('FavoritesPage', () => {
       expect(idsRepetidos()).toEqual([])
     })
   })
+
+  describe('botões do cartão não abrem o detalhe do produto (a contenção fica no botão)', () => {
+    it('"+ Adicionar à Minha Lista" adiciona sem abrir o detalhe', async () => {
+      await renderizar()
+
+      fireEvent.click(within(cartaoDe('Arroz Branco Tipo 1')).getByRole('button', { name: '+ Adicionar à Minha Lista' }))
+
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('o sino abre só o modal de alerta, não o detalhe do produto', async () => {
+      await renderizar()
+
+      fireEvent.click(within(cartaoDe('Arroz Branco Tipo 1')).getByTitle('Definir alerta de preço'))
+
+      expect(screen.getAllByRole('dialog')).toHaveLength(1)
+      expect(within(dialogo()).getByRole('heading', { name: 'Definir Alerta de Preço' })).toBeInTheDocument()
+    })
+
+    it('clicar no resto do cartão continua abrindo o detalhe', async () => {
+      await renderizar()
+
+      fireEvent.click(screen.getByRole('heading', { level: 3, name: 'Arroz Branco Tipo 1' }))
+
+      expect(screen.getByRole('dialog', { name: 'Arroz Branco Tipo 1' })).toBeInTheDocument()
+    })
+  })
 })
