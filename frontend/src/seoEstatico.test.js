@@ -7,10 +7,10 @@ const ler = (...partes) => fs.readFileSync(path.join(RAIZ, ...partes), 'utf8')
 describe('SEO estático (robots.txt, sitemap.xml e canonical)', () => {
   const canonical = ler('index.html').match(/<link rel="canonical" href="([^"]+)"/)[1]
 
-  it('o robots.txt libera o site, barra o Admin e aponta para o sitemap', () => {
+  it('o robots.txt libera o site, aponta para o sitemap e não cita o caminho do Admin', () => {
     const robots = ler('public', 'robots.txt')
     expect(robots).toMatch(/^User-agent: \*$/m)
-    expect(robots).toMatch(/^Disallow: \/smartmarket\/admin$/m)
+    expect(robots).not.toMatch(/admin/i)
     expect(robots).toContain(`Sitemap: ${canonical}sitemap.xml`)
   })
 
