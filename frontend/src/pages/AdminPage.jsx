@@ -14,6 +14,7 @@ import {
   ModalFooter,
   ProductImage,
 } from "../components/ui"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 // Só dados que a API confirmou podem ser alterados: o catálogo/mercados locais (ids textuais, ex. "p1" e
 // "fort") existem apenas no front quando a API não responde, então não há o que gravar.
@@ -38,6 +39,7 @@ function converterUsuarios(usersData) {
 
 // O catálogo (data.js) é carregado sob demanda; a tela só monta com os produtos em mãos.
 export default function AdminPage() {
+  useTituloDaPagina("Painel Administrativo")
   return <ComCatalogo>{(produtos) => <AdminPageConteudo produtos={produtos} />}</ComCatalogo>
 }
 
@@ -453,7 +455,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
         <Card variant="default" className="p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-wider text-brand-muted">
+              <p className="text-xs font-bold uppercase tracking-wider text-brand-muted">
                 Produtos no Catálogo
               </p>
               <h3 className="text-2xl font-extrabold text-brand-navy mt-0.5">
@@ -470,7 +472,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
         <Card variant="default" className="p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-wider text-brand-muted">
+              <p className="text-xs font-bold uppercase tracking-wider text-brand-muted">
                 Redes Monitoradas
               </p>
               <h3 className="text-2xl font-extrabold text-brand-navy mt-0.5">
@@ -487,7 +489,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
         <Card variant="default" className="p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-wider text-brand-muted">
+              <p className="text-xs font-bold uppercase tracking-wider text-brand-muted">
                 Usuários Totais
               </p>
               <h3 className="text-2xl font-extrabold text-brand-navy mt-0.5">
@@ -504,7 +506,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
         <Card variant="default" className="p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-wider text-brand-muted">
+              <p className="text-xs font-bold uppercase tracking-wider text-brand-muted">
                 Pipeline de Coleta
               </p>
               <h3 className="text-2xl font-extrabold text-amber-600 mt-0.5">Operacional</h3>
@@ -525,7 +527,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
             setActiveTab("produtos")
             setSearch("")
           }}
-          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition ${
             activeTab === "produtos"
               ? "bg-brand-green text-white shadow-sm"
               : "text-brand-muted hover:text-brand-navy hover:bg-slate-50"
@@ -541,7 +543,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
             setActiveTab("mercados")
             setSearch("")
           }}
-          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition ${
             activeTab === "mercados"
               ? "bg-brand-green text-white shadow-sm"
               : "text-brand-muted hover:text-brand-navy hover:bg-slate-50"
@@ -557,7 +559,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
             setActiveTab("usuarios")
             setSearch("")
           }}
-          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition ${
             activeTab === "usuarios"
               ? "bg-brand-green text-white shadow-sm"
               : "text-brand-muted hover:text-brand-navy hover:bg-slate-50"
@@ -601,7 +603,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
           <div className="min-w-0 overflow-x-auto">
             <table className="w-full min-w-[720px] text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-100/70 border-b border-brand-border/60 text-brand-muted font-bold uppercase tracking-wider text-[11px]">
+                <tr className="bg-slate-100/70 border-b border-brand-border/60 text-brand-muted font-bold uppercase tracking-wider text-xs">
                   <th className="py-3.5 px-4">#</th>
                   <th className="py-3.5 px-4">Produto</th>
                   <th className="py-3.5 px-4">Marca</th>
@@ -644,7 +646,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
                           <div>
                             <p className="font-bold text-brand-navy text-sm">{p.name}</p>
                             {p.promo && (
-                              <span className="inline-block px-1.5 py-0.2 rounded-sm bg-amber-100 text-amber-800 text-[9px] font-extrabold uppercase mt-0.5">
+                              <span className="inline-block px-1.5 py-0.2 rounded-sm bg-amber-100 text-amber-800 text-[11px] font-extrabold uppercase mt-0.5">
                                 PROMO
                               </span>
                             )}
@@ -664,7 +666,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
                             <span className="font-extrabold text-brand-green">
                               R$ {bestPrice.toFixed(2)}
                             </span>
-                            <span className="block text-[10px] text-brand-muted">
+                            <span className="block text-xs text-brand-muted">
                               no {bestMarket}
                             </span>
                           </div>
@@ -716,7 +718,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
             </p>
             <table className="w-full min-w-[720px] text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-100/70 border-b border-brand-border/60 text-brand-muted font-bold uppercase tracking-wider text-[11px]">
+                <tr className="bg-slate-100/70 border-b border-brand-border/60 text-brand-muted font-bold uppercase tracking-wider text-xs">
                   <th className="py-3.5 px-4">Rede</th>
                   <th className="py-3.5 px-4">Cidade</th>
                   <th className="py-3.5 px-4">Endereço Principal</th>
@@ -750,7 +752,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
                     <td className="py-3.5 px-4 text-brand-muted font-medium">{m.lastSync || "—"}</td>
                     <td className="py-3.5 px-4">
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
                           m.active ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600"
                         }`}
                       >
@@ -810,7 +812,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
             </p>
             <table className="w-full min-w-[720px] text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-100/70 border-b border-brand-border/60 text-brand-muted font-bold uppercase tracking-wider text-[11px]">
+                <tr className="bg-slate-100/70 border-b border-brand-border/60 text-brand-muted font-bold uppercase tracking-wider text-xs">
                   <th className="py-3.5 px-4">Usuário</th>
                   <th className="py-3.5 px-4">E-mail</th>
                   <th className="py-3.5 px-4">Papel no Sistema</th>
@@ -834,7 +836,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
                     <td className="py-3.5 px-4 text-brand-muted font-medium">{u.email}</td>
                     <td className="py-3.5 px-4">
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-extrabold ${
                           u.role === "ADMIN" ? "bg-brand-navy text-white" : "bg-emerald-100 text-emerald-800"
                         }`}
                       >
@@ -845,7 +847,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
                     <td className="py-3.5 px-4 text-brand-muted">{u.createdAt}</td>
                     <td className="py-3.5 px-4">
                       <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                           u.status === "ATIVO" ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"
                         }`}
                       >

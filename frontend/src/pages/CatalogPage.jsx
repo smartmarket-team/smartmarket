@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback, useLayoutEffect } from "react";
 import { CATEGORIES, MARKETS as DEFAULT_MARKETS, REDES_COM_PRODUTOS } from "../catalogoResumo";
 import ComCatalogo from "../components/ComCatalogo";
 import { redesComEquivalenteConfirmado } from "../utils/equivalentes";
@@ -27,6 +27,8 @@ import { CATEGORIAS_VISUAIS } from "../utils/categoriasVisuais"
 import { mesclarCatalogo } from "../utils/mesclarCatalogo"
 import { urlPublica } from "../utils/urlPublica"
 import { aplicarAlteracoes, criarRegistroDeAlteracoes, registrarAlteracao } from "../utils/alteracoesFavoritos"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
+import { CARDS_INICIAIS, proximoLimite } from "../utils/carrosselProgressivo"
 
 const MARKET_LOGOS = {
   fort: logoFort,
@@ -425,7 +427,7 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
         <button
           type="button"
           onClick={() => handleScroll("left")}
-          className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-brand-border/90 text-brand-navy hover:text-brand-green shadow-md flex items-center justify-center transition-all cursor-pointer hover:scale-105"
+          className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-brand-border/90 text-brand-navy hover:text-brand-green shadow-md flex items-center justify-center transition cursor-pointer hover:scale-105"
           title="Departamentos anteriores"
           aria-label="Departamentos anteriores"
         >
@@ -445,12 +447,12 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
               key={cat.id}
               type="button"
               onClick={() => onSelectCat(cat.id)}
-              className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition-all duration-200 outline-none"
+              className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition duration-200 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2"
               title={`Ver ${cat.label}`}
             >
               {/* Círculo Badge Verde Master Supermercados */}
               <div
-                className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 flex items-center justify-center rounded-2xl transition-all duration-300 ${
+                className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 flex items-center justify-center rounded-2xl transition duration-300 ${
                   isActive
                     ? "ring-3 ring-[#065417] ring-offset-2 scale-105 bg-emerald-50/70 shadow-sm"
                     : "group-hover:scale-105"
@@ -459,6 +461,8 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
                 <img
                   src={cat.img}
                   alt={cat.label}
+                  width={96}
+                  height={96}
                   loading="lazy"
                   style={{ clipPath: "inset(0 0 8% 0)" }}
                   className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-108 pointer-events-none"
@@ -497,7 +501,7 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
         <button
           type="button"
           onClick={() => handleScroll("right")}
-          className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-brand-border/90 text-brand-navy hover:text-brand-green shadow-md flex items-center justify-center transition-all cursor-pointer hover:scale-105"
+          className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-brand-border/90 text-brand-navy hover:text-brand-green shadow-md flex items-center justify-center transition cursor-pointer hover:scale-105"
           title="Mais departamentos"
           aria-label="Mais departamentos"
         >
@@ -550,7 +554,7 @@ function FavMarketsStrip({ markets, selectedMkt, onSelectMkt, favs = [], onToggl
               key={m.id}
               data-mais-perto={ehMaisPerto ? "true" : undefined}
               onClick={() => onSelectMkt(isSelected ? "todos" : m.id)}
-              className={`group relative flex items-center justify-between gap-1.5 h-13 sm:h-14 px-2.5 sm:px-3 py-1.5 rounded-xl border transition-all duration-200 cursor-pointer select-none flex-1 min-w-[118px] sm:min-w-[130px] ${
+              className={`group relative flex items-center justify-between gap-1.5 h-13 sm:h-14 px-2.5 sm:px-3 py-1.5 rounded-xl border transition duration-200 cursor-pointer select-none flex-1 min-w-[118px] sm:min-w-[130px] ${
                 isSelected
                   ? "bg-emerald-50/90 border-brand-green ring-2 ring-brand-green/35 shadow-xs"
                   : isFav
@@ -563,7 +567,7 @@ function FavMarketsStrip({ markets, selectedMkt, onSelectMkt, favs = [], onToggl
                   folga do contêiner (p-2.5), que corta o que passa dela. */}
               {ehMaisPerto && (
                 <span
-                  className="absolute -top-2 left-2 z-10 inline-flex items-center gap-0.5 rounded-full bg-emerald-700 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-white shadow-xs pointer-events-none"
+                  className="absolute -top-2 left-2 z-10 inline-flex items-center gap-0.5 rounded-full bg-emerald-700 px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wide text-white shadow-xs pointer-events-none"
                   title={`${m.name} tem a loja mais perto de você`}
                 >
                   <span aria-hidden="true">📍</span> Mais perto
@@ -579,6 +583,8 @@ function FavMarketsStrip({ markets, selectedMkt, onSelectMkt, favs = [], onToggl
                   <img
                     src={logoSrc}
                     alt={m.name}
+                    width={120}
+                    height={40}
                     className={`w-full object-contain transition-transform duration-200 group-hover:scale-105 ${opticalClass}`}
                   />
                 ) : (
@@ -659,7 +665,7 @@ function ProductCard({
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="group relative bg-white rounded-3xl border border-brand-border/80 p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:border-brand-green/60 hover:-translate-y-0.5 cursor-pointer select-none w-full"
+        className="group relative bg-white rounded-3xl border border-brand-border/80 p-4 sm:p-5 flex flex-col justify-between transition duration-200 hover:shadow-lg hover:border-brand-green/60 hover:-translate-y-0.5 cursor-pointer select-none w-full"
       >
         <div>
           {/* Botão de Favoritar Produto */}
@@ -669,7 +675,7 @@ function ProductCard({
               e.stopPropagation();
               onToggleFavProduct(product.id);
             }}
-            className={`absolute top-6 right-6 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+            className={`absolute top-6 right-6 z-10 w-8 h-8 rounded-full flex items-center justify-center transition ${
               isFavProduct
                 ? "bg-rose-50 text-rose-600 border border-rose-200"
                 : "bg-white/85 backdrop-blur-xs text-brand-muted hover:text-rose-500 border border-slate-200/70 opacity-70 group-hover:opacity-100 focus-visible:opacity-100"
@@ -690,7 +696,7 @@ function ProductCard({
             />
 
             {product.promo && (
-              <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
+              <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-xs font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
                 Oferta
               </span>
             )}
@@ -698,7 +704,7 @@ function ProductCard({
 
           {/* Categoria e Marca */}
           <div className="flex items-start justify-between gap-2">
-            <span className="text-[11px] font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            <span className="text-xs font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
               {product.category}
             </span>
             <div className="flex items-center gap-1.5 text-xs text-brand-muted font-medium truncate">
@@ -724,7 +730,7 @@ function ProductCard({
             </button>
           </h3>
 
-          <p className="line-clamp-2 text-[11px] text-brand-muted mt-1 min-h-[1.75rem]">
+          <p className="line-clamp-2 text-xs text-brand-muted mt-1 min-h-[1.75rem]">
             {product.descricao || product.name}
           </p>
         </div>
@@ -735,10 +741,10 @@ function ProductCard({
             <>
               <div className="flex items-center justify-between p-3 rounded-2xl bg-brand-green-light/60 border border-brand-green/20 text-xs">
                 <div className="min-w-0">
-                  <span className="block text-[10px] font-semibold text-emerald-800 truncate">
+                  <span className="block text-xs font-semibold text-emerald-800 truncate">
                     Melhor Preço ({pricing.bestMarket.name})
                     {pricing.isClube && (
-                      <span className="ml-1 text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
+                      <span className="ml-1 text-[11px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
                         🏷️ {pricing.clubeNome}
                       </span>
                     )}
@@ -748,7 +754,7 @@ function ProductCard({
                   </span>
                 </div>
                 {pricing.economia > 0 && (
-                  <span className="text-[10px] font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs shrink-0">
+                  <span className="text-xs font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs shrink-0">
                     -R$ {pricing.economia.toFixed(2)}
                   </span>
                 )}
@@ -772,14 +778,14 @@ function ProductCard({
                 />
               )}
 
-              <div className="text-[11px] text-brand-muted flex items-center justify-between px-1">
+              <div className="text-xs text-brand-muted flex items-center justify-between px-1">
                 <span>Comparado em {pricing.allPrices.length} mercados</span>
                 <span className="text-brand-navy font-bold group-hover:underline">
                   Ver comparativo &rarr;
                 </span>
               </div>
               {tambemEm.length > 0 && (
-                <p className="text-[11px] text-brand-muted px-1">também em {listarNomes(tambemEm)}</p>
+                <p className="text-xs text-brand-muted px-1">também em {listarNomes(tambemEm)}</p>
               )}
             </>
           ) : (
@@ -818,7 +824,7 @@ function ProductCard({
               <button
                 type="button"
                 onClick={handleAddClick}
-                className="w-full py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-brand-green text-white hover:bg-brand-green-hover hover:shadow-md active:scale-98"
+                className="w-full py-2.5 px-3 rounded-xl text-xs font-bold transition duration-200 flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-brand-green text-white hover:bg-brand-green-hover hover:shadow-md active:scale-98"
               >
                 + Adicionar à Minha Lista
               </button>
@@ -837,7 +843,7 @@ function ProductCard({
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative bg-white rounded-2xl border border-brand-border/70 p-3 sm:p-3.5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:border-brand-green/50 hover:-translate-y-1 cursor-pointer select-none ${
+      className={`group relative bg-white rounded-2xl border border-brand-border/70 p-3 sm:p-3.5 flex flex-col justify-between transition duration-200 hover:shadow-lg hover:border-brand-green/50 hover:-translate-y-1 cursor-pointer select-none ${
         isShelf
           ? "w-[205px] sm:w-[225px] shrink-0 snap-start"
           : "w-full"
@@ -850,7 +856,7 @@ function ProductCard({
           e.stopPropagation();
           onToggleFavProduct(product.id);
         }}
-        className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+        className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition ${
           isFavProduct
             ? "bg-rose-50 text-rose-600 border border-rose-200"
             : "bg-white/80 backdrop-blur-xs text-brand-muted hover:text-rose-500 border border-slate-200/70 opacity-70 group-hover:opacity-100 focus-visible:opacity-100"
@@ -872,7 +878,7 @@ function ProductCard({
 
         {/* Badge de Oferta / Promoção */}
         {product.promo && (
-          <span className="absolute top-2 left-2 bg-brand-coral text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
+          <span className="absolute top-2 left-2 bg-brand-coral text-white text-[11px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
             Oferta
           </span>
         )}
@@ -880,7 +886,7 @@ function ProductCard({
 
       {/* Informações Textuais */}
       <div className="space-y-1">
-        <div className="flex items-center justify-between text-[10px] text-brand-muted font-bold uppercase tracking-wider">
+        <div className="flex items-center justify-between text-xs text-brand-muted font-bold uppercase tracking-wider">
           <span className="line-clamp-1">{product.brand || "Geral"}</span>
           <span className="text-slate-400 font-normal capitalize">
             {product.category}
@@ -902,11 +908,11 @@ function ProductCard({
         {pricing ? (
           <div>
             <div className="flex items-baseline justify-between gap-1">
-              <span className="text-[10px] text-brand-muted font-medium">
+              <span className="text-xs text-brand-muted font-medium">
                 Melhor preço:
               </span>
               {pricing.economia > 0 && (
-                <span className="text-[10px] font-extrabold text-brand-green bg-emerald-50 px-1.5 py-0.2 rounded">
+                <span className="text-xs font-extrabold text-brand-green bg-emerald-50 px-1.5 py-0.2 rounded">
                   -R$ {pricing.economia.toFixed(2)}
                 </span>
               )}
@@ -915,11 +921,11 @@ function ProductCard({
               <span className="text-lg font-black text-brand-green leading-tight">
                 R$ {pricing.bestPrice.toFixed(2)}
               </span>
-              <span className="text-[10px] text-brand-navy font-semibold truncate">
+              <span className="text-xs text-brand-navy font-semibold truncate">
                 no {pricing.bestMarket.name}
               </span>
               {pricing.isClube && (
-                <span className="text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
+                <span className="text-[11px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
                   🏷️ {pricing.clubeNome}
                 </span>
               )}
@@ -949,7 +955,7 @@ function ProductCard({
               {pricing.allPrices.slice(0, 3).map((item) => (
                 <span
                   key={item.market.id}
-                  className={`text-[9px] px-1.5 py-0.5 rounded border whitespace-nowrap flex items-center gap-1 ${
+                  className={`text-[11px] px-1.5 py-0.5 rounded border whitespace-nowrap flex items-center gap-1 ${
                     item.market.id === pricing.bestMarket.id
                       ? "bg-emerald-50 text-emerald-800 border-emerald-200 font-bold"
                       : "bg-slate-50 text-slate-600 border-slate-200"
@@ -964,13 +970,13 @@ function ProductCard({
                 </span>
               ))}
               {pricing.allPrices.length > 3 && (
-                <span className="text-[9px] text-brand-muted font-bold pl-0.5">
+                <span className="text-[11px] text-brand-muted font-bold pl-0.5">
                   +{pricing.allPrices.length - 3}
                 </span>
               )}
             </div>
             {tambemEm.length > 0 && (
-              <p className="text-[10px] text-brand-muted pt-1">também em {listarNomes(tambemEm)}</p>
+              <p className="text-xs text-brand-muted pt-1">também em {listarNomes(tambemEm)}</p>
             )}
           </div>
         ) : (
@@ -1010,7 +1016,7 @@ function ProductCard({
             <button
               type="button"
               onClick={handleAddClick}
-              className="w-full py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-gradient-to-r from-brand-green to-brand-teal text-white hover:opacity-95 hover:shadow-md active:scale-98"
+              className="w-full py-2.5 px-3 rounded-xl text-xs font-bold transition duration-200 flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-gradient-to-r from-brand-green to-brand-teal text-white hover:opacity-95 hover:shadow-md active:scale-98"
             >
               <IconCart /> Adicionar
             </button>
@@ -1041,6 +1047,7 @@ function CategoryShelf({
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [limite, setLimite] = useState(CARDS_INICIAIS);
 
   const meta = CATEGORY_META[category.id] || {
     banner: null,
@@ -1048,14 +1055,20 @@ function CategoryShelf({
     cor: C.navy,
   };
 
-  const updateScrollButtons = () => {
+  const totalProdutos = products.length;
+  const updateScrollButtons = useCallback(() => {
     if (!scrollRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
     setCanScrollLeft(scrollLeft > 8);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 8);
-  };
+    // Carrega o próximo lote de cards ao chegar perto do fim da prateleira.
+    setLimite((atual) =>
+      proximoLimite({ limite: atual, total: totalProdutos, scrollLeft, scrollWidth, clientWidth }),
+    );
+  }, [totalProdutos]);
 
-  useEffect(() => {
+  // useLayoutEffect: mede a prateleira e libera o próximo lote antes da pintura (sem piscar cards).
+  useLayoutEffect(() => {
     updateScrollButtons();
     const el = scrollRef.current;
     if (el) {
@@ -1066,7 +1079,7 @@ function CategoryShelf({
         window.removeEventListener("resize", updateScrollButtons);
       };
     }
-  }, [products]);
+  }, [products, limite, updateScrollButtons]);
 
   const scroll = (direction) => {
     if (!scrollRef.current) return;
@@ -1089,7 +1102,7 @@ function CategoryShelf({
               <h2 className="text-base sm:text-lg font-extrabold text-brand-navy tracking-tight">
                 {category.label}
               </h2>
-              <span className="text-[11px] font-bold text-brand-muted bg-brand-bg px-2.5 py-0.5 rounded-full border border-brand-border/70">
+              <span className="text-xs font-bold text-brand-muted bg-brand-bg px-2.5 py-0.5 rounded-full border border-brand-border/70">
                 {products.length} itens
               </span>
             </div>
@@ -1113,7 +1126,7 @@ function CategoryShelf({
               type="button"
               onClick={() => scroll("left")}
               disabled={!canScrollLeft}
-              className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
+              className={`w-8 h-8 rounded-full border flex items-center justify-center transition ${
                 canScrollLeft
                   ? "bg-white border-brand-border text-brand-navy hover:bg-brand-bg hover:border-brand-green/60 shadow-xs cursor-pointer"
                   : "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
@@ -1126,7 +1139,7 @@ function CategoryShelf({
               type="button"
               onClick={() => scroll("right")}
               disabled={!canScrollRight}
-              className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
+              className={`w-8 h-8 rounded-full border flex items-center justify-center transition ${
                 canScrollRight
                   ? "bg-white border-brand-border text-brand-navy hover:bg-brand-bg hover:border-brand-green/60 shadow-xs cursor-pointer"
                   : "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
@@ -1149,7 +1162,7 @@ function CategoryShelf({
           <button
             type="button"
             onClick={() => onSelectCategory(category.id)}
-            className="w-[160px] sm:w-[185px] md:w-[205px] shrink-0 self-stretch rounded-2xl overflow-hidden relative shadow-xs border border-brand-border/70 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 snap-start bg-slate-50 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60"
+            className="w-[160px] sm:w-[185px] md:w-[205px] shrink-0 self-stretch rounded-2xl overflow-hidden relative shadow-xs border border-brand-border/70 group cursor-pointer transition duration-300 hover:shadow-lg hover:-translate-y-0.5 snap-start bg-slate-50 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60"
             style={{ minHeight: "360px" }}
             title={`Ver todos os produtos de ${category.label}`}
             aria-label={`Ver todos os produtos de ${category.label}`}
@@ -1157,6 +1170,8 @@ function CategoryShelf({
             <img
               src={meta.bannerVertical}
               alt={`Departamento ${category.label}`}
+              width={253}
+              height={453}
               loading="lazy"
               className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-103"
               onError={(e) => {
@@ -1173,7 +1188,7 @@ function CategoryShelf({
         )}
 
         {/* CARDS DE PRODUTOS DA CATEGORIA */}
-        {products.slice(0, 24).map((prod) => (
+        {products.slice(0, limite).map((prod) => (
           <ProductCard
             key={prod.id}
             product={prod}
@@ -1199,6 +1214,7 @@ function CategoryShelf({
 // -----------------------------------------------------------------------------
 // O catálogo (data.js) é carregado sob demanda; a tela só monta com os produtos em mãos.
 export default function CatalogPage() {
+  useTituloDaPagina("Catálogo")
   return <ComCatalogo>{(produtos) => <CatalogPageConteudo produtos={produtos} />}</ComCatalogo>;
 }
 
@@ -1545,11 +1561,14 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 <IconSearch />
               </div>
               <input
+                id="catalogo-busca"
+                name="busca"
+                autoComplete="off"
                 type="text"
                 placeholder="Buscar arroz, leite, café, marca ou categoria…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-brand-border/80 bg-brand-bg text-sm text-brand-navy placeholder:text-brand-muted focus:outline-none focus:border-brand-green focus:bg-white transition-all shadow-2xs font-sans"
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-brand-border/80 bg-brand-bg text-sm text-brand-navy placeholder:text-brand-muted focus:outline-none focus:border-brand-green focus:bg-white transition shadow-2xs font-sans"
               />
               {search && (
                 <button
@@ -1566,9 +1585,12 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
             <div className="flex flex-wrap items-center gap-2">
               {/* Filtro por Supermercado */}
               <select
+                id="catalogo-rede"
+                name="rede"
+                autoComplete="off"
                 value={mktFilter}
                 onChange={(e) => setMktFilter(e.target.value)}
-                className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus:outline-none cursor-pointer"
+                className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green cursor-pointer"
                 title="Filtrar por rede"
               >
                 <option value="todos">Todas as redes</option>
@@ -1581,9 +1603,12 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
 
               {/* Ordenar */}
               <select
+                id="catalogo-ordem"
+                name="ordem"
+                autoComplete="off"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus:outline-none cursor-pointer max-w-full"
+                className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green cursor-pointer max-w-full"
                 title="Critério de ordenação"
               >
                 <option value="relevancia">Relevância</option>
@@ -1597,7 +1622,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 <button
                   type="button"
                   onClick={() => setViewMode("prateleiras")}
-                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                     viewMode === "prateleiras"
                       ? "bg-white text-brand-navy shadow-xs"
                       : "text-brand-muted hover:text-brand-navy"
@@ -1609,7 +1634,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 <button
                   type="button"
                   onClick={() => setViewMode("grade")}
-                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                     viewMode === "grade"
                       ? "bg-white text-brand-navy shadow-xs"
                       : "text-brand-muted hover:text-brand-navy"
@@ -1622,12 +1647,12 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
 
               <a
                 href={urlPublica("/list")}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-teal text-white text-xs font-bold shadow-sm hover:shadow-md transition-all shrink-0"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-teal text-white text-xs font-bold shadow-sm hover:shadow-md transition shrink-0"
               >
                 <IconCart />
                 <span>Minha Lista</span>
                 {listCount > 0 && (
-                  <span className="bg-white/25 px-2 py-0.5 rounded-full text-[11px] font-black">
+                  <span className="bg-white/25 px-2 py-0.5 rounded-full text-xs font-black">
                     {listCount}
                   </span>
                 )}
@@ -1774,7 +1799,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                           <h2 className="text-base sm:text-lg font-extrabold text-brand-navy tracking-tight">
                             {activeCatObj?.label || selectedCat}
                           </h2>
-                          <span className="text-[11px] font-bold text-brand-muted bg-brand-bg px-2.5 py-0.5 rounded-full border border-brand-border/70">
+                          <span className="text-xs font-bold text-brand-muted bg-brand-bg px-2.5 py-0.5 rounded-full border border-brand-border/70">
                             {filteredProducts.length} itens
                           </span>
                         </div>

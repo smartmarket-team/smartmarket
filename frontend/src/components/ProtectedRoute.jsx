@@ -34,7 +34,7 @@ export function ProtectedRoute({ children, requiredRole }) {
           <div className="w-16 h-16 rounded-3xl bg-rose-50 text-rose-500 flex items-center justify-center text-3xl mx-auto mb-4 border border-rose-100 shadow-xs">
             🛡️
           </div>
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-rose-100 text-rose-800">
+          <span className="px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-rose-100 text-rose-800">
             Acesso Restrito (403)
           </span>
           <h2 className="text-xl font-bold text-brand-navy mt-3 mb-2">

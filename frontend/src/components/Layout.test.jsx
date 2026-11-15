@@ -60,6 +60,17 @@ describe('Layout', () => {
     expect(screen.getByText('ADMINISTRADOR')).toBeInTheDocument()
   })
 
+  it('o selo do papel (ADMINISTRADOR ou USUÁRIO) tem texto de pelo menos 11 px', () => {
+    useAuth.mockReturnValue({ user: { nome: 'Chefe', papel: 'ADMIN' }, isAdmin: true, logout })
+    const { unmount } = renderizar('/admin')
+    expect(parseFloat(screen.getByText('ADMINISTRADOR').style.fontSize)).toBeGreaterThanOrEqual(11)
+    unmount()
+
+    useAuth.mockReturnValue({ user: { nome: 'Ana', papel: 'USER' }, isAdmin: false, logout })
+    renderizar()
+    expect(parseFloat(screen.getByText('USUÁRIO').style.fontSize)).toBeGreaterThanOrEqual(11)
+  })
+
   it('mostra nome, papel e inicial do usuario', () => {
     renderizar()
 

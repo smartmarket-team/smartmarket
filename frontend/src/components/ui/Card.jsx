@@ -10,7 +10,7 @@ export function Card({
     default: "bg-white border border-brand-border rounded-2xl shadow-sm",
     elevated: "bg-white border border-brand-border/60 rounded-2xl shadow-[0_8px_32px_rgba(13,33,55,0.08)]",
     interactive:
-      "bg-white border border-brand-border rounded-2xl shadow-sm hover:shadow-md hover:border-brand-green/40 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer",
+      "bg-white border border-brand-border rounded-2xl shadow-sm hover:shadow-md hover:border-brand-green/40 hover:-translate-y-0.5 transition-[box-shadow,border-color,translate] duration-200 cursor-pointer",
     subtle: "bg-brand-green-light/30 border border-brand-border/60 rounded-2xl",
     flat: "bg-white rounded-2xl",
   }

@@ -14,7 +14,7 @@ const ROTULOS_RAIO = {
 };
 
 const botaoSecundario =
-  "px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-brand-green text-brand-navy text-xs font-bold transition-all shadow-2xs cursor-pointer";
+  "px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-brand-green text-brand-navy text-xs font-bold transition shadow-2xs cursor-pointer";
 const botaoPrimario =
   "px-3 py-1.5 bg-brand-green text-white text-xs font-bold rounded-xl hover:bg-brand-green-hover transition-colors shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed";
 const botaoPerigo =
@@ -157,7 +157,7 @@ export function SeletorCepRaio({
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs font-black text-brand-navy tracking-tight">Lojas perto da sua localização atual</span>
                 {temCep && (
-                  <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-white border border-emerald-200 text-slate-600">
+                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-md bg-white border border-emerald-200 text-slate-600">
                     {`CEP: ${mascararCep(cep)}`}
                   </span>
                 )}
@@ -179,12 +179,12 @@ export function SeletorCepRaio({
                   {resolvida && (
                     <span className="text-xs font-black text-brand-navy tracking-tight">{`Lojas perto de ${lugar}`}</span>
                   )}
-                  <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-white border border-emerald-200 text-slate-600">
+                  <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-md bg-white border border-emerald-200 text-slate-600">
                     {`CEP: ${mascararCep(cep)}`}
                   </span>
                 </div>
                 {!resolvida && (
-                  <p className="text-[11px] text-brand-muted mt-0.5">
+                  <p className="text-xs text-brand-muted mt-0.5">
                     Não conseguimos localizar esse CEP; mostrando as lojas padrão.
                   </p>
                 )}
@@ -234,7 +234,7 @@ export function SeletorCepRaio({
             )}
             {mostrarRaio && (
               <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 shadow-2xs">
-                <label htmlFor={idRaio} className="text-[11px] text-brand-muted font-bold whitespace-nowrap">
+                <label htmlFor={idRaio} className="text-xs text-brand-muted font-bold whitespace-nowrap">
                   Raio
                 </label>
                 <select
@@ -258,19 +258,19 @@ export function SeletorCepRaio({
       {/* A região de status existe antes da mensagem (leitor de tela só anuncia mudança numa região que
           já estava no DOM) e continua depois de o botão sumir. */}
       {!carregando && (localizacaoAtual?.suportado === true || localizacaoAtual?.mensagem) && (
-        <div role="status" className={localizacaoAtual.mensagem ? "text-[11px] font-bold text-emerald-900 mt-2" : undefined}>
+        <div role="status" className={localizacaoAtual.mensagem ? "text-xs font-bold text-emerald-900 mt-2" : undefined}>
           {localizacaoAtual.mensagem}
         </div>
       )}
 
       {/* Logo abaixo de "Lojas perto de ...": o preço é da rede, a loja só ajuda a saber onde ir. */}
-      <p className="text-[11px] text-brand-muted mt-2">
+      <p className="text-xs text-brand-muted mt-2">
         O preço é o mesmo em toda a rede; a loja é só referência para você saber onde ir.
       </p>
 
       {mostrarRaio && redeMaisPerto?.nome && (
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
-          <p className="text-[11px] font-bold text-emerald-900">
+          <p className="text-xs font-bold text-emerald-900">
             {`A rede mais perto é ${redeMaisPerto.nome}`}
             {textoDistancia(redeMaisPerto.distanciaKm) ? (
               <>
@@ -298,13 +298,13 @@ export function SeletorCepRaio({
       )}
 
       {mostrarRaio && (
-        <p className="text-[11px] text-brand-muted mt-1">Lojas sem distância calculada continuam aparecendo.</p>
+        <p className="text-xs text-brand-muted mt-1">Lojas sem distância calculada continuam aparecendo.</p>
       )}
 
       {!carregando && modo === "editando" && (
         <form onSubmit={salvarCep} noValidate className={`flex flex-wrap items-end gap-2 ${painelAbaixo}`}>
           <div className="flex flex-col gap-1">
-            <label htmlFor={idCampoCep} className="text-[11px] font-bold text-brand-muted">
+            <label htmlFor={idCampoCep} className="text-xs font-bold text-brand-muted">
               CEP
             </label>
             <input

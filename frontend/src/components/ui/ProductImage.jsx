@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { urlAsset } from "../../utils/urlAssets"
+import { urlPublica } from "../../utils/urlPublica"
 
 /**
  * Componente resiliente para exibição de imagens de produtos.
@@ -24,6 +26,10 @@ export function ProductImage({
     src.startsWith("https://")
   )
 
+  // "/images/produtos/..." vira a URL do bucket (quando há VITE_ASSETS_BASE_URL) e os demais caminhos
+  // locais respeitam a base do app (/smartmarket/ no Pages). URL completa (CDN) passa sem mudança.
+  const urlFinal = isLocalOrRemote ? urlPublica(urlAsset(src)) : src
+
   if (!src || hasError || !isLocalOrRemote) {
     return (
       <div
@@ -45,12 +51,14 @@ export function ProductImage({
         </div>
       )}
       <img
-        src={src}
+        src={urlFinal}
         alt={alt}
+        width={400}
+        height={400}
         loading="lazy"
         onLoad={() => setEstado({ src, falhou: false, carregada: true })}
         onError={() => setEstado({ src, falhou: true, carregada: true })}
-        className={`w-full h-full object-contain p-2 transition-all duration-300 group-hover:scale-105 ${
+        className={`w-full h-full object-contain p-2 transition duration-300 group-hover:scale-105 ${
           isLoading ? "opacity-0" : "opacity-100"
         }`}
       />

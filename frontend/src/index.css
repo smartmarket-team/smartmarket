@@ -159,6 +159,31 @@ html, body, #root {
   to { opacity: 1; transform: translateX(0); }
 }
 
+/* Entradas usadas em modais, toasts e avisos (animate-in + fade-in/zoom-in-95/slide-in-from-*).
+   Antes eram classes de plugin que o projeto não instala, então nada animava. Aqui ficam só as 6 que
+   o app usa: sem dependência nova e sem custo no bundle além de ~1 KB de CSS. A duração vem do
+   duration-* do Tailwind (--tw-duration); sem ele, 150 ms. */
+@keyframes sm-entrada-fade { from { opacity: 0; } }
+@keyframes sm-entrada-zoom { from { opacity: 0; transform: scale(0.95); } }
+@keyframes sm-entrada-topo { from { opacity: 0; transform: translateY(-0.5rem); } }
+@keyframes sm-entrada-topo-curta { from { opacity: 0; transform: translateY(-0.25rem); } }
+@keyframes sm-entrada-base { from { opacity: 0; transform: translateY(0.75rem); } }
+
+@utility animate-in {
+  animation-duration: var(--tw-duration, 150ms);
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+@utility fade-in { animation-name: sm-entrada-fade; }
+@utility zoom-in-95 { animation-name: sm-entrada-zoom; }
+@utility slide-in-from-top { animation-name: sm-entrada-topo-curta; }
+@utility slide-in-from-top-2 { animation-name: sm-entrada-topo; }
+@utility slide-in-from-bottom-3 { animation-name: sm-entrada-base; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in { animation: none !important; }
+}
+
 .animate-soft-float {
   animation: softFloat 4s ease-in-out infinite;
 }
@@ -194,6 +219,15 @@ html, body, #root {
   animation: pulseSoft 2.5s ease-in-out infinite;
 }
 
+/* Chama a atenção na abertura e para: 2 pulsos de 0,9 s (antes o selo de oferta pulsava para sempre). */
+@keyframes sm-pulso-curto {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.animate-pulso-curto {
+  animation: sm-pulso-curto 0.9s ease-in-out 2;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-soft-float,
   .animate-soft-float-delayed,
@@ -202,6 +236,7 @@ html, body, #root {
   .animate-fade-in-up-slow,
   .animate-shimmer,
   .animate-pulse-soft,
+  .animate-pulso-curto,
   .animate-pulse {
     animation: none !important;
     transform: none !important;
@@ -796,8 +831,8 @@ html, body, #root {
 .sm-cupom__title span { display: block; color: #0e7a46; white-space: nowrap; }
 .sm-cupom__apoio { max-width: 22rem; font-size: 0.875rem; line-height: 1.55; color: #5C7668; }
 .sm-cupom__passos { display: grid; gap: 0.75rem; list-style: none; margin: 0; padding: 0; }
-.sm-cupom__passo { width: 100%; display: flex; align-items: flex-start; gap: 1rem; text-align: left; padding: 1.05rem 1.25rem; border: 1px solid #dfe9e2; border-radius: 1.5rem; background: #fff; color: #0b192c; opacity: 0.5; transition: opacity 300ms ease, transform 300ms ease, background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, color 300ms ease; }
-.sm-cupom__num { font-family: var(--font-display); font-weight: 800; font-size: 2rem; line-height: 1; color: #0e7a46; min-width: 2.6rem; transition: color 300ms ease; }
+.sm-cupom__passo { width: 100%; display: flex; align-items: flex-start; gap: 1rem; text-align: left; padding: 1.05rem 1.25rem; border: 1px solid #dfe9e2; border-radius: 1.5rem; background: #fff; color: #0b192c; transition: opacity 300ms ease, transform 300ms ease, background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, color 300ms ease; }
+.sm-cupom__num { font-family: var(--font-display); font-weight: 800; font-size: 2rem; line-height: 1; color: var(--color-brand-green-dark); min-width: 2.6rem; transition: color 300ms ease; }
 .sm-cupom__passo strong { display: block; font-weight: 800; font-size: 1.05rem; }
 .sm-cupom__passo small { display: block; margin-top: 0.25rem; font-size: 0.85rem; line-height: 1.45; color: #5C7668; transition: color 300ms ease; }
 .sm-cupom__passo.is-ativo { opacity: 1; transform: scale(1.02); box-shadow: 0 18px 36px -22px rgba(11, 25, 44, 0.45); }

@@ -14,6 +14,7 @@ import logoZaffari from "../../logo/zaffari-bourbon-logo.png";
 import logoMaster from "../../logo/mastersupermercados-logo.png";
 import { mesclarCatalogo } from "../utils/mesclarCatalogo"
 import { urlPublica } from "../utils/urlPublica"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 const MARKET_LOGOS = {
   fort: logoFort,
@@ -237,6 +238,7 @@ function compareMarkets(list, products, markets) {
 
 // O catálogo (data.js) é carregado sob demanda; a tela só monta com os produtos em mãos.
 export default function ShoppingListPage() {
+  useTituloDaPagina("Minha Lista de Compras")
   return <ComCatalogo>{(produtos) => <ShoppingListPageConteudo produtos={produtos} />}</ComCatalogo>;
 }
 
@@ -487,7 +489,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
               <button
                 type="button"
                 onClick={compare}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-teal text-white text-sm font-bold shadow-sm hover:shadow-md transition-all cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-teal text-white text-sm font-bold shadow-sm hover:shadow-md transition cursor-pointer"
               >
                 ⚡ Comparar Cestas
               </button>
@@ -517,7 +519,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                       className="flex items-center gap-3 sm:gap-6 flex-1 min-w-0 cursor-pointer"
                       title="Ver foto e detalhes do produto"
                     >
-                      <div className="w-[4.5rem] h-[4.5rem] sm:w-32 sm:h-32 rounded-2xl bg-slate-50 border border-brand-border/80 flex items-center justify-center text-3xl sm:text-4xl shrink-0 overflow-hidden p-2 sm:p-3 shadow-xs group-hover:bg-white group-hover:border-brand-green/50 transition-all">
+                      <div className="w-[4.5rem] h-[4.5rem] sm:w-32 sm:h-32 rounded-2xl bg-slate-50 border border-brand-border/80 flex items-center justify-center text-3xl sm:text-4xl shrink-0 overflow-hidden p-2 sm:p-3 shadow-xs group-hover:bg-white group-hover:border-brand-green/50 transition">
                         {imgSrc ? (
                           <ProductImage
                             src={imgSrc}
@@ -669,7 +671,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
 
                     {savings > 0 && (
                       <div className="rounded-2xl bg-emerald-500/20 border border-emerald-400/35 px-4 py-2.5 text-right">
-                        <span className="block text-[11px] font-bold uppercase tracking-wider text-emerald-200">
+                        <span className="block text-xs font-bold uppercase tracking-wider text-emerald-200">
                           Você economiza no bolso
                         </span>
                         <span className="text-xl font-black text-white">
@@ -701,7 +703,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                     <button
                       type="button"
                       onClick={() => setChartMode("total")}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                         chartMode === "total"
                           ? "bg-white text-brand-navy shadow-xs"
                           : "text-brand-muted hover:text-brand-navy"
@@ -712,7 +714,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                     <button
                       type="button"
                       onClick={() => setChartMode("diferenca")}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                         chartMode === "diferenca"
                           ? "bg-white text-brand-navy shadow-xs"
                           : "text-brand-muted hover:text-brand-navy"
@@ -802,7 +804,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                           onClick={() =>
                             setSelectedMarketId(isSelected ? null : r.marketId)
                           }
-                          className={`group rounded-2xl border p-3.5 transition-all duration-200 cursor-pointer select-none ${
+                          className={`group rounded-2xl border p-3.5 transition duration-200 cursor-pointer select-none ${
                             isWinner
                               ? "bg-emerald-50/70 border-emerald-300 ring-1 ring-emerald-300/60 shadow-2xs"
                               : isSelected
@@ -834,7 +836,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                                     className={`w-full object-contain ${opticalClass}`}
                                   />
                                 ) : (
-                                  <span className="text-[10px] font-bold text-brand-navy truncate">
+                                  <span className="text-xs font-bold text-brand-navy truncate">
                                     {m.name}
                                   </span>
                                 )}
@@ -845,15 +847,15 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                                   {m.name}
                                 </span>
                                 {isWinner && winnerCompleto ? (
-                                  <span className="text-[10px] font-extrabold text-emerald-700">
+                                  <span className="text-xs font-extrabold text-emerald-700">
                                     ★ Melhor escolha para o seu bolso
                                   </span>
                                 ) : !comparavel ? (
-                                  <span className="text-[10px] font-semibold text-amber-700">
+                                  <span className="text-xs font-semibold text-amber-700">
                                     {rotuloCobertura}
                                   </span>
                                 ) : (
-                                  <span className="text-[10px] font-semibold text-rose-600">
+                                  <span className="text-xs font-semibold text-rose-600">
                                     +R$ {diff.toFixed(2)} mais caro (+{diffPct.toFixed(1)}%)
                                   </span>
                                 )}
@@ -872,7 +874,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                               >
                                 R$ {r.total.toFixed(2)}
                               </span>
-                              <span className="text-[10px] font-bold text-brand-muted group-hover:text-brand-green">
+                              <span className="text-xs font-bold text-brand-muted group-hover:text-brand-green">
                                 {isSelected ? "▲ Ocultar itens" : "▼ Ver itens"}
                               </span>
                             </div>
@@ -886,7 +888,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                                 transition:
                                   "width 850ms cubic-bezier(0.22, 1, 0.36, 1)",
                               }}
-                              className={`h-full rounded-lg bg-gradient-to-r ${barGradient} flex items-center justify-end pr-2.5 text-[11px] font-extrabold text-white shadow-2xs whitespace-nowrap overflow-hidden`}
+                              className={`h-full rounded-lg bg-gradient-to-r ${barGradient} flex items-center justify-end pr-2.5 text-xs font-extrabold text-white shadow-2xs whitespace-nowrap overflow-hidden`}
                             >
                               {chartMode === "total"
                                 ? `R$ ${r.total.toFixed(2)}`
@@ -899,7 +901,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                           </div>
 
                           {r.missing.length > 0 && (
-                            <p className="mt-1.5 text-[11px] font-semibold text-amber-700">
+                            <p className="mt-1.5 text-xs font-semibold text-amber-700">
                               ⚠️ {r.missing.length} produto(s) sem cotação nesta rede
                             </p>
                           )}
@@ -923,7 +925,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                                   </span>
                                   <span className="font-extrabold text-brand-navy shrink-0">
                                     R$ {it.lineTotal.toFixed(2)}{" "}
-                                    <span className="text-[10px] font-normal text-brand-muted">
+                                    <span className="text-xs font-normal text-brand-muted">
                                       (R$ {it.unitPrice.toFixed(2)}/un)
                                     </span>
                                   </span>

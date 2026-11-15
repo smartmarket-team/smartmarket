@@ -2,6 +2,10 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { CupomViva } from './CupomViva'
 
+jest.mock('../../utils/urlAssets', () => ({
+  urlAsset: (c) => (typeof c === 'string' && c.startsWith('/images/produtos/') ? `https://bucket.exemplo/assets${c}` : c),
+}))
+
 function montar() {
   window.matchMedia = jest.fn().mockImplementation(() => ({
     matches: false,
@@ -86,5 +90,12 @@ describe('CupomViva', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /cruze os preços/i }))
     expect(papel).toHaveAttribute('data-passo', '1')
+  })
+
+  it('as fotos dos produtos de demonstração saem pelo bucket, nunca pelo domínio do site', () => {
+    const { container } = montar()
+    const fotos = [...container.querySelectorAll('img')].map((img) => img.getAttribute('src'))
+    expect(fotos.length).toBeGreaterThan(0)
+    for (const src of fotos) expect(src).toMatch(/^https:\/\/bucket\.exemplo\/assets\/images\/produtos\//)
   })
 })
