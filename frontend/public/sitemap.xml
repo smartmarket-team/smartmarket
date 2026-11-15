@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Só a página pública. Catálogo, Favoritos, Lista e Admin exigem login e não entram. -->
+  <url>
+    <loc>https://smartmarket-team.github.io/smartmarket/</loc>
+  </url>
+</urlset>

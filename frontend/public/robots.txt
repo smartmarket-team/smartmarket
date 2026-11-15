@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /smartmarket/admin
+
+Sitemap: https://smartmarket-team.github.io/smartmarket/sitemap.xml
