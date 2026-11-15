@@ -96,7 +96,7 @@ h2{font-size:104px}
 .dg{position:absolute;left:0;top:270px;width:1920px;height:470px}
 .tiles{position:absolute;left:120px;right:120px;bottom:70px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 .tile{border-top:2px solid var(--mint);padding-top:16px}
-.tile h4{font-size:27px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+.tile h3{font-size:27px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
 .tile p{font-size:21px;line-height:1.4;color:rgba(255,255,255,.7)}
 
 /* slide 6 */
@@ -116,7 +116,7 @@ h2{font-size:104px}
 .nodes{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
 .nd{position:relative;padding-top:34px}
 .nd::before{content:"";position:absolute;left:0;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--green)}
-.nd h4{font-size:32px;font-weight:800;letter-spacing:-.02em}
+.nd h3{font-size:32px;font-weight:800;letter-spacing:-.02em}
 .nd p{font-size:23px;line-height:1.4;color:var(--mut);margin-top:8px}
 .nd .src{display:block;margin-top:10px}
 .facts{position:absolute;left:120px;right:120px;bottom:96px;display:flex;gap:70px;align-items:flex-end}
@@ -180,7 +180,7 @@ body:hover #hud,#hud:focus-within,body.hud #hud{opacity:1}
   <div class="bg" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div>
   <div class="top kicker">Defesa de projeto · 2026</div>
   <div class="c reveal">
-    <div class="wm">Smart<b>Market</b></div>
+    <h1 class="wm">Smart<b>Market</b></h1>
     <p class="pos">Descubra em qual mercado do Rio Grande do Sul a sua compra custa menos.</p>
     <p class="by">Grupo 40 · Trilha Dev Full Stack 2026 · Apresenta: Davi Cardozo</p>
   </div>
@@ -278,10 +278,10 @@ body:hover #hud,#hud:focus-within,body.hud #hud{opacity:1}
     </g>
   </svg>
   <div class="tiles reveal">
-    <div class="tile"><h4>Quarentena, não parada</h4><p>Registro inválido vai para um relatório. O lote só falha se mais de 20% for rejeitado.</p></div>
-    <div class="tile"><h4>Um preço vigente por loja</h4><p>O próprio banco recusa dois preços valendo ao mesmo tempo.</p></div>
-    <div class="tile"><h4>Papel lido do banco</h4><p>Cada pedido confere se a pessoa ainda é administrador. O token sozinho não decide.</p></div>
-    <div class="tile"><h4>Testes no CI</h4><p>92 arquivos no site, 56 no servidor, 37 na coleta, com mínimo de 70% de cobertura.</p></div>
+    <div class="tile"><h3>Quarentena, não parada</h3><p>Registro inválido vai para um relatório. O lote só falha se mais de 20% for rejeitado.</p></div>
+    <div class="tile"><h3>Um preço vigente por loja</h3><p>O próprio banco recusa dois preços valendo ao mesmo tempo.</p></div>
+    <div class="tile"><h3>Papel lido do banco</h3><p>Cada pedido confere se a pessoa ainda é administrador. O token sozinho não decide.</p></div>
+    <div class="tile"><h3>Testes no CI</h3><p>92 arquivos no site, 56 no servidor, 37 na coleta, com mínimo de 70% de cobertura.</p></div>
   </div>
 </section>
 
@@ -316,10 +316,10 @@ body:hover #hud,#hud:focus-within,body.hud #hud{opacity:1}
   <div class="tl reveal">
     <div class="rail"></div>
     <div class="nodes">
-      <div class="nd"><h4>Bloqueio</h4><p>Cloudflare barrou o robô e o robots.txt de duas redes proíbe a coleta.</p><span class="src">→ 4 redes suspensas, sem contornar</span></div>
-      <div class="nd"><h4>Servidor dormindo</h4><p>No plano grátis a primeira chamada leva de 1 a 3 minutos.</p><span class="src">→ aviso na tela e keep-alive</span></div>
-      <div class="nd"><h4>CEP impreciso</h4><p>36 CEPs de Porto Alegre caíam no mesmo ponto do mapa.</p><span class="src">→ refino pela rua, ou só cidade</span></div>
-      <div class="nd"><h4>Preço simulado</h4><p>O catálogo tinha valores simulados, que pareciam preço coletado.</p><span class="src">→ removidos; só preço coletado</span></div>
+      <div class="nd"><h3>Bloqueio</h3><p>Cloudflare barrou o robô e o robots.txt de duas redes proíbe a coleta.</p><span class="src">→ 4 redes suspensas, sem contornar</span></div>
+      <div class="nd"><h3>Servidor dormindo</h3><p>No plano grátis a primeira chamada leva de 1 a 3 minutos.</p><span class="src">→ aviso na tela e keep-alive</span></div>
+      <div class="nd"><h3>CEP impreciso</h3><p>36 CEPs de Porto Alegre caíam no mesmo ponto do mapa.</p><span class="src">→ refino pela rua, ou só cidade</span></div>
+      <div class="nd"><h3>Preço simulado</h3><p>O catálogo tinha valores simulados, que pareciam preço coletado.</p><span class="src">→ removidos; só preço coletado</span></div>
     </div>
   </div>
   <div class="facts reveal">
