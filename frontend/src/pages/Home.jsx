@@ -906,9 +906,9 @@ export function Home() {
 
           {/* Coluna 2: Navegação */}
           <div className="space-y-2">
-            <h4 className="text-xs font-bold text-brand-navy uppercase tracking-wider">
+            <h2 className="text-xs font-bold text-brand-navy uppercase tracking-wider">
               Navegação
-            </h4>
+            </h2>
             <ul className="space-y-1.5">
               <li>
                 <Link to="/catalog" className="hover:text-brand-green transition-colors">
@@ -935,9 +935,9 @@ export function Home() {
 
           {/* Coluna 3: Redes Integradas */}
           <div className="space-y-2">
-            <h4 className="text-xs font-bold text-brand-navy uppercase tracking-wider">
+            <h2 className="text-xs font-bold text-brand-navy uppercase tracking-wider">
               Redes no RS
-            </h4>
+            </h2>
             <div>
               <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-emerald-800">
                 Coleta ativa
@@ -976,9 +976,9 @@ export function Home() {
 
           {/* Coluna 4: Institucional */}
           <div className="space-y-2">
-            <h4 className="text-xs font-bold text-brand-navy uppercase tracking-wider">
+            <h2 className="text-xs font-bold text-brand-navy uppercase tracking-wider">
               Sobre o Projeto
-            </h4>
+            </h2>
             <p className="text-xs text-brand-muted leading-relaxed">
               Desenvolvido pelo Grupo 40 Dev Full Stack. Dados coletados de fontes públicas oficiais para auxílio aos consumidores do RS.
             </p>

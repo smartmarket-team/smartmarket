@@ -47,6 +47,20 @@ describe('Home: números e redes sem inflar', () => {
     }
   })
 
+  it('os títulos da página nunca pulam de nível (h1, h2, h3...)', () => {
+    renderizar()
+
+    let anterior = 0
+    for (const titulo of document.querySelectorAll('h1, h2, h3, h4, h5, h6')) {
+      const nivel = Number(titulo.tagName[1])
+      expect({ titulo: titulo.textContent.trim().slice(0, 40), salto: nivel - anterior <= 1 }).toEqual({
+        titulo: titulo.textContent.trim().slice(0, 40),
+        salto: true,
+      })
+      anterior = nivel
+    }
+  })
+
   it('a faixa de redes conta só as com coleta ativa (o Fort tem produtos, mas está suspenso no scraper)', () => {
     renderizar()
 
