@@ -903,16 +903,16 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           const evalInfo = evaluateAlertForProduct(p, priceAlerts[p.id], favMarketIds)
                           if (!evalInfo) return null
                           return (
-                            <div
-                              onClick={(e) => e.stopPropagation()}
-                              className="px-2.5 py-1.5 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-2 text-xs text-amber-900"
-                            >
+                            <div className="px-2.5 py-1.5 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-2 text-xs text-amber-900">
                               <span className="font-semibold truncate">
                                 🔔 Alvo: R$ {evalInfo.targetPrice.toFixed(2)} ({evalInfo.scopeLabel})
                               </span>
                               <button
                                 type="button"
-                                onClick={() => handleRemoveAlert(p.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  handleRemoveAlert(p.id)
+                                }}
                                 className="text-amber-700 hover:text-amber-900 text-xs font-bold shrink-0"
                                 title="Remover alerta"
                               >

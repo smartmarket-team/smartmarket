@@ -556,6 +556,16 @@ describe('FavoritesPage', () => {
       expect(within(dialogo()).getByRole('heading', { name: 'Definir Alerta de Preço' })).toBeInTheDocument()
     })
 
+    it('o ✕ da caixa de alerta remove o alerta sem abrir o detalhe', async () => {
+      localStorage.setItem('sm_price_alerts', JSON.stringify({ p1: 21 }))
+      await renderizar()
+
+      fireEvent.click(within(cartaoDe('Arroz Branco Tipo 1')).getByTitle('Remover alerta'))
+
+      expect(lerLocal('sm_price_alerts')).toEqual({})
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
     it('clicar no resto do cartão continua abrindo o detalhe', async () => {
       await renderizar()
 
