@@ -19,6 +19,20 @@ export function origemDe(url) {
 const unicas = (lista) => [...new Set(lista.filter(Boolean))]
 
 /**
+ * Hosts das fotos dos mercados (campo imageUrl do catálogo), que o app carrega direto do CDN de cada rede.
+ * Levantados de src/data.js: o csp.test.js falha se aparecer um host de imagem novo que não esteja aqui.
+ * Host novo de foto precisa entrar nesta lista (e o teste dirá qual); sem isso o navegador bloqueia a foto
+ * e o cartão mostra o ícone de fallback.
+ */
+export const HOSTS_DE_IMAGEM = [
+  'https://edge.osuper.com.br',
+  'https://produto-assets-vipcommerce-com-br.br-se1.magaluobjects.com',
+  'https://superrissul.vteximg.com.br',
+  'https://zaffari.vteximg.com.br',
+  'https://atacadaobr.vteximg.com.br',
+]
+
+/**
  * Monta a política. Recebe as mesmas URLs que o app usa em tempo de execução:
  * - apiUrl (VITE_API_URL): backend em outro domínio -> connect-src. "/api" relativo cai em 'self'.
  * - catalogoUrl (VITE_CATALOGO_URL): JSON do catálogo no bucket -> connect-src.
@@ -37,8 +51,9 @@ export function montarCsp({ apiUrl, catalogoUrl, assetsUrl } = {}) {
     // React aplica estilos via atributo style=; sem 'unsafe-inline' em style-src eles seriam bloqueados.
     'style-src': ["'self'", "'unsafe-inline'"],
     'font-src': ["'self'", 'data:'],
-    // Fotos vêm do bucket e também de URLs https dos próprios mercados (campo imageUrl do catálogo).
-    'img-src': unicas(["'self'", 'data:', assets, 'https:']),
+    // Fotos vêm do bucket e dos CDNs dos mercados (HOSTS_DE_IMAGEM). Não use `https:`: liberaria imagem
+    // de qualquer host, o que permite exfiltrar dados via pixel e esconde host novo que ninguém revisou.
+    'img-src': unicas(["'self'", 'data:', assets, ...HOSTS_DE_IMAGEM]),
     'media-src': unicas(["'self'", assets]),
     'connect-src': unicas(["'self'", api, catalogo]),
     'object-src': ["'none'"],
