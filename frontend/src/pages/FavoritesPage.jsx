@@ -831,19 +831,19 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           />
 
                           {p.promo && (
-                            <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
+                            <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-xs font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
                               Oferta
                             </span>
                           )}
 
-                          <span className="absolute bottom-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
+                          <span className="absolute bottom-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-xs font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
                             {p.unit || "1 un"}
                           </span>
                         </div>
 
                         {/* Categoria e Marca */}
                         <div className="flex items-start justify-between gap-2">
-                          <span className="text-[11px] font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                          <span className="text-xs font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                             {p.category}
                           </span>
                           <span className="text-xs text-brand-muted font-medium truncate">
@@ -855,7 +855,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           {p.name}
                         </h3>
 
-                        <p className="line-clamp-2 text-[11px] text-brand-muted mt-1 min-h-[1.75rem]">
+                        <p className="line-clamp-2 text-xs text-brand-muted mt-1 min-h-[1.75rem]">
                           {p.descricao || p.name}
                         </p>
                       </div>
@@ -866,7 +866,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           <>
                             <div className="flex items-center justify-between p-3 rounded-2xl bg-brand-green-light/60 border border-brand-green/20 text-xs">
                               <div className="min-w-0">
-                                <span className="block text-[10px] font-semibold text-emerald-800 truncate">
+                                <span className="block text-xs font-semibold text-emerald-800 truncate">
                                   {pricing.totalMarkets > 1
                                     ? `Melhor Preço (${pricing.bestMarketName})`
                                     : `Preço no ${pricing.bestMarketName}`}
@@ -876,13 +876,13 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                                 </span>
                               </div>
                               {pricing.economia > 0 && (
-                                <span className="text-[10px] font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs shrink-0">
+                                <span className="text-xs font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs shrink-0">
                                   -R$ {pricing.economia.toFixed(2)}
                                 </span>
                               )}
                             </div>
 
-                            <div className="text-[11px] text-brand-muted flex items-center justify-between px-1">
+                            <div className="text-xs text-brand-muted flex items-center justify-between px-1">
                               <span>
                                 {pricing.totalMarkets > 1
                                   ? `Comparado em ${pricing.totalMarkets} mercados`
@@ -905,7 +905,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           return (
                             <div
                               onClick={(e) => e.stopPropagation()}
-                              className="px-2.5 py-1.5 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-2 text-[11px] text-amber-900"
+                              className="px-2.5 py-1.5 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-2 text-xs text-amber-900"
                             >
                               <span className="font-semibold truncate">
                                 🔔 Alvo: R$ {evalInfo.targetPrice.toFixed(2)} ({evalInfo.scopeLabel})
@@ -989,7 +989,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                   className="h-11 text-xs sm:text-sm bg-brand-bg"
                 />
 
-                <div className="flex items-center justify-between text-[11px] font-semibold text-brand-muted pt-1">
+                <div className="flex items-center justify-between text-xs font-semibold text-brand-muted pt-1">
                   <span>
                     {alertSearchQuery.trim()
                       ? `Resultados encontrados para "${alertSearchQuery}":`
@@ -1033,11 +1033,11 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           <p className="text-xs font-extrabold text-brand-navy line-clamp-1">
                             {prod.name}
                           </p>
-                          <p className="text-[11px] text-brand-muted truncate">
+                          <p className="text-xs text-brand-muted truncate">
                             {prod.brand} · {prod.unit}
                           </p>
                           {pricing && (
-                            <p className="text-[11px] font-bold text-brand-green mt-0.5">
+                            <p className="text-xs font-bold text-brand-green mt-0.5">
                               Hoje: R$ {pricing.bestPrice.toFixed(2)} ({pricing.bestMarketName})
                             </p>
                           )}
@@ -1084,7 +1084,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                               )}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-green bg-brand-green-light px-2 py-0.5 rounded-full">
+                              <span className="text-xs font-bold uppercase tracking-wider text-brand-green bg-brand-green-light px-2 py-0.5 rounded-full">
                                 Produto Selecionado
                               </span>
                               <h3 className="text-sm font-extrabold text-brand-navy mt-1 line-clamp-2">
@@ -1136,7 +1136,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           {/* Atalhos rápidos de desconto sobre o menor preço atual */}
                           {pricing && (
                             <div className="space-y-1.5">
-                              <span className="block text-[11px] font-bold text-brand-muted">
+                              <span className="block text-xs font-bold text-brand-muted">
                                 Sugestões rápidas de meta:
                               </span>
                               <div className="flex flex-wrap gap-2">

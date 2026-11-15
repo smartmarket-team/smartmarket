@@ -151,7 +151,7 @@ export function ProductViewer360({
       <div className={`flex flex-col items-center justify-center p-6 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-300 min-h-[260px] ${className}`}>
         <span className="text-2xl mb-1">📷</span>
         <p className="text-xs font-bold text-slate-700">Visualização 360° Indisponível</p>
-        <p className="text-[11px] text-slate-500 mt-1 max-w-xs">
+        <p className="text-xs text-slate-500 mt-1 max-w-xs">
           A rotação 360° requer uma sequência fotográfica completa verificada na rede de origem.
         </p>
       </div>
@@ -180,7 +180,7 @@ export function ProductViewer360({
         <div className="absolute inset-0 bg-white/90 backdrop-blur-xs flex flex-col items-center justify-center z-10 gap-2">
           <span className="w-7 h-7 border-3 border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
           <p className="text-xs font-bold text-slate-700">Carregando rotação 360°...</p>
-          <p className="text-[10px] text-slate-500 font-mono">Preparando {totalFrames} quadros</p>
+          <p className="text-xs text-slate-500 font-mono">Preparando {totalFrames} quadros</p>
         </div>
       )}
 
@@ -196,7 +196,7 @@ export function ProductViewer360({
 
       {/* Dica de arraste com o mouse (desaparece ao interagir) */}
       {!isLoading && !hasInteracted && (
-        <div className="absolute bottom-3 inset-x-0 mx-auto w-fit bg-slate-900/75 backdrop-blur-xs text-white px-3 py-1 rounded-full text-[10px] font-semibold flex items-center gap-1.5 opacity-90 pointer-events-none shadow-xs">
+        <div className="absolute bottom-3 inset-x-0 mx-auto w-fit bg-slate-900/75 backdrop-blur-xs text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 opacity-90 pointer-events-none shadow-xs">
           <span>⇄</span>
           <span>Clique e arraste para girar</span>
         </div>

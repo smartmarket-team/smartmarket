@@ -237,7 +237,7 @@ export function SearchSuggest({
                     <span className="min-w-0 flex-1">
                       <span className="line-clamp-2 text-sm font-semibold leading-snug text-brand-navy">{product.name}</span>
                       {product.isClube && (
-                        <span className="mt-1 inline-block rounded bg-brand-navy px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-white">
+                        <span className="mt-1 inline-block rounded bg-brand-navy px-1.5 py-0.5 text-xs font-bold tracking-wide text-white">
                           Clube
                         </span>
                       )}
@@ -248,8 +248,8 @@ export function SearchSuggest({
                       )}
                       {desconto > 0 && (
                         <span className="mt-0.5 flex items-center justify-end gap-1">
-                          <span className="rounded bg-brand-navy px-1 py-0.5 text-[10px] font-bold text-white">{desconto}%</span>
-                          <span className="text-[11px] text-slate-400 line-through">{moeda.format(product.precoNormal)}</span>
+                          <span className="rounded bg-brand-navy px-1 py-0.5 text-xs font-bold text-white">{desconto}%</span>
+                          <span className="text-xs text-slate-400 line-through">{moeda.format(product.precoNormal)}</span>
                         </span>
                       )}
                     </span>

@@ -343,7 +343,7 @@ export function Home() {
         <div className="sm-hero-scrim" aria-hidden="true" />
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 lg:min-h-[calc(100svh-5rem)]">
           <div className="sm-hero-copy relative lg:col-span-5 xl:col-span-5 text-white flex flex-col justify-center px-6 sm:px-10 lg:px-10 xl:px-16 py-10 sm:py-12">
-            <p className="sm-rise text-[11px] font-bold uppercase tracking-[0.22em] text-[#7dffe0]">
+            <p className="sm-rise text-xs font-bold uppercase tracking-[0.22em] text-[#7dffe0]">
               Comparação de preços
             </p>
             <HeroHeadline />
@@ -394,7 +394,7 @@ export function Home() {
                 </form>
               )}
               <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                <span className="text-[11px] font-semibold text-white/45">
+                <span className="text-xs font-semibold text-white/45">
                   {isAuthenticated ? "Atalhos" : "A busca abre com a sua conta"}
                 </span>
                 {quickSearchTags.map((tag) => (
@@ -409,7 +409,7 @@ export function Home() {
                       setSearchTerm(tag)
                       document.getElementById("catalogo-ofertas")?.scrollIntoView({ behavior: "smooth" })
                     }}
-                    className="rounded-full border border-white/20 px-2.5 py-1 text-[11px] font-semibold text-white/80 transition-colors duration-200 hover:border-[#7dffe0] hover:text-[#7dffe0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7dffe0]"
+                    className="rounded-full border border-white/20 px-2.5 py-1 text-xs font-semibold text-white/80 transition-colors duration-200 hover:border-[#7dffe0] hover:text-[#7dffe0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7dffe0]"
                   >
                     {tag}
                   </button>
@@ -435,13 +435,13 @@ export function Home() {
 
             <dl className="sm-rise sm-hero-late-4 mt-6 grid grid-cols-2 gap-6 max-w-sm border-t border-white/15 pt-4">
               <div>
-                <dt className="text-[11px] uppercase tracking-wider text-white/45">Redes no catálogo</dt>
+                <dt className="text-xs uppercase tracking-wider text-white/45">Redes no catálogo</dt>
                 <dd className="mt-1 font-display text-3xl font-extrabold tabular-nums text-white">{REDES_ATIVAS.length}</dd>
               </div>
               <div>
-                <dt className="text-[11px] uppercase tracking-wider text-white/45">Anúncios com preço coletado</dt>
+                <dt className="text-xs uppercase tracking-wider text-white/45">Anúncios com preço coletado</dt>
                 <dd className="mt-1 font-display text-3xl font-extrabold tabular-nums text-white">{ANUNCIOS_COM_PRECO.toLocaleString("pt-BR")}</dd>
-                <dd className="mt-0.5 text-[11px] text-white/55">
+                <dd className="mt-0.5 text-xs text-white/55">
                   {PRODUTOS_EM_2_REDES > 0
                     ? `${PRODUTOS_EM_2_REDES.toLocaleString("pt-BR")} ${PRODUTOS_EM_2_REDES === 1 ? "produto" : "produtos"} em 2+ redes, com preço comparável`
                     : "cada um com o preço da rede onde foi coletado"}
@@ -461,7 +461,7 @@ export function Home() {
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <header className="mb-8 flex flex-col gap-5 lg:mb-10 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#0e7a46]">
+              <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#0e7a46]">
                 <span className="h-2 w-2 rounded-[2px] bg-[#0e7a46] motion-safe:animate-pulse" aria-hidden="true" />
                 Ecossistema de varejo
               </p>
@@ -514,7 +514,7 @@ export function Home() {
         <div ref={secaoSetoresRef} className="space-y-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-brand-border/70 pb-5">
             <div>
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-brand-green-dark">
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-green-dark">
                 Raio-X de preços
               </p>
               <h2 className="mt-1 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-brand-navy">
@@ -596,7 +596,7 @@ export function Home() {
                       {cat.label}
                     </span>
                     {media !== undefined && (
-                      <span className="mt-0.5 text-[11px] font-bold text-brand-muted">{media}% em média</span>
+                      <span className="mt-0.5 text-xs font-bold text-brand-muted">{media}% em média</span>
                     )}
                   </button>
                 )
@@ -697,19 +697,19 @@ export function Home() {
                         />
 
                         {produto.promo && (
-                          <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
+                          <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-xs font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
                             Oferta
                           </span>
                         )}
 
-                        <span className="absolute top-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
+                        <span className="absolute top-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-xs font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
                           {produto.unit || "Unidade"}
                         </span>
                       </div>
 
                       {/* Metadados da Marca e Categoria */}
                       <div className="flex items-start justify-between gap-2">
-                        <span className="text-[11px] font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                        <span className="text-xs font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                           {produto.category}
                         </span>
                         <span className="text-xs text-brand-muted font-medium">
@@ -722,7 +722,7 @@ export function Home() {
                       </CardTitle>
 
                       {produto.descricao && (
-                        <CardDescription className="line-clamp-2 text-[11px] text-brand-muted mt-1">
+                        <CardDescription className="line-clamp-2 text-xs text-brand-muted mt-1">
                           {produto.descricao}
                         </CardDescription>
                       )}
@@ -733,12 +733,12 @@ export function Home() {
                         <>
                           <div className="flex items-center justify-between p-3 rounded-2xl bg-brand-green-light/60 border border-brand-green/20 text-xs">
                             <div>
-                              <span className="block text-[10px] font-semibold text-emerald-800">
+                              <span className="block text-xs font-semibold text-emerald-800">
                                 {insights.totalMarkets > 1
                                   ? `Melhor Preço (${insights.bestMarketName})`
                                   : `Preço no ${insights.bestMarketName}`}
                                 {insights.isClube && (
-                                  <span className="ml-1 text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
+                                  <span className="ml-1 text-[11px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
                                     🏷️ {insights.clubeNome}
                                   </span>
                                 )}
@@ -748,13 +748,13 @@ export function Home() {
                               </span>
                             </div>
                             {insights.economia > 0 && (
-                              <span className="text-[10px] font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs">
+                              <span className="text-xs font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs">
                                 -R$ {insights.economia.toFixed(2)}
                               </span>
                             )}
                           </div>
 
-                          <div className="text-[11px] text-brand-muted flex items-center justify-between px-1">
+                          <div className="text-xs text-brand-muted flex items-center justify-between px-1">
                             <span>
                               {insights.totalMarkets > 1
                                 ? `Comparado em ${insights.totalMarkets} mercados`
@@ -939,7 +939,7 @@ export function Home() {
               Redes no RS
             </h2>
             <div>
-              <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-emerald-800">
+              <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-emerald-800">
                 Coleta ativa
               </p>
               <ul className="flex flex-wrap gap-1.5">
@@ -956,7 +956,7 @@ export function Home() {
             </div>
             {REDES_MAPEADAS.length > 0 && (
               <div className="pt-2">
-                <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-amber-800">
+                <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-amber-800">
                   Mapeadas no RS · coleta em pausa
                 </p>
                 <ul className="flex flex-wrap gap-1.5">

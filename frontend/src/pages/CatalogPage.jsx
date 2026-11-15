@@ -487,7 +487,7 @@ function FavMarketsStrip({ markets, selectedMkt, onSelectMkt, favs = [], onToggl
                   folga do contêiner (p-2.5), que corta o que passa dela. */}
               {ehMaisPerto && (
                 <span
-                  className="absolute -top-2 left-2 z-10 inline-flex items-center gap-0.5 rounded-full bg-emerald-700 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-white shadow-xs pointer-events-none"
+                  className="absolute -top-2 left-2 z-10 inline-flex items-center gap-0.5 rounded-full bg-emerald-700 px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wide text-white shadow-xs pointer-events-none"
                   title={`${m.name} tem a loja mais perto de você`}
                 >
                   <span aria-hidden="true">📍</span> Mais perto
@@ -616,19 +616,19 @@ function ProductCard({
             />
 
             {product.promo && (
-              <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
+              <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-xs font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
                 Oferta
               </span>
             )}
 
-            <span className="absolute top-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
+            <span className="absolute top-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-xs font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
               {product.unit || "1 un"}
             </span>
           </div>
 
           {/* Categoria e Marca */}
           <div className="flex items-start justify-between gap-2">
-            <span className="text-[11px] font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            <span className="text-xs font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
               {product.category}
             </span>
             <span className="text-xs text-brand-muted font-medium truncate">
@@ -648,7 +648,7 @@ function ProductCard({
             </button>
           </h3>
 
-          <p className="line-clamp-2 text-[11px] text-brand-muted mt-1 min-h-[1.75rem]">
+          <p className="line-clamp-2 text-xs text-brand-muted mt-1 min-h-[1.75rem]">
             {product.descricao || product.name}
           </p>
         </div>
@@ -659,10 +659,10 @@ function ProductCard({
             <>
               <div className="flex items-center justify-between p-3 rounded-2xl bg-brand-green-light/60 border border-brand-green/20 text-xs">
                 <div className="min-w-0">
-                  <span className="block text-[10px] font-semibold text-emerald-800 truncate">
+                  <span className="block text-xs font-semibold text-emerald-800 truncate">
                     Melhor Preço ({pricing.bestMarket.name})
                     {pricing.isClube && (
-                      <span className="ml-1 text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
+                      <span className="ml-1 text-[11px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
                         🏷️ {pricing.clubeNome}
                       </span>
                     )}
@@ -672,7 +672,7 @@ function ProductCard({
                   </span>
                 </div>
                 {pricing.economia > 0 && (
-                  <span className="text-[10px] font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs shrink-0">
+                  <span className="text-xs font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs shrink-0">
                     -R$ {pricing.economia.toFixed(2)}
                   </span>
                 )}
@@ -696,14 +696,14 @@ function ProductCard({
                 />
               )}
 
-              <div className="text-[11px] text-brand-muted flex items-center justify-between px-1">
+              <div className="text-xs text-brand-muted flex items-center justify-between px-1">
                 <span>Comparado em {pricing.allPrices.length} mercados</span>
                 <span className="text-brand-navy font-bold group-hover:underline">
                   Ver comparativo &rarr;
                 </span>
               </div>
               {tambemEm.length > 0 && (
-                <p className="text-[11px] text-brand-muted px-1">também em {listarNomes(tambemEm)}</p>
+                <p className="text-xs text-brand-muted px-1">também em {listarNomes(tambemEm)}</p>
               )}
             </>
           ) : (
@@ -796,20 +796,20 @@ function ProductCard({
 
         {/* Badge de Oferta / Promoção */}
         {product.promo && (
-          <span className="absolute top-2 left-2 bg-brand-coral text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
+          <span className="absolute top-2 left-2 bg-brand-coral text-white text-[11px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-xs">
             Oferta
           </span>
         )}
 
         {/* Unidade / Medida */}
-        <span className="absolute bottom-2 right-2 bg-white/95 backdrop-blur-xs text-slate-700 font-bold text-[10px] px-2 py-0.5 rounded-md border border-slate-200/80 shadow-2xs pointer-events-none">
+        <span className="absolute bottom-2 right-2 bg-white/95 backdrop-blur-xs text-slate-700 font-bold text-xs px-2 py-0.5 rounded-md border border-slate-200/80 shadow-2xs pointer-events-none">
           {product.unit || "1 un"}
         </span>
       </div>
 
       {/* Informações Textuais */}
       <div className="space-y-1">
-        <div className="flex items-center justify-between text-[10px] text-brand-muted font-bold uppercase tracking-wider">
+        <div className="flex items-center justify-between text-xs text-brand-muted font-bold uppercase tracking-wider">
           <span className="line-clamp-1">{product.brand || "Geral"}</span>
           <span className="text-slate-400 font-normal capitalize">
             {product.category}
@@ -831,11 +831,11 @@ function ProductCard({
         {pricing ? (
           <div>
             <div className="flex items-baseline justify-between gap-1">
-              <span className="text-[10px] text-brand-muted font-medium">
+              <span className="text-xs text-brand-muted font-medium">
                 Melhor preço:
               </span>
               {pricing.economia > 0 && (
-                <span className="text-[10px] font-extrabold text-brand-green bg-emerald-50 px-1.5 py-0.2 rounded">
+                <span className="text-xs font-extrabold text-brand-green bg-emerald-50 px-1.5 py-0.2 rounded">
                   -R$ {pricing.economia.toFixed(2)}
                 </span>
               )}
@@ -844,11 +844,11 @@ function ProductCard({
               <span className="text-lg font-black text-brand-green leading-tight">
                 R$ {pricing.bestPrice.toFixed(2)}
               </span>
-              <span className="text-[10px] text-brand-navy font-semibold truncate">
+              <span className="text-xs text-brand-navy font-semibold truncate">
                 no {pricing.bestMarket.name}
               </span>
               {pricing.isClube && (
-                <span className="text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
+                <span className="text-[11px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded">
                   🏷️ {pricing.clubeNome}
                 </span>
               )}
@@ -878,7 +878,7 @@ function ProductCard({
               {pricing.allPrices.slice(0, 3).map((item) => (
                 <span
                   key={item.market.id}
-                  className={`text-[9px] px-1.5 py-0.5 rounded border whitespace-nowrap flex items-center gap-1 ${
+                  className={`text-[11px] px-1.5 py-0.5 rounded border whitespace-nowrap flex items-center gap-1 ${
                     item.market.id === pricing.bestMarket.id
                       ? "bg-emerald-50 text-emerald-800 border-emerald-200 font-bold"
                       : "bg-slate-50 text-slate-600 border-slate-200"
@@ -893,13 +893,13 @@ function ProductCard({
                 </span>
               ))}
               {pricing.allPrices.length > 3 && (
-                <span className="text-[9px] text-brand-muted font-bold pl-0.5">
+                <span className="text-[11px] text-brand-muted font-bold pl-0.5">
                   +{pricing.allPrices.length - 3}
                 </span>
               )}
             </div>
             {tambemEm.length > 0 && (
-              <p className="text-[10px] text-brand-muted pt-1">também em {listarNomes(tambemEm)}</p>
+              <p className="text-xs text-brand-muted pt-1">também em {listarNomes(tambemEm)}</p>
             )}
           </div>
         ) : (
@@ -1024,7 +1024,7 @@ function CategoryShelf({
               <h2 className="text-base sm:text-lg font-extrabold text-brand-navy tracking-tight">
                 {category.label}
               </h2>
-              <span className="text-[11px] font-bold text-brand-muted bg-brand-bg px-2.5 py-0.5 rounded-full border border-brand-border/70">
+              <span className="text-xs font-bold text-brand-muted bg-brand-bg px-2.5 py-0.5 rounded-full border border-brand-border/70">
                 {products.length} itens
               </span>
             </div>
@@ -1548,7 +1548,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 <IconCart />
                 <span>Minha Lista</span>
                 {listCount > 0 && (
-                  <span className="bg-white/25 px-2 py-0.5 rounded-full text-[11px] font-black">
+                  <span className="bg-white/25 px-2 py-0.5 rounded-full text-xs font-black">
                     {listCount}
                   </span>
                 )}
@@ -1694,7 +1694,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                           <h2 className="text-base sm:text-lg font-extrabold text-brand-navy tracking-tight">
                             {activeCatObj?.label || selectedCat}
                           </h2>
-                          <span className="text-[11px] font-bold text-brand-muted bg-brand-bg px-2.5 py-0.5 rounded-full border border-brand-border/70">
+                          <span className="text-xs font-bold text-brand-muted bg-brand-bg px-2.5 py-0.5 rounded-full border border-brand-border/70">
                             {filteredProducts.length} itens
                           </span>
                         </div>

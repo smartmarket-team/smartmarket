@@ -124,7 +124,7 @@ export function Product360HoverPreview({
         }`}
         title="Produto com rotação 360° disponível"
       >
-        <span className="text-[9px] font-black text-slate-800 leading-none">360°</span>
+        <span className="text-[11px] font-black text-slate-800 leading-none">360°</span>
         <svg
           className={`w-3.5 h-2.5 text-slate-800 mt-0.5 transition-transform duration-300 ${
             isHovered ? "rotate-[-20deg]" : ""

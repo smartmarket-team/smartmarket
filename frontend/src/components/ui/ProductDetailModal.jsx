@@ -355,7 +355,7 @@ export function ProductDetailModal({
                         }`}
                         title="Giro 360°"
                       >
-                        <span className="text-[10px] font-black text-slate-800 leading-none">360°</span>
+                        <span className="text-xs font-black text-slate-800 leading-none">360°</span>
                         <svg
                           className="w-4.5 h-3 text-slate-700 mt-0.5"
                           viewBox="0 0 20 12"
@@ -432,7 +432,7 @@ export function ProductDetailModal({
                         </div>
 
                         {/* Indicador de Unidade */}
-                        <span className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-xs text-slate-800 font-bold text-[11px] px-2.5 py-0.5 rounded-md border border-slate-200 shadow-2xs pointer-events-none">
+                        <span className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-xs text-slate-800 font-bold text-xs px-2.5 py-0.5 rounded-md border border-slate-200 shadow-2xs pointer-events-none">
                           {currentProduct.unit || "1 un"}
                         </span>
                       </div>
@@ -451,7 +451,7 @@ export function ProductDetailModal({
                     >
                       <path d="M12 9a3 3 0 100 6 3 3 0 000-6zm-7-3h2.18l1.45-2h6.74l1.45 2H19a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2zm7 11a5 5 0 100-10 5 5 0 000 10z" />
                     </svg>
-                    <p className="text-[10px] leading-tight text-slate-400">
+                    <p className="text-xs leading-tight text-slate-400">
                       Proibida a cópia ou reprodução das imagens 360° do produto sem autorização da{" "}
                       <span className="font-bold text-slate-500">OSuper Sistemas Ltda</span>, detentora dos direitos.
                     </p>
@@ -699,7 +699,7 @@ export function ProductDetailModal({
                         <div className="flex items-center justify-between gap-2 mb-1.5 text-xs">
                           <div className="flex items-center gap-2 min-w-0">
                             <span
-                              className={`w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center shrink-0 ${
+                              className={`w-5 h-5 rounded-full text-xs font-black flex items-center justify-center shrink-0 ${
                                 isBest
                                   ? "bg-emerald-600 text-white"
                                   : isWorst
@@ -713,14 +713,14 @@ export function ProductDetailModal({
                               {item.market.name}
                             </span>
                             {item.isClube && (
-                              <span className="text-[9px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-1.5 py-0.2 rounded shrink-0">
+                              <span className="text-[11px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-1.5 py-0.2 rounded shrink-0">
                                 🏷️ {item.clubeNome}
                               </span>
                             )}
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
                             {!isBest && (
-                              <span className="text-[11px] font-bold text-rose-600">
+                              <span className="text-xs font-bold text-rose-600">
                                 +R$ {diff.toFixed(2)}
                               </span>
                             )}
@@ -735,7 +735,7 @@ export function ProductDetailModal({
                         </div>
 
                         {item.equivalente && (
-                          <p className="text-[11px] text-slate-600 mb-1.5 truncate" title={item.equivalente.produto.name}>
+                          <p className="text-xs text-slate-600 mb-1.5 truncate" title={item.equivalente.produto.name}>
                             Equivalente nesta rede: <span className="font-semibold text-slate-800">{item.equivalente.produto.name}</span>
                           </p>
                         )}
@@ -747,7 +747,7 @@ export function ProductDetailModal({
                               transition:
                                 "width 800ms cubic-bezier(0.22, 1, 0.36, 1)",
                             }}
-                            className={`h-full rounded-md bg-gradient-to-r ${barColor} flex items-center justify-end pr-2 text-[10px] font-extrabold text-white whitespace-nowrap overflow-hidden`}
+                            className={`h-full rounded-md bg-gradient-to-r ${barColor} flex items-center justify-end pr-2 text-xs font-extrabold text-white whitespace-nowrap overflow-hidden`}
                           >
                             {chartDisplayMode === "preco"
                               ? isBest
@@ -781,12 +781,12 @@ export function ProductDetailModal({
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.market.color || "#0D2137" }} aria-hidden="true" />
                           <span className="text-xs font-bold text-slate-900">{item.market.name}</span>
-                          <span className="text-[10px] font-black text-amber-950 bg-amber-100 border border-amber-300 px-1.5 py-0.5 rounded">
+                          <span className="text-xs font-black text-amber-950 bg-amber-100 border border-amber-300 px-1.5 py-0.5 rounded">
                             {SELO_PROVAVEL}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-700 break-words">{item.equivalente.produto.name}</p>
-                        <p className="text-[11px] text-amber-900">{AVISO_PROVAVEL}</p>
+                        <p className="text-xs text-slate-700 break-words">{item.equivalente.produto.name}</p>
+                        <p className="text-xs text-amber-900">{AVISO_PROVAVEL}</p>
                       </div>
                       <span className="text-sm font-black text-slate-800 whitespace-nowrap">R$ {item.price.toFixed(2)}</span>
                     </div>
@@ -818,22 +818,22 @@ export function ProductDetailModal({
                               {item.market.name}
                             </span>
                             {item.isClube && (
-                              <span className="text-[9px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded shrink-0">
+                              <span className="text-[11px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded shrink-0">
                                 🏷️ {item.clubeNome}
                               </span>
                             )}
                           </div>
                           {item.equivalente && (
-                            <span className="text-[10px] text-slate-600 block truncate" title={item.equivalente.produto.name}>
+                            <span className="text-xs text-slate-600 block truncate" title={item.equivalente.produto.name}>
                               {item.equivalente.produto.name}
                             </span>
                           )}
                           {isBest ? (
-                            <span className="text-[9px] font-black text-emerald-800 uppercase tracking-wider block">
+                            <span className="text-[11px] font-black text-emerald-800 uppercase tracking-wider block">
                               ★ Menor Preço
                             </span>
                           ) : (
-                            <span className="text-[9px] text-slate-400 font-medium block">
+                            <span className="text-[11px] text-slate-400 font-medium block">
                               +{((item.price - bestOffer.price) / bestOffer.price * 100).toFixed(0)}% vs melhor
                             </span>
                           )}
@@ -861,7 +861,7 @@ export function ProductDetailModal({
                         {m.name}
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-400 font-medium italic">
+                    <span className="text-xs text-slate-400 font-medium italic">
                       Indisponível
                     </span>
                   </div>
@@ -967,7 +967,7 @@ export function ProductDetailModal({
                           {/* Topo do card: Badges de Oferta e 360 */}
                           <div className="flex items-center justify-between w-full h-5 mb-1 pointer-events-none">
                             {isPromo ? (
-                              <span className="bg-[#dc2626] text-white text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-2xs">
+                              <span className="bg-[#dc2626] text-white text-xs font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-2xs">
                                 Oferta
                               </span>
                             ) : (
@@ -977,7 +977,7 @@ export function ProductDetailModal({
                             {altHas360 && (
                               <span
                                 title="Possui rotação 360°"
-                                className="bg-slate-900 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-2xs"
+                                className="bg-slate-900 text-white text-[11px] font-black px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-2xs"
                               >
                                 360°
                               </span>
@@ -999,7 +999,7 @@ export function ProductDetailModal({
                             {alt._lowestPrice !== null ? (
                               <div>
                                 {isPromo && alt.precoNormal && (
-                                  <div className="flex items-center gap-1.5 text-[11px] leading-none mb-0.5">
+                                  <div className="flex items-center gap-1.5 text-xs leading-none mb-0.5">
                                     {descontoPerc && (
                                       <span className="text-[#dc2626] font-bold">
                                         -{descontoPerc}%
@@ -1027,7 +1027,7 @@ export function ProductDetailModal({
                               {alt.name}
                             </h4>
                             {alt.unit && (
-                              <span className="text-[10px] text-slate-500 font-medium block mt-0.5">
+                              <span className="text-xs text-slate-500 font-medium block mt-0.5">
                                 {alt.unit}
                               </span>
                             )}

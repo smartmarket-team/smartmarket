@@ -203,7 +203,7 @@ export function Navbar({
                   {link.badgeCount !== undefined && link.badgeCount > 0 && (
                     <span
                       className={cn(
-                        "inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-bold rounded-full",
+                        "inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold rounded-full",
                         isActive
                           ? "bg-brand-green text-white"
                           : "bg-slate-200 text-brand-navy"
@@ -252,7 +252,7 @@ export function Navbar({
                 />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-green text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-green text-white text-xs font-bold rounded-full flex items-center justify-center shadow-xs">
                   {cartCount}
                 </span>
               )}
@@ -269,7 +269,7 @@ export function Navbar({
                 <span className="text-xs font-bold text-brand-navy leading-tight">
                   {displayName || "Conta"}
                 </span>
-                <span className="text-[10px] text-brand-muted">{user.email}</span>
+                <span className="text-xs text-brand-muted">{user.email}</span>
               </div>
               <button
                 type="button"
@@ -362,7 +362,7 @@ export function Navbar({
                   to={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    "px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-between",
+                    "px-4 py-3 rounded-xl text-sm font-semibold flex items-center justify-between",
                     isActive
                       ? "text-brand-green bg-brand-green-light"
                       : "text-brand-navy hover:bg-slate-50"
@@ -389,7 +389,7 @@ export function Navbar({
                   <p className="text-xs font-bold text-brand-navy truncate">
                     {displayName || "Conta"}
                   </p>
-                  <p className="text-[11px] text-brand-muted truncate">{user.email}</p>
+                  <p className="text-xs text-brand-muted truncate">{user.email}</p>
                 </div>
               </div>
               <button

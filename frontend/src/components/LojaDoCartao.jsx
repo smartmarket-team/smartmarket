@@ -12,9 +12,9 @@ const AVISO_PRECO = (rede) => `O preço vale para toda a rede ${rede}; a loja é
 // começa com um "•" solto: o "•" só aparece entre a distância e o preço.
 const CLASSE_CHIP = {
   completo:
-    "flex flex-col gap-0.5 text-[11px] leading-snug font-bold text-emerald-900 bg-emerald-50/90 border border-emerald-200/90 px-2.5 py-1.5 rounded-xl",
+    "flex flex-col gap-0.5 text-xs leading-snug font-bold text-emerald-900 bg-emerald-50/90 border border-emerald-200/90 px-2.5 py-1.5 rounded-xl",
   compacto:
-    "flex flex-col gap-0.5 text-[10px] leading-snug font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-lg",
+    "flex flex-col gap-0.5 text-xs leading-snug font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-lg",
 }
 
 // Link para o app de mapas: outra aba, sem referrer, e o clique NÃO sobe ao cartão (que abriria o
