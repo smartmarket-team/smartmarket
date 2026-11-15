@@ -564,7 +564,7 @@ export function ProductDetailModal({
                     onClick={() => {
                       if (onAddToList) onAddToList(currentProduct)
                     }}
-                    className="w-full sm:w-auto min-w-[260px] py-3 px-6 rounded-xl border-2 border-red-600 text-red-600 hover:bg-red-50 hover:border-red-700 font-black text-sm transition active:scale-98 cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
+                    className="w-full sm:w-auto min-w-[260px] py-3 px-6 rounded-xl border-2 border-red-600 text-red-600 hover:bg-red-50 hover:border-red-700 font-black text-sm transition active:scale-98 motion-reduce:active:scale-100 motion-reduce:transition-none cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
                   >
                     <span>Adicionar ao carrinho</span>
                   </button>
@@ -1040,7 +1040,7 @@ export function ProductDetailModal({
                               e.stopPropagation()
                               if (onAddToList) onAddToList(alt)
                             }}
-                            className="w-full py-1.5 px-3 rounded-full border border-red-500 text-red-600 hover:bg-red-50 text-xs font-extrabold transition active:scale-98 cursor-pointer mt-1 flex items-center justify-center"
+                            className="w-full py-1.5 px-3 rounded-full border border-red-500 text-red-600 hover:bg-red-50 text-xs font-extrabold transition active:scale-98 motion-reduce:active:scale-100 motion-reduce:transition-none cursor-pointer mt-1 flex items-center justify-center"
                           >
                             Adicionar
                           </button>
@@ -1085,7 +1085,7 @@ export function ProductDetailModal({
 
             <Button
               variant="primary"
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 active:scale-98 transition cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 active:scale-98 transition motion-reduce:transition-none motion-reduce:active:scale-100 cursor-pointer"
               onClick={() => {
                 if (onAddToList) onAddToList(currentProduct)
                 onClose()

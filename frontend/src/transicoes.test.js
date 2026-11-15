@@ -23,3 +23,13 @@ describe('transições', () => {
     expect(fs.readFileSync(path.join(__dirname, 'components', arquivo), 'utf8')).toContain(esperado)
   })
 })
+
+describe('movimento reduzido', () => {
+  it('todo active:scale-98 do ProductDetailModal vem com motion-reduce que desliga a escala e a transição', () => {
+    const texto = fs.readFileSync(path.join(__dirname, 'components', 'ui', 'ProductDetailModal.jsx'), 'utf8')
+    const usos = texto.match(/active:scale-98/g) || []
+    expect(usos.length).toBeGreaterThan(0)
+    expect(texto.match(/motion-reduce:active:scale-100/g) || []).toHaveLength(usos.length)
+    expect(texto.match(/motion-reduce:transition-none/g) || []).toHaveLength(usos.length)
+  })
+})
