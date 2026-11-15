@@ -430,11 +430,6 @@ export function ProductDetailModal({
                             fallbackIcon={currentProduct.image || "📦"}
                           />
                         </div>
-
-                        {/* Indicador de Unidade */}
-                        <span className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-xs text-slate-800 font-bold text-xs px-2.5 py-0.5 rounded-md border border-slate-200 shadow-2xs pointer-events-none">
-                          {currentProduct.unit || "1 un"}
-                        </span>
                       </div>
                     )}
                   </div>

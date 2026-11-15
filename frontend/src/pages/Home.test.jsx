@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
 import Home from './Home'
 import { MARKETS, PRODUCTS } from '../data'
+import { redesComColetaAtiva } from '../utils/redesDoCatalogo'
 
 // Catálogo real (src/data.js) tem 32 MB; os testes usam a fixture pequena.
 jest.mock('../data', () => require('../test/dataFixture'))
@@ -109,7 +110,7 @@ describe('Home (visitante)', () => {
     renderizar()
 
     const valorDe = (rotulo) => screen.getByText(rotulo).closest('div').querySelector('dd')
-    expect(valorDe('Redes no catálogo')).toHaveTextContent(new RegExp(`^${MARKETS.length}$`))
+    expect(valorDe('Redes no catálogo')).toHaveTextContent(new RegExp(`^${redesComColetaAtiva(MARKETS).length}$`))
     expect(valorDe('Anúncios com preço coletado')).toHaveTextContent(new RegExp(`^${PRODUCTS.length}$`))
   })
 })

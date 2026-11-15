@@ -1,6 +1,18 @@
 import api from "./api"
 import { carregarProdutos } from "../utils/carregarProdutos"
 
+/**
+ * Normaliza a exibição de unidade/peso evitando concatenações redundantes
+ * como "1 1kg" ou "1 5kg" quando a unidade já contém a gramatura/volume.
+ */
+export function formatarUnidade(quantidade, unidade) {
+  if (!unidade) return quantidade ? `${quantidade} un` : ""
+  const u = String(unidade).trim()
+  if (!u) return quantidade ? `${quantidade} un` : ""
+  if (/\d/.test(u)) return u
+  return quantidade ? `${quantidade} ${u}` : u
+}
+
 export const produtoService = {
   /**
    * Busca catálogo enriquecido com preços de todos os mercados.
@@ -15,7 +27,7 @@ export const produtoService = {
           name: p.nome,
           brand: p.marca || "",
           category: p.categoria || "todos",
-          unit: `${p.quantidade || ""} ${p.unidade || ""}`.trim(),
+          unit: formatarUnidade(p.quantidade, p.unidade),
           image: p.imagemUrl || "🏪",
           prices: p.precos || {},
           menorPreco: p.menorPreco,

@@ -71,27 +71,11 @@ function IconLogout() {
   )
 }
 
-const COMPACT_SHELL = "(max-width: 1279px)"
-
 export default function Layout() {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, isAdmin, logout } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [compact, setCompact] = useState(() =>
-    typeof window !== "undefined" && window.matchMedia(COMPACT_SHELL).matches
-  )
-
-  useEffect(() => {
-    const media = window.matchMedia(COMPACT_SHELL)
-    const onChange = () => {
-      setCompact(media.matches)
-      if (!media.matches) setMenuOpen(false)
-    }
-    onChange()
-    media.addEventListener("change", onChange)
-    return () => media.removeEventListener("change", onChange)
-  }, [])
 
   useEffect(() => {
     setMenuOpen(false)
@@ -153,8 +137,6 @@ export default function Layout() {
       <aside
         id="sm-shell-nav"
         className={`sm-shell-aside ${menuOpen ? "is-open" : ""}`}
-        inert={compact && !menuOpen ? true : undefined}
-        aria-hidden={compact && !menuOpen ? true : undefined}
       >
         {/* Logo */}
         <NavLink

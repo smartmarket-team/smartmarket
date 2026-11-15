@@ -436,7 +436,7 @@ export function Home() {
             <dl className="sm-rise sm-hero-late-4 mt-6 grid grid-cols-2 gap-6 max-w-sm border-t border-white/15 pt-4">
               <div>
                 <dt className="text-xs uppercase tracking-wider text-white/45">Redes no catálogo</dt>
-                <dd className="mt-1 font-display text-3xl font-extrabold tabular-nums text-white">{REDES_ATIVAS.length}</dd>
+                <dd className="mt-1 font-display text-3xl font-extrabold tabular-nums text-white">{REDES_DA_FAIXA.length}</dd>
               </div>
               <div>
                 <dt className="text-xs uppercase tracking-wider text-white/45">Anúncios com preço coletado</dt>
@@ -806,7 +806,7 @@ export function Home() {
                   Cadastre-se grátis para desbloquear todos os {filteredProducts.length} itens desta seleção!
                 </h3>
                 <p className="text-xs sm:text-sm text-white/75 max-w-2xl">
-                  Com a sua conta gratuita, você libera os {TOTAL_ANUNCIOS.toLocaleString("pt-BR")} anúncios do catálogo, pesquisa qualquer marca e vê os preços em {REDES_ATIVAS.length} supermercados.
+                  Com a sua conta gratuita, você libera os {TOTAL_ANUNCIOS.toLocaleString("pt-BR")} anúncios do catálogo, pesquisa qualquer marca e vê os preços em {REDES_DA_FAIXA.length} supermercados.
                 </p>
               </div>
 

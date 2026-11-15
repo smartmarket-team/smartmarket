@@ -31,11 +31,11 @@ function renderizar() {
 }
 
 describe('Home: números e redes sem inflar', () => {
-  it('conta só as redes que têm anúncios (o Carrefour sem produtos não entra)', () => {
+  it('o hero conta só as redes com coleta ativa (o Carrefour sem produtos e o Fort suspenso não entram)', () => {
     renderizar()
 
     const dd = screen.getByText('Redes no catálogo').closest('div').querySelector('dd')
-    expect(dd).toHaveTextContent(/^2$/)
+    expect(dd).toHaveTextContent(/^1$/)
   })
 
   it('a lista de definições do hero só tem dt e dd dentro de cada grupo', () => {

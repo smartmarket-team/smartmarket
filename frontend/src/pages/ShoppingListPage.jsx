@@ -18,25 +18,72 @@ import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 const MARKET_LOGOS = {
   fort: logoFort,
-  asun: logoAsun,
-  stok: logoStok,
-  atacadao: logoAtacadao,
+  1: logoFort,
   carrefour: logoCarrefour,
-  rissul: logoRissul,
-  zaffari: logoZaffari,
+  2: logoCarrefour,
+  asun: logoAsun,
+  3: logoAsun,
+  atacadao: logoAtacadao,
+  4: logoAtacadao,
   master: logoMaster,
+  5: logoMaster,
+  zaffari: logoZaffari,
+  6: logoZaffari,
+  rissul: logoRissul,
+  7: logoRissul,
+  stok: logoStok,
+  8: logoStok,
 };
 
 const MARKET_LOGO_OPTICAL_CLASS = {
   zaffari: "max-h-7 scale-[1.15]",
+  6: "max-h-7 scale-[1.15]",
   rissul: "max-h-8 scale-[1.75]",
+  7: "max-h-8 scale-[1.75]",
   asun: "max-h-8 scale-[1.32]",
+  3: "max-h-8 scale-[1.32]",
   stok: "max-h-8 scale-[1.35]",
+  8: "max-h-8 scale-[1.35]",
   atacadao: "max-h-7 scale-[1.12]",
+  4: "max-h-7 scale-[1.12]",
   master: "max-h-7 scale-[1.14]",
+  5: "max-h-7 scale-[1.14]",
   fort: "max-h-8 scale-[1.4]",
+  1: "max-h-8 scale-[1.4]",
   carrefour: "max-h-8 scale-[1.4]",
+  2: "max-h-8 scale-[1.4]",
 };
+
+function nameToMarketSlug(name) {
+  const n = String(name || "").toLowerCase();
+  if (n.includes("fort")) return "fort";
+  if (n.includes("carrefour")) return "carrefour";
+  if (n.includes("asun")) return "asun";
+  if (n.includes("atacad")) return "atacadao";
+  if (n.includes("master")) return "master";
+  if (n.includes("zaffari")) return "zaffari";
+  if (n.includes("rissul")) return "rissul";
+  if (n.includes("stok")) return "stok";
+  return "";
+}
+
+function getMarketLogo(m) {
+  if (!m) return null;
+  const mId = m.id !== undefined && m.id !== null ? String(m.id).toLowerCase() : "";
+  const slug = m.slug || MARKET_ID_TO_SLUG[mId] || nameToMarketSlug(m.name || m.nome) || mId;
+  return MARKET_LOGOS[slug] || MARKET_LOGOS[mId] || m.logoUrl || null;
+}
+
+function getMarketOpticalClass(m) {
+  if (!m) return "max-h-7";
+  const mId = m.id !== undefined && m.id !== null ? String(m.id).toLowerCase() : "";
+  const slug = m.slug || MARKET_ID_TO_SLUG[mId] || nameToMarketSlug(m.name || m.nome) || mId;
+  return (
+    MARKET_LOGO_OPTICAL_CLASS[slug] ||
+    MARKET_LOGO_OPTICAL_CLASS[mId] ||
+    "max-h-7"
+  );
+}
 
 // Paleta da marca (espelha as variaveis --color-brand-* de src/index.css).
 // Dois merges introduziram esta constante em paralelo; a uniao das duas
@@ -85,20 +132,48 @@ function saveStoredList(l) {
   sessionStorage.setItem("sm_list", JSON.stringify(l));
 }
 
+const MARKET_ID_TO_SLUG = {
+  1: "fort",
+  2: "carrefour",
+  3: "asun",
+  4: "atacadao",
+  5: "master",
+  6: "zaffari",
+  7: "rissul",
+  8: "stok",
+};
+
+const MARKET_SLUG_TO_ID = {
+  fort: "1",
+  carrefour: "2",
+  asun: "3",
+  atacadao: "4",
+  master: "5",
+  zaffari: "6",
+  rissul: "7",
+  stok: "8",
+};
+
 function getPriceForMarket(product, market) {
   if (!product || !product.prices) return null;
-  return (
-    product.prices[market.id] ??
-    product.prices[market.id?.toString()] ??
-    product.prices[
-      market.name?.toLowerCase().includes("fort")
-        ? "fort"
-        : market.name?.toLowerCase().includes("carrefour")
-          ? "carrefour"
-          : "big"
-    ] ??
-    null
-  );
+  const mId = market?.id?.toString().toLowerCase();
+  const mName = market?.name?.toLowerCase() || "";
+
+  if (mId && product.prices[mId] !== undefined) return product.prices[mId];
+
+  const mappedSlug = mId ? MARKET_ID_TO_SLUG[mId] : null;
+  if (mappedSlug && product.prices[mappedSlug] !== undefined) return product.prices[mappedSlug];
+
+  const mappedId = mId ? MARKET_SLUG_TO_ID[mId] : null;
+  if (mappedId && product.prices[mappedId] !== undefined) return product.prices[mappedId];
+
+  for (const [key, val] of Object.entries(product.prices)) {
+    const k = key.toLowerCase();
+    if (mId && (k === mId || mId.includes(k) || k.includes(mId))) return val;
+    if (mappedSlug && (k === mappedSlug || mappedSlug.includes(k) || k.includes(mappedSlug))) return val;
+    if (mName && (mName.includes(k) || k.includes(mName.split(" ")[0]))) return val;
+  }
+  return null;
 }
 
 function getBestMarketPrice(product, markets) {
@@ -219,7 +294,19 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
         if (prodsData && prodsData.length > 0) {
           setProducts(mesclarCatalogo(DEFAULT_PRODUCTS, prodsData));
         }
-        if (mktsData && mktsData.length > 0) setMarkets(mktsData);
+        if (mktsData && mktsData.length > 0) {
+          const enriched = mktsData.map((m) => {
+            const slug = MARKET_ID_TO_SLUG[m.id] || nameToMarketSlug(m.name);
+            const defaultMkt = DEFAULT_MARKETS.find((dm) => dm.id === slug) || {};
+            return {
+              ...defaultMkt,
+              ...m,
+              slug: slug || defaultMkt.id,
+              name: m.name || defaultMkt.name,
+            };
+          });
+          setMarkets(enriched);
+        }
       } catch {
         // Fallback
       }
@@ -561,12 +648,12 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                       )}
                     </div>
 
-                    {MARKET_LOGOS[winnerMarket.id] && (
+                    {getMarketLogo(winnerMarket) && (
                       <div className="w-24 h-13 rounded-2xl bg-white p-2 flex items-center justify-center shadow-md shrink-0 overflow-hidden">
                         <img
-                          src={MARKET_LOGOS[winnerMarket.id]}
+                          src={getMarketLogo(winnerMarket)}
                           alt={winnerMarket.name}
-                          className={`w-full object-contain ${MARKET_LOGO_OPTICAL_CLASS[winnerMarket.id] || "max-h-9"}`}
+                          className={`w-full object-contain ${getMarketOpticalClass(winnerMarket) || "max-h-9"}`}
                         />
                       </div>
                     )}
@@ -708,8 +795,8 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                             ? "from-rose-500 to-orange-500"
                             : "from-amber-400 to-amber-500";
 
-                      const logoSrc = MARKET_LOGOS[m.id];
-                      const opticalClass = MARKET_LOGO_OPTICAL_CLASS[m.id] || "max-h-7";
+                      const logoSrc = getMarketLogo(m);
+                      const opticalClass = getMarketOpticalClass(m) || "max-h-7";
 
                       return (
                         <div

@@ -1,5 +1,5 @@
 import api from './api'
-import produtoService from './produtoService'
+import produtoService, { formatarUnidade } from './produtoService'
 import { PRODUCTS } from '../data'
 
 // O data.js real tem ~32 MB; os testes usam a fixture (regra do CLAUDE.md).
@@ -19,6 +19,27 @@ describe('produtoService', () => {
     // Sem o jest.mock('../data') acima, PRODUCTS seria o catálogo real (milhares de produtos).
     expect(PRODUCTS.length).toBeGreaterThan(0)
     expect(PRODUCTS.length).toBeLessThan(100)
+  })
+
+  describe('formatarUnidade', () => {
+    it('evita duplicar o 1 quando a unidade ja contem gramatura/peso', () => {
+      expect(formatarUnidade(1, '1kg')).toBe('1kg')
+      expect(formatarUnidade(1, '5kg')).toBe('5kg')
+      expect(formatarUnidade(1, '175g')).toBe('175g')
+      expect(formatarUnidade(1, '2L')).toBe('2L')
+    })
+
+    it('junta quantidade e unidade quando a unidade e puramente metrica', () => {
+      expect(formatarUnidade(5, 'kg')).toBe('5 kg')
+      expect(formatarUnidade(500, 'g')).toBe('500 g')
+      expect(formatarUnidade(2, 'un')).toBe('2 un')
+    })
+
+    it('trata valores nulos ou vazios de forma segura', () => {
+      expect(formatarUnidade(null, null)).toBe('')
+      expect(formatarUnidade(undefined, '')).toBe('')
+      expect(formatarUnidade(3, null)).toBe('3 un')
+    })
   })
 
   describe('buscarCatalogoComPrecos', () => {

@@ -114,3 +114,13 @@ Vocabulário padrão: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-fo
 ### Domain docs
 
 Single-context: `GLOSSARY.md` e `docs/adr/` na raiz, criados sob demanda. Veja `docs/agents/domain.md`.
+
+## Economia de Contexto — Avaliação Automática
+
+A cada nova mensagem do usuário, avalie rapidamente (sem gastar tokens extras explicando):
+
+1. **Mudou de assunto?** Se o pedido atual NÃO tem relação com a tarefa anterior na conversa, sugira em 1 linha: "💡 Assunto novo detectado. Recomendo `/compact` para comprimir o histórico, ou inicie um novo chat para economizar tokens."
+2. **Conversa longa no mesmo assunto?** Se já houve mais de ~10 trocas na mesma tarefa, sugira em 1 linha: "💡 Conversa longa. Recomendo `/compact` para continuar com economia de tokens."
+3. **Mesmo assunto, conversa curta?** Não diga nada. Execute normalmente.
+
+> Regra: nunca gaste mais de 1 linha com essa sugestão. Priorize sempre executar o pedido do usuário.
