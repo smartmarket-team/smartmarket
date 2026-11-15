@@ -38,11 +38,20 @@ describe('Home: números e redes sem inflar', () => {
     expect(dd).toHaveTextContent(/^2$/)
   })
 
+  it('a lista de definições do hero só tem dt e dd dentro de cada grupo', () => {
+    renderizar()
+
+    const dl = screen.getByText('Redes no catálogo').closest('dl')
+    for (const grupo of dl.children) {
+      for (const filho of grupo.children) expect(['DT', 'DD']).toContain(filho.tagName)
+    }
+  })
+
   it('a faixa de redes conta só as com coleta ativa (o Fort tem produtos, mas está suspenso no scraper)', () => {
     renderizar()
 
     expect(screen.getByText('redes com coleta ativa').previousSibling).toHaveTextContent('01')
-    const faixa = screen.getByRole('group', { name: 'Redes com coleta de preços' })
+    const faixa = screen.getByRole('list', { name: 'Redes com coleta de preços' })
     expect(faixa.querySelector('img[alt="Asun Supermercados"]')).toBeInTheDocument()
     expect(faixa.querySelector('img[alt="Fort Atacadista"]')).not.toBeInTheDocument()
   })

@@ -45,7 +45,7 @@ export function RadarColeta({ markets, redesResumo, selectedMarket, onSelect }) 
       </svg>
       <span className="sm-radar__stem" aria-hidden="true" />
 
-      <ul role="group" aria-label="Redes com coleta de preços" className="sm-radar__cards" style={{ "--n": redes.length }}>
+      <ul aria-label="Redes com coleta de preços" className="sm-radar__cards" style={{ "--n": redes.length }}>
         {redes.map((mercado) => {
           const logo = LOGOS_REDES[mercado.id]
           const selecionado = selectedMarket === mercado.id

@@ -441,11 +441,11 @@ export function Home() {
               <div>
                 <dt className="text-[11px] uppercase tracking-wider text-white/45">Anúncios com preço coletado</dt>
                 <dd className="mt-1 font-display text-3xl font-extrabold tabular-nums text-white">{ANUNCIOS_COM_PRECO.toLocaleString("pt-BR")}</dd>
-                <p className="mt-0.5 text-[11px] text-white/55">
+                <dd className="mt-0.5 text-[11px] text-white/55">
                   {PRODUTOS_EM_2_REDES > 0
                     ? `${PRODUTOS_EM_2_REDES.toLocaleString("pt-BR")} ${PRODUTOS_EM_2_REDES === 1 ? "produto" : "produtos"} em 2+ redes, com preço comparável`
                     : "cada um com o preço da rede onde foi coletado"}
-                </p>
+                </dd>
               </div>
             </dl>
           </div>
