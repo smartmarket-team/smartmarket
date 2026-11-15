@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import CatalogPage from './CatalogPage'
 import { produtoService, mercadoService, favoritoService } from '../services'
 import { useLocalizacao } from '../hooks/useLocalizacao'
@@ -226,6 +226,54 @@ describe('privacidade da localização atual do navegador', () => {
 
     expect(lojaService.filiaisPublicas).toHaveBeenCalledTimes(1)
     expect(lojaService.filiaisPublicas.mock.calls[0]).toEqual([])
+  })
+
+  describe('com o popover "Navegar" aberto (cartões e barra), em modo navegador', () => {
+    // O jsdom não navega: o preventDefault na captura evita o aviso "Not implemented: navigation".
+    const impedirNavegacao = (evento) => evento.preventDefault()
+    beforeEach(() => document.addEventListener('click', impedirNavegacao, true))
+    afterEach(() => document.removeEventListener('click', impedirNavegacao, true))
+
+    const botoesNavegar = () => screen.getAllByRole('button', { name: /^Navegar/ })
+
+    it('a posição do usuário não aparece no popover, nos links, no HTML nem em nenhum canal', async () => {
+      await renderizar()
+      await clicarEmUsarLocalizacao()
+      expect(botoesNavegar().length).toBeGreaterThan(0)
+
+      for (const [i] of botoesNavegar().entries()) {
+        fireEvent.click(botoesNavegar()[i])
+        expect(screen.getByRole('group')).toBeInTheDocument()
+        expect(canaisComVazamento()).toEqual([])
+        fireEvent.keyDown(document.body, { key: 'Escape' })
+      }
+    })
+
+    it('os links do popover levam só coordenadas de LOJAS (as filiais públicas), nunca a posição', async () => {
+      await renderizar()
+      await clicarEmUsarLocalizacao()
+      const coordenadasDasLojas = FILIAIS.map((f) => `${f.latitude},${f.longitude}`)
+
+      for (const [i] of botoesNavegar().entries()) {
+        fireEvent.click(botoesNavegar()[i])
+        for (const link of within(screen.getByRole('group')).getAllByRole('link')) {
+          const href = link.getAttribute('href')
+          expect(coordenadasDasLojas.some((par) => href.includes(par))).toBe(true)
+          expect(href).not.toMatch(/origin|saddr|90010/i)
+        }
+        fireEvent.keyDown(document.body, { key: 'Escape' })
+      }
+    })
+
+    it('escolher um destino não grava nada e não vaza a posição', async () => {
+      await renderizar()
+      await clicarEmUsarLocalizacao()
+
+      fireEvent.click(botoesNavegar()[0])
+      fireEvent.click(within(screen.getByRole('group')).getByRole('link', { name: /Waze/ }))
+
+      expect(canaisComVazamento()).toEqual([])
+    })
   })
 
   it('nenhuma chave de storage fala de posição, latitude, longitude ou coordenada', async () => {

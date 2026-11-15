@@ -1222,6 +1222,19 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
     () => redeMaisPerto(filiaisMaisProximas, markets),
     [filiaisMaisProximas, markets],
   );
+  // A filial dessa rede mais perto: o objeto de onde saiu a distância da frase "A rede mais perto é X (≈ N km)".
+  // O botão "Navegar" da barra usa as coordenadas DELA (a mesma loja da frase, a preferida inclusive), nunca
+  // as da loja de referência do cartão.
+  const destinoMaisPertoDaPagina = useMemo(() => {
+    const filial = redeMaisPertoDaPagina ? filiaisMaisProximas[String(redeMaisPertoDaPagina.id)] : null;
+    if (!filial) return null;
+    return {
+      nomeFilial: filial.nomeFilial,
+      latitude: filial.latitude,
+      longitude: filial.longitude,
+      distanciaKm: filial.distanciaKm,
+    };
+  }, [redeMaisPertoDaPagina, filiaisMaisProximas]);
 
   // Quantidades na lista de compras (contador mostra quantos produtos diferentes existem na lista)
   const [listQuantities, setListQuantities] = useState(() => getList());
@@ -1566,6 +1579,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 erro={erroLocalizacao}
                 raioKm={raioKm}
                 redeMaisPerto={redeMaisPertoDaPagina}
+                destinoMaisPerto={destinoMaisPertoDaPagina}
                 origem={localizacaoAtual.origem}
                 localizacaoAtual={{
                   suportado: localizacaoAtual.suportado,

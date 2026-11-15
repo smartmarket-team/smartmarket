@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { OrigemDistanciaContext } from "../contexts/OrigemDistanciaContext"
+import BotaoNavegar from "./BotaoNavegar"
 import { linkComoChegar, linkWaze } from "../utils/linkComoChegar"
 import { dicaDistancia, textoDistancia, textoDistanciaFalado } from "../utils/textoDistancia"
 
@@ -17,27 +18,9 @@ const CLASSE_CHIP = {
     "flex flex-col gap-0.5 text-xs leading-snug font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-lg",
 }
 
-// Link para o app de mapas: outra aba, sem referrer, e o clique NÃO sobe ao cartão (que abriria o
-// detalhe do produto). Só é renderizado com coordenadas válidas (o `href` vem dos helpers de link).
-function LinkDoMapa({ href, rotuloAcessivel, children }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      referrerPolicy="no-referrer"
-      aria-label={rotuloAcessivel}
-      onClick={(evento) => evento.stopPropagation()}
-      className="shrink-0 font-bold text-emerald-900 underline underline-offset-2 hover:text-emerald-700 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/50"
-    >
-      {children}
-    </a>
-  )
-}
-
 /**
- * A loja de uma rede no cartão do produto: nome, distância e os links "Como chegar" (Google Maps) e
- * "Waze". É só referência: o preço é da REDE, e o tooltip diz isso. Nunca mostra endereço nem sugere
+ * A loja de uma rede no cartão do produto: nome, distância e o botão "Navegar" (que oferece Google Maps
+ * ou Waze, em links simples). É só referência: o preço é da REDE, e o tooltip diz isso. Nunca mostra endereço nem sugere
  * preço por loja.
  *
  * - `filial`: a loja no formato dos cartões (nomeFilial, distanciaKm, latitude, longitude).
@@ -93,19 +76,15 @@ export default function LojaDoCartao({ filial, nomeRede = "", rotulo = null, pre
               {distancia ? "• " : ""}R$ {preco.toFixed(2)}
             </span>
           )}
+          {/* Um botão só: ao clicar, a pessoa escolhe Google Maps ou Waze. Sem coordenadas, sem botão. */}
           {(linkGoogle || linkDoWaze) && (
-            <span className="ml-auto flex shrink-0 items-center gap-2.5">
-              {linkGoogle && (
-                <LinkDoMapa href={linkGoogle} rotuloAcessivel={`Como chegar a ${filial.nomeFilial} (abre o mapa em outra aba)`}>
-                  Como chegar
-                </LinkDoMapa>
-              )}
-              {linkDoWaze && (
-                <LinkDoMapa href={linkDoWaze} rotuloAcessivel={`Abrir a rota até ${filial.nomeFilial} no Waze (abre em outra aba)`}>
-                  Waze
-                </LinkDoMapa>
-              )}
-            </span>
+            <BotaoNavegar
+              latitude={filial.latitude}
+              longitude={filial.longitude}
+              nomeLoja={filial.nomeFilial}
+              compacto={compacto}
+              className="ml-auto"
+            />
           )}
         </div>
       )}
