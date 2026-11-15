@@ -527,7 +527,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
             setActiveTab("produtos")
             setSearch("")
           }}
-          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition ${
             activeTab === "produtos"
               ? "bg-brand-green text-white shadow-sm"
               : "text-brand-muted hover:text-brand-navy hover:bg-slate-50"
@@ -543,7 +543,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
             setActiveTab("mercados")
             setSearch("")
           }}
-          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition ${
             activeTab === "mercados"
               ? "bg-brand-green text-white shadow-sm"
               : "text-brand-muted hover:text-brand-navy hover:bg-slate-50"
@@ -559,7 +559,7 @@ function AdminPageConteudo({ produtos: PRODUCTS }) {
             setActiveTab("usuarios")
             setSearch("")
           }}
-          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-bold transition ${
             activeTab === "usuarios"
               ? "bg-brand-green text-white shadow-sm"
               : "text-brand-muted hover:text-brand-navy hover:bg-slate-50"

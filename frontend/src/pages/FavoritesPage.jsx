@@ -573,7 +573,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                   <div
                     key={m.id}
                     onClick={() => setSelectedMarketFilter(isSelected ? "todos" : m.id)}
-                    className={`group flex items-center justify-between gap-1.5 h-13 sm:h-14 px-2.5 sm:px-3 py-1.5 rounded-xl border transition-all duration-200 cursor-pointer select-none flex-1 min-w-[118px] sm:min-w-[130px] ${
+                    className={`group flex items-center justify-between gap-1.5 h-13 sm:h-14 px-2.5 sm:px-3 py-1.5 rounded-xl border transition duration-200 cursor-pointer select-none flex-1 min-w-[118px] sm:min-w-[130px] ${
                       isSelected
                         ? "bg-emerald-50/90 border-brand-green ring-2 ring-brand-green/35 shadow-xs"
                         : isFavMkt
@@ -630,11 +630,11 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                       setSelectedCategory(cat.id)
                       setActiveTab("produtos")
                     }}
-                    className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition-all duration-200 outline-none"
+                    className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition duration-200 outline-none"
                     title={`Filtrar favoritos em ${cat.label}`}
                   >
                     <div
-                      className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 flex items-center justify-center rounded-2xl transition-all duration-300 ${
+                      className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 flex items-center justify-center rounded-2xl transition duration-300 ${
                         isActive
                           ? "ring-3 ring-[#065417] ring-offset-2 scale-105 bg-emerald-50/70 shadow-sm"
                           : "group-hover:scale-105"
@@ -697,7 +697,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
             <button
               type="button"
               onClick={() => setActiveTab("produtos")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition cursor-pointer ${
                 activeTab === "produtos"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy hover:bg-slate-100"
@@ -713,7 +713,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
             <button
               type="button"
               onClick={() => setActiveTab("alertas")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition cursor-pointer ${
                 activeTab === "alertas"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy hover:bg-slate-100"
@@ -729,7 +729,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
             <button
               type="button"
               onClick={() => setActiveTab("mercados")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition cursor-pointer ${
                 activeTab === "mercados"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy hover:bg-slate-100"
@@ -803,7 +803,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                     <div
                       key={p.id}
                       onClick={() => setSelectedProductDetail(p)}
-                      className="group relative bg-white rounded-3xl border border-brand-border/80 p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:border-brand-green/60 hover:-translate-y-0.5 cursor-pointer select-none w-full"
+                      className="group relative bg-white rounded-3xl border border-brand-border/80 p-4 sm:p-5 flex flex-col justify-between transition duration-200 hover:shadow-lg hover:border-brand-green/60 hover:-translate-y-0.5 cursor-pointer select-none w-full"
                     >
                       <div>
                         {/* Botão de Desfavoritar */}
@@ -929,7 +929,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                               e.stopPropagation()
                               addToList(p.id)
                             }}
-                            className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-brand-green text-white hover:bg-brand-green-hover transition-all shadow-xs cursor-pointer"
+                            className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-brand-green text-white hover:bg-brand-green-hover transition shadow-xs cursor-pointer"
                           >
                             + Adicionar à Minha Lista
                           </button>
@@ -1022,7 +1022,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                         key={prod.id}
                         type="button"
                         onClick={() => selectInlineAlertProduct(prod)}
-                        className={`flex items-center gap-3 p-2.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                        className={`flex items-center gap-3 p-2.5 rounded-2xl border text-left transition cursor-pointer ${
                           isSelected
                             ? "bg-emerald-50/90 border-brand-green ring-2 ring-brand-green/30 shadow-xs"
                             : "bg-slate-50/70 border-brand-border/70 hover:bg-white hover:border-brand-green/50"
@@ -1381,7 +1381,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                       <button
                         type="button"
                         onClick={() => toggleFavMarket(m.id)}
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all shrink-0 cursor-pointer ${
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition shrink-0 cursor-pointer ${
                           isFav
                             ? "bg-amber-100 text-amber-600 border border-amber-200"
                             : "bg-slate-100 text-slate-400 hover:bg-slate-200"

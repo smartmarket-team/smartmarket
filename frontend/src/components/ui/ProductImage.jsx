@@ -58,7 +58,7 @@ export function ProductImage({
         loading="lazy"
         onLoad={() => setEstado({ src, falhou: false, carregada: true })}
         onError={() => setEstado({ src, falhou: true, carregada: true })}
-        className={`w-full h-full object-contain p-2 transition-all duration-300 group-hover:scale-105 ${
+        className={`w-full h-full object-contain p-2 transition duration-300 group-hover:scale-105 ${
           isLoading ? "opacity-0" : "opacity-100"
         }`}
       />

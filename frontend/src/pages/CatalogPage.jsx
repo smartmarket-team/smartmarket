@@ -352,7 +352,7 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
         <button
           type="button"
           onClick={() => handleScroll("left")}
-          className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-brand-border/90 text-brand-navy hover:text-brand-green shadow-md flex items-center justify-center transition-all cursor-pointer hover:scale-105"
+          className="absolute left-1.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-brand-border/90 text-brand-navy hover:text-brand-green shadow-md flex items-center justify-center transition cursor-pointer hover:scale-105"
           title="Departamentos anteriores"
           aria-label="Departamentos anteriores"
         >
@@ -372,12 +372,12 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
               key={cat.id}
               type="button"
               onClick={() => onSelectCat(cat.id)}
-              className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition-all duration-200 outline-none"
+              className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition duration-200 outline-none"
               title={`Ver ${cat.label}`}
             >
               {/* Círculo Badge Verde Master Supermercados */}
               <div
-                className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 flex items-center justify-center rounded-2xl transition-all duration-300 ${
+                className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 flex items-center justify-center rounded-2xl transition duration-300 ${
                   isActive
                     ? "ring-3 ring-[#065417] ring-offset-2 scale-105 bg-emerald-50/70 shadow-sm"
                     : "group-hover:scale-105"
@@ -426,7 +426,7 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
         <button
           type="button"
           onClick={() => handleScroll("right")}
-          className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-brand-border/90 text-brand-navy hover:text-brand-green shadow-md flex items-center justify-center transition-all cursor-pointer hover:scale-105"
+          className="absolute right-1.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-brand-border/90 text-brand-navy hover:text-brand-green shadow-md flex items-center justify-center transition cursor-pointer hover:scale-105"
           title="Mais departamentos"
           aria-label="Mais departamentos"
         >
@@ -474,7 +474,7 @@ function FavMarketsStrip({ markets, selectedMkt, onSelectMkt, favs = [], onToggl
               key={m.id}
               data-mais-perto={ehMaisPerto ? "true" : undefined}
               onClick={() => onSelectMkt(isSelected ? "todos" : m.id)}
-              className={`group relative flex items-center justify-between gap-1.5 h-13 sm:h-14 px-2.5 sm:px-3 py-1.5 rounded-xl border transition-all duration-200 cursor-pointer select-none flex-1 min-w-[118px] sm:min-w-[130px] ${
+              className={`group relative flex items-center justify-between gap-1.5 h-13 sm:h-14 px-2.5 sm:px-3 py-1.5 rounded-xl border transition duration-200 cursor-pointer select-none flex-1 min-w-[118px] sm:min-w-[130px] ${
                 isSelected
                   ? "bg-emerald-50/90 border-brand-green ring-2 ring-brand-green/35 shadow-xs"
                   : isFav
@@ -585,7 +585,7 @@ function ProductCard({
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="group relative bg-white rounded-3xl border border-brand-border/80 p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:border-brand-green/60 hover:-translate-y-0.5 cursor-pointer select-none w-full"
+        className="group relative bg-white rounded-3xl border border-brand-border/80 p-4 sm:p-5 flex flex-col justify-between transition duration-200 hover:shadow-lg hover:border-brand-green/60 hover:-translate-y-0.5 cursor-pointer select-none w-full"
       >
         <div>
           {/* Botão de Favoritar Produto */}
@@ -595,7 +595,7 @@ function ProductCard({
               e.stopPropagation();
               onToggleFavProduct(product.id);
             }}
-            className={`absolute top-6 right-6 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+            className={`absolute top-6 right-6 z-10 w-8 h-8 rounded-full flex items-center justify-center transition ${
               isFavProduct
                 ? "bg-rose-50 text-rose-600 border border-rose-200"
                 : "bg-white/85 backdrop-blur-xs text-brand-muted hover:text-rose-500 border border-slate-200/70 opacity-70 group-hover:opacity-100 focus-visible:opacity-100"
@@ -742,7 +742,7 @@ function ProductCard({
               <button
                 type="button"
                 onClick={handleAddClick}
-                className="w-full py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-brand-green text-white hover:bg-brand-green-hover hover:shadow-md active:scale-98"
+                className="w-full py-2.5 px-3 rounded-xl text-xs font-bold transition duration-200 flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-brand-green text-white hover:bg-brand-green-hover hover:shadow-md active:scale-98"
               >
                 + Adicionar à Minha Lista
               </button>
@@ -761,7 +761,7 @@ function ProductCard({
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative bg-white rounded-2xl border border-brand-border/70 p-3 sm:p-3.5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:border-brand-green/50 hover:-translate-y-1 cursor-pointer select-none ${
+      className={`group relative bg-white rounded-2xl border border-brand-border/70 p-3 sm:p-3.5 flex flex-col justify-between transition duration-200 hover:shadow-lg hover:border-brand-green/50 hover:-translate-y-1 cursor-pointer select-none ${
         isShelf
           ? "w-[205px] sm:w-[225px] shrink-0 snap-start"
           : "w-full"
@@ -774,7 +774,7 @@ function ProductCard({
           e.stopPropagation();
           onToggleFavProduct(product.id);
         }}
-        className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+        className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition ${
           isFavProduct
             ? "bg-rose-50 text-rose-600 border border-rose-200"
             : "bg-white/80 backdrop-blur-xs text-brand-muted hover:text-rose-500 border border-slate-200/70 opacity-70 group-hover:opacity-100 focus-visible:opacity-100"
@@ -939,7 +939,7 @@ function ProductCard({
             <button
               type="button"
               onClick={handleAddClick}
-              className="w-full py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-gradient-to-r from-brand-green to-brand-teal text-white hover:opacity-95 hover:shadow-md active:scale-98"
+              className="w-full py-2.5 px-3 rounded-xl text-xs font-bold transition duration-200 flex items-center justify-center gap-1.5 shadow-xs cursor-pointer bg-gradient-to-r from-brand-green to-brand-teal text-white hover:opacity-95 hover:shadow-md active:scale-98"
             >
               <IconCart /> Adicionar
             </button>
@@ -1048,7 +1048,7 @@ function CategoryShelf({
               type="button"
               onClick={() => scroll("left")}
               disabled={!canScrollLeft}
-              className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
+              className={`w-8 h-8 rounded-full border flex items-center justify-center transition ${
                 canScrollLeft
                   ? "bg-white border-brand-border text-brand-navy hover:bg-brand-bg hover:border-brand-green/60 shadow-xs cursor-pointer"
                   : "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
@@ -1061,7 +1061,7 @@ function CategoryShelf({
               type="button"
               onClick={() => scroll("right")}
               disabled={!canScrollRight}
-              className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
+              className={`w-8 h-8 rounded-full border flex items-center justify-center transition ${
                 canScrollRight
                   ? "bg-white border-brand-border text-brand-navy hover:bg-brand-bg hover:border-brand-green/60 shadow-xs cursor-pointer"
                   : "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
@@ -1084,7 +1084,7 @@ function CategoryShelf({
           <button
             type="button"
             onClick={() => onSelectCategory(category.id)}
-            className="w-[160px] sm:w-[185px] md:w-[205px] shrink-0 self-stretch rounded-2xl overflow-hidden relative shadow-xs border border-brand-border/70 group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 snap-start bg-slate-50 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60"
+            className="w-[160px] sm:w-[185px] md:w-[205px] shrink-0 self-stretch rounded-2xl overflow-hidden relative shadow-xs border border-brand-border/70 group cursor-pointer transition duration-300 hover:shadow-lg hover:-translate-y-0.5 snap-start bg-slate-50 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/60"
             style={{ minHeight: "360px" }}
             title={`Ver todos os produtos de ${category.label}`}
             aria-label={`Ver todos os produtos de ${category.label}`}
@@ -1464,7 +1464,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 placeholder="Buscar arroz, leite, café, marca ou categoria…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-brand-border/80 bg-brand-bg text-sm text-brand-navy placeholder:text-brand-muted focus:outline-none focus:border-brand-green focus:bg-white transition-all shadow-2xs font-sans"
+                className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-brand-border/80 bg-brand-bg text-sm text-brand-navy placeholder:text-brand-muted focus:outline-none focus:border-brand-green focus:bg-white transition shadow-2xs font-sans"
               />
               {search && (
                 <button
@@ -1518,7 +1518,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 <button
                   type="button"
                   onClick={() => setViewMode("prateleiras")}
-                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                     viewMode === "prateleiras"
                       ? "bg-white text-brand-navy shadow-xs"
                       : "text-brand-muted hover:text-brand-navy"
@@ -1530,7 +1530,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 <button
                   type="button"
                   onClick={() => setViewMode("grade")}
-                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                     viewMode === "grade"
                       ? "bg-white text-brand-navy shadow-xs"
                       : "text-brand-muted hover:text-brand-navy"
@@ -1543,7 +1543,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
 
               <a
                 href={urlPublica("/list")}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-teal text-white text-xs font-bold shadow-sm hover:shadow-md transition-all shrink-0"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-teal text-white text-xs font-bold shadow-sm hover:shadow-md transition shrink-0"
               >
                 <IconCart />
                 <span>Minha Lista</span>

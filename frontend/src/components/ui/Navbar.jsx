@@ -193,7 +193,7 @@ export function Navbar({
                   key={link.href}
                   to={link.href}
                   className={cn(
-                    "relative whitespace-nowrap shrink-0 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-150 flex items-center gap-1.5",
+                    "relative whitespace-nowrap shrink-0 px-3 py-2 rounded-xl text-sm font-semibold transition duration-150 flex items-center gap-1.5",
                     isActive
                       ? "text-brand-green bg-brand-green-light"
                       : "text-brand-muted hover:text-brand-navy hover:bg-slate-50"

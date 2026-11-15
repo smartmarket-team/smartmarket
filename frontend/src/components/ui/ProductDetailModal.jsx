@@ -348,7 +348,7 @@ export function ProductDetailModal({
                         type="button"
                         onClick={() => setViewMode("360")}
                         aria-label="Giro 360°"
-                        className={`w-12 h-12 rounded-xl border flex flex-col items-center justify-center p-1 transition-all cursor-pointer ${
+                        className={`w-12 h-12 rounded-xl border flex flex-col items-center justify-center p-1 transition cursor-pointer ${
                           viewMode === "360"
                             ? "border-red-500 ring-2 ring-red-500/20 bg-white shadow-xs"
                             : "border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
@@ -380,7 +380,7 @@ export function ProductDetailModal({
                           setActiveImageIndex(idx)
                           setViewMode("photo")
                         }}
-                        className={`w-12 h-12 rounded-xl border p-1 bg-white shrink-0 overflow-hidden transition-all cursor-pointer ${
+                        className={`w-12 h-12 rounded-xl border p-1 bg-white shrink-0 overflow-hidden transition cursor-pointer ${
                           viewMode === "photo" && activeImageIndex === idx
                             ? "border-red-500 ring-2 ring-red-500/20 shadow-xs"
                             : "border-slate-200 opacity-70 hover:opacity-100"
@@ -564,7 +564,7 @@ export function ProductDetailModal({
                     onClick={() => {
                       if (onAddToList) onAddToList(currentProduct)
                     }}
-                    className="w-full sm:w-auto min-w-[260px] py-3 px-6 rounded-xl border-2 border-red-600 text-red-600 hover:bg-red-50 hover:border-red-700 font-black text-sm transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
+                    className="w-full sm:w-auto min-w-[260px] py-3 px-6 rounded-xl border-2 border-red-600 text-red-600 hover:bg-red-50 hover:border-red-700 font-black text-sm transition active:scale-98 cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
                   >
                     <span>Adicionar ao carrinho</span>
                   </button>
@@ -640,7 +640,7 @@ export function ProductDetailModal({
                   <button
                     type="button"
                     onClick={() => setChartDisplayMode("preco")}
-                    className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
                       chartDisplayMode === "preco"
                         ? "bg-white text-slate-900 shadow-2xs font-extrabold"
                         : "text-slate-500 hover:text-slate-800"
@@ -651,7 +651,7 @@ export function ProductDetailModal({
                   <button
                     type="button"
                     onClick={() => setChartDisplayMode("diferenca")}
-                    className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
                       chartDisplayMode === "diferenca"
                         ? "bg-white text-slate-900 shadow-2xs font-extrabold"
                         : "text-slate-500 hover:text-slate-800"
@@ -690,7 +690,7 @@ export function ProductDetailModal({
                     return (
                       <div
                         key={`bar-${item.market.id}`}
-                        className={`p-2.5 rounded-xl border transition-all ${
+                        className={`p-2.5 rounded-xl border transition ${
                           isBest
                             ? "bg-emerald-50/90 border-emerald-300 shadow-2xs"
                             : "bg-white border-slate-200/80"
@@ -801,7 +801,7 @@ export function ProductDetailModal({
                   return (
                     <div
                       key={item.market.id}
-                      className={`p-3 rounded-xl border flex items-center justify-between transition-all ${
+                      className={`p-3 rounded-xl border flex items-center justify-between transition ${
                         isBest
                           ? "bg-emerald-50/90 border-emerald-300 ring-2 ring-emerald-200/80 shadow-2xs"
                           : "bg-white border-slate-200/90 hover:border-slate-300"
@@ -892,7 +892,7 @@ export function ProductDetailModal({
                         <button
                           type="button"
                           onClick={() => setRelatedTab("other_brands")}
-                          className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                          className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
                             relatedTab === "other_brands"
                               ? "bg-white text-slate-900 shadow-2xs font-extrabold"
                               : "text-slate-500 hover:text-slate-800"
@@ -905,7 +905,7 @@ export function ProductDetailModal({
                         <button
                           type="button"
                           onClick={() => setRelatedTab("same_brand")}
-                          className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                          className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
                             relatedTab === "same_brand"
                               ? "bg-white text-slate-900 shadow-2xs font-extrabold"
                               : "text-slate-500 hover:text-slate-800"
@@ -962,7 +962,7 @@ export function ProductDetailModal({
                               setInternalProduct(alt)
                             }
                           }}
-                          className="w-[160px] sm:w-[185px] shrink-0 bg-white rounded-2xl border border-slate-200/90 p-3 hover:border-slate-300 hover:shadow-lg transition-all duration-200 flex flex-col justify-between cursor-pointer group select-none relative focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                          className="w-[160px] sm:w-[185px] shrink-0 bg-white rounded-2xl border border-slate-200/90 p-3 hover:border-slate-300 hover:shadow-lg transition duration-200 flex flex-col justify-between cursor-pointer group select-none relative focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                         >
                           {/* Topo do card: Badges de Oferta e 360 */}
                           <div className="flex items-center justify-between w-full h-5 mb-1 pointer-events-none">
@@ -1040,7 +1040,7 @@ export function ProductDetailModal({
                               e.stopPropagation()
                               if (onAddToList) onAddToList(alt)
                             }}
-                            className="w-full py-1.5 px-3 rounded-full border border-red-500 text-red-600 hover:bg-red-50 text-xs font-extrabold transition-all active:scale-98 cursor-pointer mt-1 flex items-center justify-center"
+                            className="w-full py-1.5 px-3 rounded-full border border-red-500 text-red-600 hover:bg-red-50 text-xs font-extrabold transition active:scale-98 cursor-pointer mt-1 flex items-center justify-center"
                           >
                             Adicionar
                           </button>
@@ -1058,7 +1058,7 @@ export function ProductDetailModal({
                       }
                     }}
                     aria-label="Avançar carrossel"
-                    className="absolute -right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-slate-200/90 shadow-md text-slate-700 hover:text-slate-900 hover:bg-slate-50 flex items-center justify-center z-10 transition-all cursor-pointer opacity-90 hover:opacity-100"
+                    className="absolute -right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-slate-200/90 shadow-md text-slate-700 hover:text-slate-900 hover:bg-slate-50 flex items-center justify-center z-10 transition cursor-pointer opacity-90 hover:opacity-100"
                   >
                     <span className="text-sm font-black">&gt;</span>
                   </button>
@@ -1085,7 +1085,7 @@ export function ProductDetailModal({
 
             <Button
               variant="primary"
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 active:scale-98 transition-all cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 active:scale-98 transition cursor-pointer"
               onClick={() => {
                 if (onAddToList) onAddToList(currentProduct)
                 onClose()

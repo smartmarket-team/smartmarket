@@ -334,7 +334,7 @@ function Conexoes({ ativa }) {
             strokeWidth={i === ativa ? 2 : 1}
             strokeLinejoin="round"
             stroke={i === ativa ? DESTAQUE : "rgba(255,255,255,0.16)"}
-            className={`transition-all duration-300 ${i === ativa ? "sm-bp-fluxo" : ""}`}
+            className={`transition duration-300 ${i === ativa ? "sm-bp-fluxo" : ""}`}
           />
         ))}
       </svg>
@@ -398,7 +398,7 @@ export function AnatomiaSmartMarket({ produto = null }) {
                 {ESTADOS.map((Estado, i) => (
                   <div
                     key={CAMADAS[i].rotulo}
-                    className={`col-start-1 row-start-1 min-h-64 p-5 transition-all duration-300 motion-reduce:transition-none ${
+                    className={`col-start-1 row-start-1 min-h-64 p-5 transition duration-300 motion-reduce:transition-none ${
                       i === ativa ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-1 opacity-0"
                     }`}
                     aria-hidden={i !== ativa}
@@ -423,7 +423,7 @@ export function AnatomiaSmartMarket({ produto = null }) {
               return (
                 <article
                   key={titulo}
-                  className={`relative z-10 rounded-2xl border p-5 transition-all duration-300 motion-reduce:transition-none ${POSICAO_LG[i]} ${
+                  className={`relative z-10 rounded-2xl border p-5 transition duration-300 motion-reduce:transition-none ${POSICAO_LG[i]} ${
                     lit ? "bg-[#1b3c5e]" : "bg-brand-navy-light opacity-90"
                   }`}
                   style={{ borderColor: lit ? DESTAQUE : "rgba(255,255,255,0.12)", boxShadow: lit ? `0 0 0 1px ${DESTAQUE}55` : "none" }}

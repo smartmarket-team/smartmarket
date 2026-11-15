@@ -402,7 +402,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
               <button
                 type="button"
                 onClick={compare}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-teal text-white text-sm font-bold shadow-sm hover:shadow-md transition-all cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-teal text-white text-sm font-bold shadow-sm hover:shadow-md transition cursor-pointer"
               >
                 ⚡ Comparar Cestas
               </button>
@@ -432,7 +432,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                       className="flex items-center gap-3 sm:gap-6 flex-1 min-w-0 cursor-pointer"
                       title="Ver foto e detalhes do produto"
                     >
-                      <div className="w-[4.5rem] h-[4.5rem] sm:w-32 sm:h-32 rounded-2xl bg-slate-50 border border-brand-border/80 flex items-center justify-center text-3xl sm:text-4xl shrink-0 overflow-hidden p-2 sm:p-3 shadow-xs group-hover:bg-white group-hover:border-brand-green/50 transition-all">
+                      <div className="w-[4.5rem] h-[4.5rem] sm:w-32 sm:h-32 rounded-2xl bg-slate-50 border border-brand-border/80 flex items-center justify-center text-3xl sm:text-4xl shrink-0 overflow-hidden p-2 sm:p-3 shadow-xs group-hover:bg-white group-hover:border-brand-green/50 transition">
                         {imgSrc ? (
                           <ProductImage
                             src={imgSrc}
@@ -616,7 +616,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                     <button
                       type="button"
                       onClick={() => setChartMode("total")}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                         chartMode === "total"
                           ? "bg-white text-brand-navy shadow-xs"
                           : "text-brand-muted hover:text-brand-navy"
@@ -627,7 +627,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                     <button
                       type="button"
                       onClick={() => setChartMode("diferenca")}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                         chartMode === "diferenca"
                           ? "bg-white text-brand-navy shadow-xs"
                           : "text-brand-muted hover:text-brand-navy"
@@ -717,7 +717,7 @@ function ShoppingListPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                           onClick={() =>
                             setSelectedMarketId(isSelected ? null : r.marketId)
                           }
-                          className={`group rounded-2xl border p-3.5 transition-all duration-200 cursor-pointer select-none ${
+                          className={`group rounded-2xl border p-3.5 transition duration-200 cursor-pointer select-none ${
                             isWinner
                               ? "bg-emerald-50/70 border-emerald-300 ring-1 ring-emerald-300/60 shadow-2xs"
                               : isSelected

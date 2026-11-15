@@ -40,7 +40,7 @@ function PasswordStrengthIndicator({ password }) {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className={`flex-1 rounded-full transition-all duration-300 ${
+            className={`flex-1 rounded-full transition duration-300 ${
               i < score ? currentLevel.bar : "bg-slate-200"
             }`}
           />
@@ -291,7 +291,7 @@ export default function AuthPage() {
             <button
               type="button"
               onClick={() => handleSwitchTab("login")}
-              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${
+              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition ${
                 tab === "login"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy"
@@ -302,7 +302,7 @@ export default function AuthPage() {
             <button
               type="button"
               onClick={() => handleSwitchTab("cadastro")}
-              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${
+              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition ${
                 tab === "cadastro"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy"

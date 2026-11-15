@@ -574,7 +574,7 @@ export function Home() {
                     title={`Ver o Raio-X de preços de ${cat.label}`}
                   >
                     <div
-                      className={`relative flex h-20 w-20 items-center justify-center rounded-full transition-all duration-300 sm:h-24 sm:w-24 ${
+                      className={`relative flex h-20 w-20 items-center justify-center rounded-full transition duration-300 sm:h-24 sm:w-24 ${
                         isActive
                           ? "bg-brand-green-light ring-2 ring-[#0e7a46] ring-offset-2"
                           : "group-hover:bg-brand-green-light/70"
@@ -679,7 +679,7 @@ export function Home() {
                   <Card
                     key={produto.id}
                     variant="interactive"
-                    className="flex flex-col justify-between group overflow-hidden cursor-pointer border-brand-border/80 hover:border-brand-green/60 hover:shadow-lg transition-all"
+                    className="flex flex-col justify-between group overflow-hidden cursor-pointer border-brand-border/80 hover:border-brand-green/60 hover:shadow-lg transition"
                     onClick={() => {
                       if (!isAuthenticated) {
                         navigate(caminhoDoCadastro("busca", produto.name))

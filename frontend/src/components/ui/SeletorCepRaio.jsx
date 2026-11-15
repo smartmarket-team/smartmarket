@@ -13,7 +13,7 @@ const ROTULOS_RAIO = {
 };
 
 const botaoSecundario =
-  "px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-brand-green text-brand-navy text-xs font-bold transition-all shadow-2xs cursor-pointer";
+  "px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-brand-green text-brand-navy text-xs font-bold transition shadow-2xs cursor-pointer";
 const botaoPrimario =
   "px-3 py-1.5 bg-brand-green text-white text-xs font-bold rounded-xl hover:bg-brand-green-hover transition-colors shadow-xs cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed";
 const botaoPerigo =
