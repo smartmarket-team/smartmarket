@@ -12,16 +12,23 @@ function jsxDeProducao(dir) {
 // Texto de até 10 px some em celular e reprova contraste/legibilidade. Selos curtos podem ter 11 px;
 // todo o resto fica em text-xs (12 px) ou mais. Tamanho arbitrário abaixo de 11 px não entra.
 const PEQUENO_DEMAIS = /text-\[(?:[0-9]|10)(?:\.\d+)?px\]/g
-const EXCECOES = new Set(['AnatomiaSmartMarket.jsx'])
 
 describe('tamanho mínimo de texto', () => {
   it('nenhum componente usa text-[Npx] com N menor que 11', () => {
     const achados = []
     for (const arquivo of jsxDeProducao(__dirname)) {
-      if (EXCECOES.has(path.basename(arquivo))) continue
       const texto = fs.readFileSync(arquivo, 'utf8')
       for (const m of texto.matchAll(PEQUENO_DEMAIS)) achados.push(`${path.relative(__dirname, arquivo)}: ${m[0]}`)
     }
     expect(achados).toEqual([])
+  })
+})
+
+describe('AnatomiaSmartMarket (texto branco sobre fundo escuro)', () => {
+  const texto = fs.readFileSync(path.join(__dirname, 'components', 'AnatomiaSmartMarket.jsx'), 'utf8')
+
+  it('texto não usa text-white/70 ou mais fraco (contraste; o mínimo pedido é /80)', () => {
+    expect(texto.match(/text-white\/(?:[1-6]\d?|70)(?!\d)/g) || []).toEqual([])
+    expect(texto).not.toMatch(/color:[^}]*rgba\(255,\s*255,\s*255,\s*0\.[0-7]\d*\)/)
   })
 })
