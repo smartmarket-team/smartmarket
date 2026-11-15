@@ -293,7 +293,16 @@ const LINK_WAZE_CARREFOUR = 'https://waze.com/ul?ll=-30.0346,-51.2177&navigate=y
 // A caixa da rede na fita de redes: o pai do botão "Filtrar por ...".
 const redeNaFita = (nome) => screen.getByRole('button', { name: `Filtrar por ${nome}` }).parentElement
 
-describe('CatalogPage: rede mais perto e "Como chegar"', () => {
+// Os links do mapa ficam atrás do botão "Navegar" de cada loja: abrem num popover no document.body (só um
+// aberto por vez). Estes auxiliares abrem o botão de uma loja do cartão e devolvem os links de dentro dele.
+const botaoNavegarDe = (cartao, loja) => within(cartao).getByRole('button', { name: `Navegar até ${loja}` })
+const abrirEPegarLinks = (botao) => {
+  fireEvent.click(botao)
+  return within(screen.getByRole('group')).getAllByRole('link')
+}
+const fecharPopover = () => fireEvent.keyDown(document.body, { key: 'Escape' })
+
+describe('CatalogPage: rede mais perto e "Navegar"', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     localStorage.clear()
@@ -457,7 +466,7 @@ describe('CatalogPage: rede mais perto e "Como chegar"', () => {
     })
   })
 
-  describe('"Como chegar"', () => {
+  describe('botão "Navegar" (Google Maps e Waze)', () => {
     // O jsdom não navega: o preventDefault na captura evita o aviso "Not implemented: navigation"
     // sem impedir que o clique suba pela árvore (que é o que os testes observam).
     const impedirNavegacao = (evento) => evento.preventDefault()
@@ -474,13 +483,12 @@ describe('CatalogPage: rede mais perto e "Como chegar"', () => {
 
         const cartao = cartaoDe('Atum Sólido')
 
-        const doCarrefour = within(cartao).getByRole('link', {
-          name: 'Como chegar a Carrefour Centro (abre o mapa em outra aba)',
-        })
-        const doFort = within(cartao).getByRole('link', {
-          name: 'Como chegar a Fort Cachoeirinha (abre o mapa em outra aba)',
-        })
+        const [doCarrefour] = abrirEPegarLinks(botaoNavegarDe(cartao, 'Carrefour Centro'))
+        expect(doCarrefour).toHaveAccessibleName('Abrir Carrefour Centro no Google Maps (abre em outra aba)')
         expect(doCarrefour).toHaveAttribute('href', LINK_CARREFOUR)
+        fecharPopover()
+        const [doFort] = abrirEPegarLinks(botaoNavegarDe(cartao, 'Fort Cachoeirinha'))
+        expect(doFort).toHaveAccessibleName('Abrir Fort Cachoeirinha no Google Maps (abre em outra aba)')
         expect(doFort).toHaveAttribute('href', LINK_FORT)
         for (const link of [doCarrefour, doFort]) {
           expect(link).toHaveAttribute('target', '_blank')
@@ -489,24 +497,27 @@ describe('CatalogPage: rede mais perto e "Como chegar"', () => {
         }
       })
 
-      it('sem coordenadas (null) não há link, mas a loja e a distância continuam aparecendo', async () => {
+      it('sem coordenadas (null) não há botão nem link, mas a loja e a distância continuam aparecendo', async () => {
         usarLocalizacao({ lojas: [FORT_CACHOEIRINHA, CARREFOUR_CENTRO] })
         await renderizar({ grade })
 
         const cartao = cartaoDe('Atum Sólido')
 
+        expect(within(cartao).queryByRole('button', { name: /Navegar/ })).not.toBeInTheDocument()
         expect(within(cartao).queryByRole('link')).not.toBeInTheDocument()
-        expect(within(cartao).queryByText('Como chegar')).not.toBeInTheDocument()
+        expect(within(cartao).queryByText('Navegar')).not.toBeInTheDocument()
         expect(within(cartao).getByText('Carrefour Centro')).toBeInTheDocument()
         expect(within(cartao).getByText('≈ 3,5 km')).toBeInTheDocument()
       })
 
-      it('com coordenadas só numa das lojas, só ela tem links (Google Maps e Waze)', async () => {
+      it('com coordenadas só numa das lojas, só ela tem o botão, com links do Google Maps e do Waze', async () => {
         usarLocalizacao({ lojas: [FORT_CACHOEIRINHA, CARREFOUR_COM_COORDENADAS] })
         await renderizar({ grade })
 
-        const links = within(cartaoDe('Atum Sólido')).getAllByRole('link')
+        const cartao = cartaoDe('Atum Sólido')
 
+        expect(within(cartao).getAllByRole('button', { name: /^Navegar/ })).toHaveLength(1)
+        const links = abrirEPegarLinks(botaoNavegarDe(cartao, 'Carrefour Centro'))
         expect(links.map((link) => link.getAttribute('href'))).toEqual([LINK_CARREFOUR, LINK_WAZE_CARREFOUR])
       })
 
@@ -516,46 +527,61 @@ describe('CatalogPage: rede mais perto e "Como chegar"', () => {
 
         const cartao = cartaoDe('Atum Sólido')
 
-        const wazeCarrefour = within(cartao).getByRole('link', { name: 'Abrir a rota até Carrefour Centro no Waze (abre em outra aba)' })
-        const wazeFort = within(cartao).getByRole('link', { name: 'Abrir a rota até Fort Cachoeirinha no Waze (abre em outra aba)' })
+        const linksDoCarrefour = abrirEPegarLinks(botaoNavegarDe(cartao, 'Carrefour Centro'))
+        const wazeCarrefour = linksDoCarrefour[1]
+        expect(wazeCarrefour).toHaveAccessibleName('Abrir Carrefour Centro no Waze (abre em outra aba)')
         expect(wazeCarrefour).toHaveAttribute('href', LINK_WAZE_CARREFOUR)
+        expect(linksDoCarrefour).toHaveLength(2)
+        fecharPopover()
+        const linksDoFort = abrirEPegarLinks(botaoNavegarDe(cartao, 'Fort Cachoeirinha'))
+        const wazeFort = linksDoFort[1]
+        expect(wazeFort).toHaveAccessibleName('Abrir Fort Cachoeirinha no Waze (abre em outra aba)')
         expect(wazeFort).toHaveAttribute('href', LINK_WAZE_FORT)
+        expect(linksDoFort).toHaveLength(2)
         for (const link of [wazeCarrefour, wazeFort]) {
           expect(link).toHaveAttribute('target', '_blank')
           expect(link.getAttribute('rel').split(/\s+/).sort()).toEqual(['noopener', 'noreferrer'])
           expect(link).toHaveAttribute('referrerpolicy', 'no-referrer')
         }
-        expect(within(cartao).getAllByRole('link')).toHaveLength(4)
+        // Dois botões no cartão (a loja de referência e a mais perto), um por loja com coordenadas.
+        expect(within(cartao).getAllByRole('button', { name: /^Navegar/ })).toHaveLength(2)
       })
 
       it('sem coordenadas não há Waze, e com meia coordenada também não', async () => {
         usarLocalizacao({ lojas: [FORT_CACHOEIRINHA, { ...CARREFOUR_CENTRO, latitude: -30.0346, longitude: null }] })
         await renderizar({ grade })
 
-        expect(within(cartaoDe('Atum Sólido')).queryByText('Waze')).not.toBeInTheDocument()
+        const cartao = cartaoDe('Atum Sólido')
+        expect(within(cartao).queryByRole('button', { name: /Navegar/ })).not.toBeInTheDocument()
+        expect(within(cartao).queryByText('Waze')).not.toBeInTheDocument()
       })
 
       it('clicar no Waze NÃO abre o detalhe do produto', async () => {
         usarLocalizacao({ lojas: [CARREFOUR_COM_COORDENADAS] })
         await renderizar({ grade })
 
-        fireEvent.click(within(cartaoDe('Atum Sólido')).getByRole('link', { name: /no Waze/ }))
+        abrirEPegarLinks(botaoNavegarDe(cartaoDe('Atum Sólido'), 'Carrefour Centro'))
+        fireEvent.click(within(screen.getByRole('group')).getByRole('link', { name: /no Waze/ }))
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
       })
 
-      it('com meia coordenada, não há link', async () => {
+      it('com meia coordenada, não há botão nem link', async () => {
         usarLocalizacao({ lojas: [{ ...CARREFOUR_CENTRO, latitude: -30.0346, longitude: null }] })
         await renderizar({ grade })
 
-        expect(within(cartaoDe('Atum Sólido')).queryByRole('link')).not.toBeInTheDocument()
+        const cartao = cartaoDe('Atum Sólido')
+        expect(within(cartao).queryByRole('button', { name: /Navegar/ })).not.toBeInTheDocument()
+        expect(within(cartao).queryByRole('link')).not.toBeInTheDocument()
       })
 
-      it('clicar no link NÃO abre o detalhe do produto', async () => {
+      it('clicar no botão e no link NÃO abre o detalhe do produto', async () => {
         usarLocalizacao({ lojas: [CARREFOUR_COM_COORDENADAS] })
         await renderizar({ grade })
 
-        fireEvent.click(within(cartaoDe('Atum Sólido')).getByRole('link', { name: /Como chegar a Carrefour Centro/ }))
+        abrirEPegarLinks(botaoNavegarDe(cartaoDe('Atum Sólido'), 'Carrefour Centro'))
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        fireEvent.click(within(screen.getByRole('group')).getByRole('link', { name: /no Google Maps/ }))
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
       })
@@ -570,13 +596,67 @@ describe('CatalogPage: rede mais perto e "Como chegar"', () => {
       })
     })
 
+    describe('botão "Navegar" na barra do seletor, ao lado da rede mais perto', () => {
+      const barra = () => screen.getByText(/^A rede mais perto é/).parentElement
+
+      it('aponta para a filial da rede mais perto, a mesma cuja distância a frase mostra (não para a da rede mais barata)', async () => {
+        // A Fort está a 2,5 km (a mais perto); a Carrefour a 3,5 km é a mais barata no Atum.
+        usarLocalizacao({ lojas: [FORT_COM_COORDENADAS, CARREFOUR_COM_COORDENADAS] })
+        await renderizar()
+
+        expect(screen.getByText(/^A rede mais perto é Fort Atacadista/)).toHaveTextContent(/\(≈ 2,5 km\)/)
+        const botao = within(barra()).getByRole('button', { name: 'Navegar até Fort Cachoeirinha' })
+        fireEvent.click(botao)
+
+        const links = within(screen.getByRole('group')).getAllByRole('link')
+        expect(links.map((link) => link.getAttribute('href'))).toEqual([LINK_FORT, LINK_WAZE_FORT])
+        for (const link of links) {
+          expect(link).toHaveAttribute('target', '_blank')
+          expect(link.getAttribute('rel').split(/\s+/).sort()).toEqual(['noopener', 'noreferrer'])
+          expect(link).toHaveAttribute('referrerpolicy', 'no-referrer')
+        }
+      })
+
+      it('o destino acompanha a frase quando o raio muda a rede mais perto', async () => {
+        localStorage.setItem('sm_raio_lojas_km', '5')
+        const fortLonge = { ...FORT_COM_COORDENADAS, distanciaKm: 9 }
+        usarLocalizacao({ lojas: [fortLonge, CARREFOUR_COM_COORDENADAS] })
+        await renderizar()
+
+        expect(screen.getByText(/^A rede mais perto é Carrefour/)).toHaveTextContent(/\(≈ 3,5 km\)/)
+        expect(within(barra()).queryByRole('button', { name: /Fort Cachoeirinha/ })).not.toBeInTheDocument()
+        const links = abrirEPegarLinks(within(barra()).getByRole('button', { name: 'Navegar até Carrefour Centro' }))
+
+        expect(links.map((link) => link.getAttribute('href'))).toEqual([LINK_CARREFOUR, LINK_WAZE_CARREFOUR])
+      })
+
+      it('sem coordenadas na filial mais perto, a frase continua e não há botão', async () => {
+        usarLocalizacao({ lojas: [FORT_CACHOEIRINHA, CARREFOUR_COM_COORDENADAS] })
+        await renderizar()
+
+        expect(screen.getByText(/^A rede mais perto é Fort Atacadista/)).toBeInTheDocument()
+        expect(within(barra()).queryByRole('button', { name: /Navegar/ })).not.toBeInTheDocument()
+      })
+
+      it('sem rede mais perto (empate na menor distância) não há frase nem botão na barra', async () => {
+        const empatada = { ...CARREFOUR_COM_COORDENADAS, distanciaKm: 2.5 }
+        usarLocalizacao({ lojas: [FORT_COM_COORDENADAS, empatada] })
+        await renderizar()
+
+        expect(screen.queryByText(/^A rede mais perto é/)).not.toBeInTheDocument()
+      })
+    })
+
     it('o link não leva nada do usuário: nem o CEP, nem a cidade dele, nem a origem', async () => {
       usarLocalizacao({ lojas: [FORT_COM_COORDENADAS, CARREFOUR_COM_COORDENADAS] })
       await renderizar()
 
-      const hrefs = within(cartaoDe('Atum Sólido'))
-        .getAllByRole('link')
-        .map((link) => link.getAttribute('href'))
+      const cartao = cartaoDe('Atum Sólido')
+      const hrefs = []
+      for (const loja of ['Carrefour Centro', 'Fort Cachoeirinha']) {
+        hrefs.push(...abrirEPegarLinks(botaoNavegarDe(cartao, loja)).map((link) => link.getAttribute('href')))
+        fecharPopover()
+      }
 
       expect(hrefs.join(' ')).not.toMatch(/90010|Porto|origin/i)
       const ponto = '-?\\d+(\\.\\d+)?,-?\\d+(\\.\\d+)?'

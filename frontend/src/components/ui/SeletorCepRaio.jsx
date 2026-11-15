@@ -3,6 +3,7 @@ import { cepValido, mascararCep } from "../../utils/cep";
 import { mensagemDeErro } from "../../utils/mensagemDeErro";
 import { OPCOES_RAIO, RAIO_PADRAO, normalizarRaio } from "../../utils/raioLojas";
 import { dicaDistancia, textoDistancia, textoDistanciaFalado } from "../../utils/textoDistancia";
+import BotaoNavegar from "../BotaoNavegar";
 
 const ROTULOS_RAIO = {
   3: "Até 3 km",
@@ -26,6 +27,10 @@ const painelAbaixo = "mt-3 pt-3 border-t border-emerald-200/50";
  * Cartão de localização do catálogo: mostra o CEP do usuário, deixa trocá-lo ou removê-lo e escolher
  * o raio das lojas. É só apresentação: quem busca e grava os dados (hook useLocalizacao) é o pai.
  *
+ * `destinoMaisPerto` ({ nomeFilial, latitude, longitude, distanciaKm }, opcional): a filial da rede mais perto.
+ * Com ela, o botão "Navegar" aparece ao lado da frase "A rede mais perto é X". Só aparece se a distância dela
+ * for a mesma da frase (a mesma loja) e se tiver um par de coordenadas válido.
+ *
  * Localização atual do navegador (botão temporário, por sessão, alternativa ao CEP; a posição nunca passa
  * por aqui): `origem` diz de onde vêm as distâncias ("cep" ou "navegador") e `localizacaoAtual`
  * ({ suportado, buscando, mensagem, botaoOculto }) controla o botão e a mensagem de fallback, que fica
@@ -40,6 +45,7 @@ export function SeletorCepRaio({
   onMudarRaio,
   onTrocarCep,
   onExcluir,
+  destinoMaisPerto = null,
   origem = "cep",
   localizacaoAtual = null,
   onUsarLocalizacaoAtual,
@@ -126,6 +132,8 @@ export function SeletorCepRaio({
 
   const mostrarAcoes = !carregando && modo === "ver";
   const usandoNavegador = origem === "navegador";
+  const destinoDaMesmaLoja =
+    Number.isFinite(destinoMaisPerto?.distanciaKm) && destinoMaisPerto.distanciaKm === redeMaisPerto?.distanciaKm;
   const mostrarRaio = !carregando && (resolvida || usandoNavegador);
   const podeOferecerLocalizacao = localizacaoAtual?.suportado === true && localizacaoAtual.botaoOculto !== true;
 
@@ -261,21 +269,32 @@ export function SeletorCepRaio({
       </p>
 
       {mostrarRaio && redeMaisPerto?.nome && (
-        <p className="text-[11px] font-bold text-emerald-900 mt-1">
-          {`A rede mais perto é ${redeMaisPerto.nome}`}
-          {textoDistancia(redeMaisPerto.distanciaKm) ? (
-            <>
-              {" ("}
-              <span aria-hidden="true" title={dicaDistancia(origem)}>
-                {textoDistancia(redeMaisPerto.distanciaKm)}
-              </span>
-              {")."}
-              <span className="sr-only">{textoDistanciaFalado(redeMaisPerto.distanciaKm, origem)}</span>
-            </>
-          ) : (
-            "."
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
+          <p className="text-[11px] font-bold text-emerald-900">
+            {`A rede mais perto é ${redeMaisPerto.nome}`}
+            {textoDistancia(redeMaisPerto.distanciaKm) ? (
+              <>
+                {" ("}
+                <span aria-hidden="true" title={dicaDistancia(origem)}>
+                  {textoDistancia(redeMaisPerto.distanciaKm)}
+                </span>
+                {")."}
+                <span className="sr-only">{textoDistanciaFalado(redeMaisPerto.distanciaKm, origem)}</span>
+              </>
+            ) : (
+              "."
+            )}
+          </p>
+          {/* O destino tem de ser a MESMA loja cuja distância a frase mostra: se a distância do destino não
+              bater com a da frase, não há botão (nunca aponta para outra filial). */}
+          {destinoDaMesmaLoja && (
+            <BotaoNavegar
+              latitude={destinoMaisPerto.latitude}
+              longitude={destinoMaisPerto.longitude}
+              nomeLoja={destinoMaisPerto.nomeFilial}
+            />
           )}
-        </p>
+        </div>
       )}
 
       {mostrarRaio && (

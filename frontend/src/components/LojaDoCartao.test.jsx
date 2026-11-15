@@ -1,5 +1,11 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import LojaDoCartao from './LojaDoCartao'
+
+// Os links do mapa agora ficam atrás do botão "Navegar": abrem num popover (no document.body). Os testes
+// abrem o botão e olham os links de dentro dele, com as mesmas propriedades de antes.
+const botaoNavegar = () => screen.getByRole('button', { name: /^Navegar/ })
+const abrirNavegar = () => fireEvent.click(botaoNavegar())
+const linksDoPopover = () => within(screen.getByRole('group')).getAllByRole('link')
 
 const FILIAL = {
   nomeFilial: 'Carrefour Centro',
@@ -93,12 +99,22 @@ describe('LojaDoCartao', () => {
     })
   })
 
-  describe('"Como chegar"', () => {
-    it('com coordenadas mostra o link do Google Maps, em outra aba, sem referrer e com rótulo acessível', () => {
+  describe('botão "Navegar" (Google Maps)', () => {
+    it('os dois links não aparecem soltos no cartão: só o botão "Navegar", até ele ser aberto', () => {
       render(<LojaDoCartao filial={FILIAL} nomeRede="Carrefour" />)
 
-      const link = screen.getByRole('link', { name: 'Como chegar a Carrefour Centro (abre o mapa em outra aba)' })
-      expect(link).toHaveTextContent('Como chegar')
+      expect(botaoNavegar()).toHaveAccessibleName('Navegar até Carrefour Centro')
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.queryByText('Como chegar')).not.toBeInTheDocument()
+      expect(screen.queryByText('Waze')).not.toBeInTheDocument()
+    })
+
+    it('com coordenadas mostra o link do Google Maps, em outra aba, sem referrer e com rótulo acessível', () => {
+      render(<LojaDoCartao filial={FILIAL} nomeRede="Carrefour" />)
+      abrirNavegar()
+
+      const link = screen.getByRole('link', { name: 'Abrir Carrefour Centro no Google Maps (abre em outra aba)' })
+      expect(link).toHaveTextContent('Google Maps')
       expect(link).toHaveAttribute('href', 'https://www.google.com/maps/dir/?api=1&destination=-30.0346,-51.2177')
       expect(link).toHaveAttribute('target', '_blank')
       expect(link.getAttribute('rel').split(/\s+/).sort()).toEqual(['noopener', 'noreferrer'])
@@ -107,8 +123,9 @@ describe('LojaDoCartao', () => {
 
     it('os links só levam o ponto da loja: nada do usuário nem endereço', () => {
       render(<LojaDoCartao filial={FILIAL} nomeRede="Carrefour" />)
+      abrirNavegar()
 
-      const hrefs = screen.getAllByRole('link').map((link) => link.getAttribute('href'))
+      const hrefs = linksDoPopover().map((link) => link.getAttribute('href'))
       expect(hrefs).toHaveLength(2)
       for (const href of hrefs) {
         expect(href).not.toMatch(/origin|Andradas|Porto|90010/i)
@@ -122,19 +139,21 @@ describe('LojaDoCartao', () => {
       ['só a longitude', { latitude: null, longitude: -51.2 }],
       ['texto no lugar de número', { latitude: '-30.03', longitude: '-51.2' }],
       ['fora da faixa', { latitude: 95, longitude: -51.2 }],
-    ])('sem coordenadas válidas (%s) não há link', (_nome, coordenadas) => {
+    ])('sem coordenadas válidas (%s) não há botão nem link', (_nome, coordenadas) => {
       render(<LojaDoCartao filial={{ ...FILIAL, ...coordenadas }} nomeRede="Carrefour" />)
 
+      expect(screen.queryByRole('button', { name: /Navegar/ })).not.toBeInTheDocument()
       expect(screen.queryByRole('link')).not.toBeInTheDocument()
-      expect(screen.queryByText('Como chegar')).not.toBeInTheDocument()
+      expect(screen.queryByText('Navegar')).not.toBeInTheDocument()
       // o resto da loja continua aparecendo
       expect(screen.getByText('Carrefour Centro')).toBeInTheDocument()
     })
 
-    it('o link aparece também na versão compacta', () => {
+    it('o botão e o link aparecem também na versão compacta', () => {
       render(<LojaDoCartao filial={FILIAL} nomeRede="Carrefour" compacto />)
+      abrirNavegar()
 
-      expect(screen.getByRole('link', { name: /Como chegar a Carrefour Centro/ })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /Abrir Carrefour Centro no Google Maps/ })).toBeInTheDocument()
     })
 
     describe('clique', () => {
@@ -144,7 +163,7 @@ describe('LojaDoCartao', () => {
       beforeEach(() => document.addEventListener('click', impedirNavegacao, true))
       afterEach(() => document.removeEventListener('click', impedirNavegacao, true))
 
-      it('clicar no link NÃO dispara o clique do cartão (não abre o detalhe do produto)', () => {
+      it('clicar no botão e no link NÃO dispara o clique do cartão (não abre o detalhe do produto)', () => {
         const aoClicarNoCartao = jest.fn()
         render(
           <div onClick={aoClicarNoCartao}>
@@ -152,7 +171,8 @@ describe('LojaDoCartao', () => {
           </div>
         )
 
-        fireEvent.click(screen.getByRole('link', { name: /Como chegar/ }))
+        abrirNavegar()
+        fireEvent.click(screen.getByRole('link', { name: /Google Maps/ }))
 
         expect(aoClicarNoCartao).not.toHaveBeenCalled()
       })
@@ -216,17 +236,14 @@ describe('LojaDoCartao', () => {
       expect(nome.parentElement).toContainElement(screen.getByText('📍'))
     })
 
-    it('a distância, o preço e os links nunca encolhem (shrink-0), e os links ficam juntos, à direita', () => {
+    it('a distância, o preço e o botão "Navegar" nunca encolhem (shrink-0), e o botão fica à direita da linha', () => {
       chip({ preco: 7.9 })
 
       expect(screen.getByText('≈ 3,5 km')).toHaveClass('shrink-0')
       expect(screen.getByText('• R$ 7.90')).toHaveClass('shrink-0')
-      const google = screen.getByRole('link', { name: /Como chegar/ })
-      const waze = screen.getByRole('link', { name: /Waze/ })
-      expect(google).toHaveClass('shrink-0')
-      expect(waze).toHaveClass('shrink-0')
-      expect(google.parentElement).toBe(waze.parentElement)
-      expect(google.parentElement).toHaveClass('ml-auto', 'shrink-0')
+      const botao = botaoNavegar()
+      expect(botao).toHaveClass('shrink-0', 'ml-auto')
+      expect(botao.parentElement).toBe(screen.getByText('≈ 3,5 km').parentElement)
     })
   })
 
@@ -308,11 +325,11 @@ describe('LojaDoCartao', () => {
       expect(linha.textContent).not.toMatch(/•/)
     })
 
-    it('só com links (sem distância nem preço), a linha de detalhes não tem "•"', () => {
+    it('só com o botão (sem distância nem preço), a linha de detalhes não tem "•"', () => {
       render(<LojaDoCartao filial={{ ...FILIAL, distanciaKm: null }} nomeRede="Carrefour" />)
 
       const linha = screen.getByText('Carrefour Centro').closest('[title]').lastElementChild
-      expect(linha.textContent).toBe('Como chegarWaze')
+      expect(linha.textContent).toBe('Navegar')
     })
 
     it('sem nada para a linha de detalhes (sem distância, preço nem coordenadas), ela nem existe', () => {
@@ -330,8 +347,9 @@ describe('LojaDoCartao', () => {
 
     it('com coordenadas mostra o link do Waze, em outra aba, sem referrer e com rótulo acessível', () => {
       render(<LojaDoCartao filial={FILIAL} nomeRede="Carrefour" />)
+      abrirNavegar()
 
-      const link = screen.getByRole('link', { name: 'Abrir a rota até Carrefour Centro no Waze (abre em outra aba)' })
+      const link = screen.getByRole('link', { name: 'Abrir Carrefour Centro no Waze (abre em outra aba)' })
       expect(link).toHaveTextContent('Waze')
       expect(link).toHaveAttribute('href', 'https://waze.com/ul?ll=-30.0346,-51.2177&navigate=yes')
       expect(link).toHaveAttribute('target', '_blank')
@@ -341,15 +359,17 @@ describe('LojaDoCartao', () => {
 
     it('o rótulo do Waze não se confunde com o do Google Maps (cada link tem um nome só)', () => {
       render(<LojaDoCartao filial={FILIAL} nomeRede="Carrefour" />)
+      abrirNavegar()
 
-      expect(screen.getAllByRole('link', { name: /Como chegar a Carrefour Centro/ })).toHaveLength(1)
+      expect(screen.getAllByRole('link', { name: /no Google Maps/ })).toHaveLength(1)
       expect(screen.getAllByRole('link', { name: /Waze/ })).toHaveLength(1)
     })
 
-    it('os dois links aparecem na ordem Como chegar, Waze', () => {
+    it('os dois links aparecem na ordem Google Maps, Waze', () => {
       render(<LojaDoCartao filial={FILIAL} nomeRede="Carrefour" />)
+      abrirNavegar()
 
-      expect(screen.getAllByRole('link').map((link) => link.textContent)).toEqual(['Como chegar', 'Waze'])
+      expect(linksDoPopover().map((link) => link.textContent)).toEqual(['Google Maps', 'Waze'])
     })
 
     it.each([
@@ -358,15 +378,17 @@ describe('LojaDoCartao', () => {
       ['só a longitude', { latitude: null, longitude: -51.2 }],
       ['texto no lugar de número', { latitude: '-30.03', longitude: '-51.2' }],
       ['fora da faixa', { latitude: 95, longitude: -51.2 }],
-    ])('sem coordenadas válidas (%s) não há link do Waze', (_nome, coordenadas) => {
+    ])('sem coordenadas válidas (%s) não há botão nem link do Waze', (_nome, coordenadas) => {
       render(<LojaDoCartao filial={{ ...FILIAL, ...coordenadas }} nomeRede="Carrefour" />)
 
+      expect(screen.queryByRole('button', { name: /Navegar/ })).not.toBeInTheDocument()
       expect(screen.queryByText('Waze')).not.toBeInTheDocument()
       expect(screen.queryByRole('link')).not.toBeInTheDocument()
     })
 
     it('o link do Waze aparece também na versão compacta', () => {
       render(<LojaDoCartao filial={FILIAL} nomeRede="Carrefour" compacto />)
+      abrirNavegar()
 
       expect(screen.getByRole('link', { name: /no Waze/ })).toBeInTheDocument()
     })
@@ -379,6 +401,7 @@ describe('LojaDoCartao', () => {
         </div>
       )
 
+      abrirNavegar()
       fireEvent.click(screen.getByRole('link', { name: /no Waze/ }))
 
       expect(aoClicarNoCartao).not.toHaveBeenCalled()

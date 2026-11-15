@@ -844,4 +844,95 @@ describe("SeletorCepRaio", () => {
       });
     });
   });
+
+  describe('botão "Navegar" ao lado da rede mais perto', () => {
+    const REDE = { id: "fort", nome: "Fort Atacadista", distanciaKm: 2.5 };
+    // A filial da rede mais perto, a MESMA cuja distância a frase mostra.
+    const DESTINO = { nomeFilial: "Fort Cachoeirinha", latitude: -29.9511, longitude: -51.0944, distanciaKm: 2.5 };
+    const GOOGLE = "https://www.google.com/maps/dir/?api=1&destination=-29.9511,-51.0944";
+    const WAZE = "https://waze.com/ul?ll=-29.9511,-51.0944&navigate=yes";
+    const botao = () => screen.queryByRole("button", { name: /^Navegar/ });
+
+    it("mostra o botão com o nome da filial, na mesma linha da frase", () => {
+      renderizar({ localizacao: LOCALIZACAO, redeMaisPerto: REDE, destinoMaisPerto: DESTINO });
+
+      expect(screen.getByRole("button", { name: "Navegar até Fort Cachoeirinha" })).toBeInTheDocument();
+      const linha = screen.getByRole("button", { name: /^Navegar/ }).parentElement;
+      expect(linha).toContainElement(screen.getByText(/A rede mais perto é Fort Atacadista/));
+    });
+
+    it("o clique abre a escolha, com os links só da coordenada dessa filial", () => {
+      renderizar({ localizacao: LOCALIZACAO, redeMaisPerto: REDE, destinoMaisPerto: DESTINO });
+
+      fireEvent.click(botao());
+
+      expect(screen.getByRole("link", { name: /Google Maps/ })).toHaveAttribute("href", GOOGLE);
+      expect(screen.getByRole("link", { name: /Waze/ })).toHaveAttribute("href", WAZE);
+    });
+
+    it("sem destinoMaisPerto não há botão (e a frase continua)", () => {
+      renderizar({ localizacao: LOCALIZACAO, redeMaisPerto: REDE });
+
+      expect(botao()).not.toBeInTheDocument();
+      expect(screen.getByText(/A rede mais perto é Fort Atacadista/)).toBeInTheDocument();
+    });
+
+    it.each([
+      ["coordenadas nulas", { latitude: null, longitude: null }],
+      ["só a latitude", { latitude: -29.95, longitude: null }],
+      ["texto no lugar de número", { latitude: "-29.95", longitude: "-51.09" }],
+      ["fora da faixa", { latitude: 95, longitude: -51.09 }],
+    ])("sem coordenadas válidas (%s) não há botão", (_caso, coordenadas) => {
+      renderizar({ localizacao: LOCALIZACAO, redeMaisPerto: REDE, destinoMaisPerto: { ...DESTINO, ...coordenadas } });
+
+      expect(botao()).not.toBeInTheDocument();
+    });
+
+    it("sem rede mais perto (empate ou sem distância) não há botão, mesmo com destino", () => {
+      renderizar({ localizacao: LOCALIZACAO, redeMaisPerto: null, destinoMaisPerto: DESTINO });
+
+      expect(botao()).not.toBeInTheDocument();
+    });
+
+    it("se a distância do destino não é a da frase (outra loja), não há botão: nunca aponta para outra filial", () => {
+      renderizar({
+        localizacao: LOCALIZACAO,
+        redeMaisPerto: REDE,
+        destinoMaisPerto: { ...DESTINO, nomeFilial: "Fort Caxias", distanciaKm: 96.4 },
+      });
+
+      expect(botao()).not.toBeInTheDocument();
+      expect(screen.getByText(/A rede mais perto é Fort Atacadista/)).toBeInTheDocument();
+    });
+
+    it("destino e distância sem número (sem distância na frase) não geram botão", () => {
+      renderizar({
+        localizacao: LOCALIZACAO,
+        redeMaisPerto: { ...REDE, distanciaKm: null },
+        destinoMaisPerto: { ...DESTINO, distanciaKm: null },
+      });
+
+      expect(botao()).not.toBeInTheDocument();
+    });
+
+    it("em modo navegador o botão também aparece e leva à mesma filial", () => {
+      renderizar({
+        localizacao: null,
+        origem: "navegador",
+        localizacaoAtual: { suportado: true, buscando: false, mensagem: null, botaoOculto: false },
+        redeMaisPerto: REDE,
+        destinoMaisPerto: DESTINO,
+      });
+
+      fireEvent.click(botao());
+
+      expect(screen.getByRole("link", { name: /Google Maps/ })).toHaveAttribute("href", GOOGLE);
+    });
+
+    it("enquanto carrega a localização, nem a frase nem o botão aparecem", () => {
+      renderizar({ carregando: true, localizacao: LOCALIZACAO, redeMaisPerto: REDE, destinoMaisPerto: DESTINO });
+
+      expect(botao()).not.toBeInTheDocument();
+    });
+  });
 });

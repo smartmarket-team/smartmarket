@@ -284,4 +284,48 @@ describe('CatalogPage com a localização atual do navegador', () => {
       semMudanca()
     })
   })
+
+  describe('botão "Navegar" da barra: destino e quilometragem são da mesma loja', () => {
+    const LINK_CAXIAS = 'https://www.google.com/maps/dir/?api=1&destination=-29.1681,-51.1794'
+    const LINK_CACHOEIRINHA = 'https://www.google.com/maps/dir/?api=1&destination=-29.9511,-51.0944'
+    const barra = () => screen.getByText(/^A rede mais perto é/).parentElement
+
+    it('com a loja preferida, a frase mostra a distância da PREFERIDA e o botão leva à PREFERIDA, não à mais próxima', async () => {
+      // Fort: a preferida (Caxias, ~96,4 km) vence a Cachoeirinha (~15,1 km), que é mais perto. A Carrefour só
+      // tem a loja padrão, então a rede mais perto é a Fort, e a loja dela é a preferida.
+      const preferida = lojaDoCep({ lojaId: 12, lojaNome: 'Fort Caxias', preferida: true, latitude: -29.1681, longitude: -51.1794 })
+      const carrefourPadrao = lojaDoCep({ mercadoId: 2, mercadoNome: 'Carrefour', lojaId: 20, lojaNome: 'Carrefour padrão', padrao: true, distanciaKm: null })
+      lojaService.filiaisPublicas.mockResolvedValue([FORT_CACHOEIRINHA, FORT_CAXIAS]) // sem filial pública da Carrefour
+      usarLocalizacao({ lojas: [preferida, carrefourPadrao] })
+      await renderizar()
+
+      await usarMinhaLocalizacao()
+
+      expect(screen.getByText(/^A rede mais perto é Fort Atacadista/)).toHaveTextContent(/\(≈ 96,4 km\)/)
+      const botao = within(barra()).getByRole('button', { name: 'Navegar até Fort Caxias' })
+      fireEvent.click(botao)
+      const links = within(screen.getByRole('group')).getAllByRole('link')
+      expect(links[0]).toHaveAttribute('href', LINK_CAXIAS)
+      expect(links.map((link) => link.getAttribute('href')).join(' ')).not.toContain('-29.9511')
+      expect(within(barra()).queryByRole('button', { name: /Cachoeirinha/ })).not.toBeInTheDocument()
+    })
+
+    it('sem preferida, a frase mostra a distância da filial mais próxima e o botão leva a ela', async () => {
+      const carrefourPadrao = lojaDoCep({ mercadoId: 2, mercadoNome: 'Carrefour', lojaId: 20, lojaNome: 'Carrefour padrão', padrao: true, distanciaKm: null })
+      lojaService.filiaisPublicas.mockResolvedValue([FORT_CACHOEIRINHA, FORT_CAXIAS])
+      usarLocalizacao({ lojas: [lojaDoCep(), carrefourPadrao] })
+      await renderizar()
+
+      await usarMinhaLocalizacao()
+
+      expect(screen.getByText(/^A rede mais perto é Fort Atacadista/)).toHaveTextContent(/\(≈ 15,1 km\)/)
+      const links = abrirBotaoDaBarra()
+      expect(links[0]).toHaveAttribute('href', LINK_CACHOEIRINHA)
+    })
+
+    function abrirBotaoDaBarra() {
+      fireEvent.click(within(barra()).getByRole('button', { name: /^Navegar/ }))
+      return within(screen.getByRole('group')).getAllByRole('link')
+    }
+  })
 })
