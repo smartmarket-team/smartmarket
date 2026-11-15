@@ -1,4 +1,4 @@
-import { useId, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { linkComoChegar, linkWaze } from "../utils/linkComoChegar"
 import { posicaoDoPopover } from "../utils/posicaoDoPopover"
@@ -21,6 +21,9 @@ const Chevron = () => (
     <path d="M2.5 4.5 6 8l3.5-3.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+
+// Quem está com o popover aberto (no máximo um): abrir outro fecha este.
+let fecharOAberto = null
 
 /**
  * Botão "Navegar": ao clicar, abre uma escolha entre Google Maps e Waze, que são só links (outra aba, sem
@@ -48,6 +51,40 @@ export default function BotaoNavegar({ latitude, longitude, nomeLoja = "", compa
     if (aberto) refPopover.current?.querySelector("a")?.focus({ preventScroll: true })
   }, [aberto])
 
+  // Enquanto aberto: Esc, toque fora, rolagem e redimensionamento fecham. O scroll não sobe pela página
+  // (cada trilho horizontal rola sozinho), então o ouvinte fica em `window` na fase de CAPTURA, que enxerga a
+  // rolagem de qualquer contêiner. Fechar por Esc devolve o foco ao botão; fechar por toque fora, rolagem ou
+  // redimensionamento não mexe no foco (quem tocou em outro controle continua nele).
+  useEffect(() => {
+    if (!aberto) return undefined
+    const fechar = () => setPosicao(null)
+    if (fecharOAberto && fecharOAberto !== fechar) fecharOAberto()
+    fecharOAberto = fechar
+
+    const aoTeclar = (evento) => {
+      if (evento.key !== "Escape") return
+      fechar()
+      refGatilho.current?.focus({ preventScroll: true })
+    }
+    const aoTocar = (evento) => {
+      const alvo = evento.target
+      // O botão alterna pelo próprio clique; fechar aqui o reabriria logo depois.
+      if (refPopover.current?.contains(alvo) || refGatilho.current?.contains(alvo)) return
+      fechar()
+    }
+    document.addEventListener("keydown", aoTeclar)
+    document.addEventListener("pointerdown", aoTocar)
+    window.addEventListener("scroll", fechar, true)
+    window.addEventListener("resize", fechar)
+    return () => {
+      document.removeEventListener("keydown", aoTeclar)
+      document.removeEventListener("pointerdown", aoTocar)
+      window.removeEventListener("scroll", fechar, true)
+      window.removeEventListener("resize", fechar)
+      if (fecharOAberto === fechar) fecharOAberto = null
+    }
+  }, [aberto])
+
   if (!google || !waze) return null
 
   const rotuloDaLoja = nomeLoja ? `Navegar até ${nomeLoja}` : undefined
@@ -62,6 +99,12 @@ export default function BotaoNavegar({ latitude, longitude, nomeLoja = "", compa
         popover: TAMANHO_DO_POPOVER,
       }),
     )
+  }
+
+  // Escolher um destino fecha o popover e devolve o foco ao botão (a aba do mapa abre sozinha).
+  function aoEscolher() {
+    setPosicao(null)
+    refGatilho.current?.focus({ preventScroll: true })
   }
 
   function alternar(evento) {
@@ -103,6 +146,7 @@ export default function BotaoNavegar({ latitude, longitude, nomeLoja = "", compa
               rel="noopener noreferrer"
               referrerPolicy="no-referrer"
               aria-label={`Abrir ${nomeNoRotulo} no Google Maps (abre em outra aba)`}
+              onClick={aoEscolher}
               className={CLASSE_LINK}
             >
               Google Maps
@@ -113,6 +157,7 @@ export default function BotaoNavegar({ latitude, longitude, nomeLoja = "", compa
               rel="noopener noreferrer"
               referrerPolicy="no-referrer"
               aria-label={`Abrir ${nomeNoRotulo} no Waze (abre em outra aba)`}
+              onClick={aoEscolher}
               className={CLASSE_LINK}
             >
               Waze

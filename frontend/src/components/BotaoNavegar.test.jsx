@@ -173,4 +173,234 @@ describe('BotaoNavegar', () => {
       expect(document.body.querySelector('[role="group"]')).toBeNull()
     })
   })
+
+  describe('fechar', () => {
+    it('Esc fecha o popover e devolve o foco ao botão', () => {
+      renderizar()
+      abrir()
+
+      fireEvent.keyDown(document.activeElement, { key: 'Escape' })
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+      expect(gatilho()).toHaveFocus()
+      expect(gatilho()).toHaveAttribute('aria-expanded', 'false')
+    })
+
+    it('Esc também fecha com o foco fora do popover', () => {
+      renderizar()
+      abrir()
+      gatilho().focus()
+
+      fireEvent.keyDown(document.body, { key: 'Escape' })
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+    })
+
+    it('Esc com o popover fechado não faz nada', () => {
+      renderizar()
+
+      fireEvent.keyDown(document.body, { key: 'Escape' })
+
+      expect(gatilho()).toHaveAttribute('aria-expanded', 'false')
+    })
+
+    it.each(['Google Maps', 'Waze'])('escolher "%s" fecha o popover e devolve o foco ao botão', (nome) => {
+      renderizar()
+      abrir()
+
+      fireEvent.click(screen.getByRole('link', { name: new RegExp(nome) }))
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+      expect(gatilho()).toHaveFocus()
+    })
+
+    it('tocar fora fecha e NÃO rouba o foco de onde o usuário tocou', () => {
+      render(
+        <>
+          <BotaoNavegar latitude={LAT} longitude={LON} nomeLoja="Carrefour Centro" />
+          <button>Outro controle</button>
+        </>,
+      )
+      abrir()
+      const outro = screen.getByRole('button', { name: 'Outro controle' })
+      outro.focus()
+
+      fireEvent.pointerDown(outro)
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+      expect(outro).toHaveFocus()
+    })
+
+    it('tocar dentro do popover não fecha', () => {
+      renderizar()
+      abrir()
+
+      fireEvent.pointerDown(screen.getByRole('group'))
+      fireEvent.pointerDown(screen.getAllByRole('link')[1])
+
+      expect(screen.getByRole('group')).toBeInTheDocument()
+    })
+
+    it('tocar no próprio botão não fecha antes do clique (quem alterna é o clique)', () => {
+      renderizar()
+      abrir()
+
+      fireEvent.pointerDown(gatilho())
+
+      expect(screen.getByRole('group')).toBeInTheDocument()
+    })
+
+    it('rolar a página fecha o popover', () => {
+      renderizar()
+      abrir()
+
+      fireEvent.scroll(window)
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+    })
+
+    it('rolar o trilho horizontal da prateleira também fecha (o evento de scroll não sobe pela página)', () => {
+      render(
+        <div data-testid="trilho" style={{ overflowX: 'auto' }}>
+          <BotaoNavegar latitude={LAT} longitude={LON} nomeLoja="Carrefour Centro" />
+        </div>,
+      )
+      abrir()
+
+      fireEvent.scroll(screen.getByTestId('trilho'))
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+    })
+
+    it('rolar qualquer outro contêiner da página fecha', () => {
+      renderizar()
+      abrir()
+      const lista = document.createElement('div')
+      document.body.appendChild(lista)
+
+      fireEvent.scroll(lista)
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+      lista.remove()
+    })
+
+    it('redimensionar a janela fecha o popover', () => {
+      renderizar()
+      abrir()
+
+      fireEvent(window, new Event('resize'))
+
+      expect(screen.queryByRole('group')).not.toBeInTheDocument()
+    })
+
+    it('depois de fechado, rolar e redimensionar não deixam ouvintes pendurados (reabrir funciona)', () => {
+      renderizar()
+      abrir()
+      fireEvent.scroll(window)
+
+      abrir()
+
+      expect(screen.getByRole('group')).toBeInTheDocument()
+    })
+
+    it('o popover não fecha a si mesmo ao abrir: focar o primeiro link NÃO rola a página (preventScroll)', async () => {
+      // O navegador rola até o elemento focado (e dispara "scroll" no quadro seguinte) a menos que o foco
+      // peça preventScroll. Aqui o foco simulado rola quando não pede.
+      const original = HTMLElement.prototype.focus
+      const foco = jest.spyOn(HTMLElement.prototype, 'focus').mockImplementation(function (opcoes) {
+        original.call(this, opcoes)
+        if (!opcoes?.preventScroll) setTimeout(() => window.dispatchEvent(new Event('scroll')), 0)
+      })
+      renderizar()
+
+      abrir()
+      await new Promise((resolve) => setTimeout(resolve, 20))
+
+      expect(screen.getByRole('group')).toBeInTheDocument()
+      foco.mockRestore()
+    })
+
+    it('abrir um segundo botão fecha o primeiro (só um popover aberto por vez)', () => {
+      render(
+        <>
+          <BotaoNavegar latitude={LAT} longitude={LON} nomeLoja="Carrefour Centro" />
+          <BotaoNavegar latitude={-29.95} longitude={-51.09} nomeLoja="Fort Cachoeirinha" />
+        </>,
+      )
+
+      fireEvent.click(screen.getByRole('button', { name: 'Navegar até Carrefour Centro' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Navegar até Fort Cachoeirinha' }))
+
+      expect(screen.getAllByRole('group')).toHaveLength(1)
+      expect(screen.getByRole('group', { name: 'Navegar até Fort Cachoeirinha' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Navegar até Carrefour Centro' })).toHaveAttribute('aria-expanded', 'false')
+    })
+  })
+
+  describe('o clique não abre o detalhe do cartão', () => {
+    const noCartao = () => {
+      const aoClicarNoCartao = jest.fn()
+      render(
+        <div onClick={aoClicarNoCartao}>
+          <BotaoNavegar latitude={LAT} longitude={LON} nomeLoja="Carrefour Centro" />
+        </div>,
+      )
+      return aoClicarNoCartao
+    }
+
+    it('clicar no botão não dispara o clique do cartão', () => {
+      const aoClicarNoCartao = noCartao()
+
+      abrir()
+
+      expect(aoClicarNoCartao).not.toHaveBeenCalled()
+    })
+
+    it('clicar no popover (portal) não sobe ao cartão pela árvore do React', () => {
+      const aoClicarNoCartao = noCartao()
+      abrir()
+
+      fireEvent.click(screen.getByRole('group'))
+
+      expect(aoClicarNoCartao).not.toHaveBeenCalled()
+    })
+
+    it.each(['Google Maps', 'Waze'])('clicar em "%s" não sobe ao cartão', (nome) => {
+      const aoClicarNoCartao = noCartao()
+      abrir()
+
+      fireEvent.click(screen.getByRole('link', { name: new RegExp(nome) }))
+
+      expect(aoClicarNoCartao).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('não lembra a escolha (nada em storage)', () => {
+    it('escolher um destino não grava nada no navegador', () => {
+      const gravar = jest.spyOn(Storage.prototype, 'setItem')
+      localStorage.clear()
+      sessionStorage.clear()
+      renderizar()
+      abrir()
+
+      fireEvent.click(screen.getByRole('link', { name: /Waze/ }))
+
+      expect(gravar).not.toHaveBeenCalled()
+      expect(localStorage).toHaveLength(0)
+      expect(sessionStorage).toHaveLength(0)
+      gravar.mockRestore()
+    })
+
+    it('reabrir depois de escolher o Waze começa de novo: Google Maps primeiro e com o foco', () => {
+      renderizar()
+      abrir()
+      fireEvent.click(screen.getByRole('link', { name: /Waze/ }))
+
+      abrir()
+
+      const links = screen.getAllByRole('link')
+      expect(links.map((link) => link.textContent)).toEqual(['Google Maps', 'Waze'])
+      expect(links[0]).toHaveFocus()
+    })
+  })
 })
