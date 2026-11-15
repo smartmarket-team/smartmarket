@@ -696,4 +696,22 @@ describe('CatalogPage', () => {
       expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([])
     })
   })
+
+  describe('foco visível por teclado (nada de outline-none sem substituto)', () => {
+    it('os chips de categoria e os dois seletores mostram um anel ao receber foco por teclado', async () => {
+      // Os chips de departamento só aparecem na grade (ou com categoria/busca ativa).
+      await renderizar({}, { grade: true })
+
+      const chips = screen.getAllByTitle(/^Ver (?!todos)/)
+      expect(chips.length).toBeGreaterThan(0)
+      for (const chip of chips) {
+        expect(chip).toHaveClass('focus-visible:ring-2')
+        expect(chip).not.toHaveClass('outline-none')
+      }
+      for (const nome of ['Filtrar por rede', 'Critério de ordenação']) {
+        expect(screen.getByTitle(nome)).toHaveClass('focus-visible:ring-2')
+        expect(screen.getByTitle(nome)).not.toHaveClass('focus:outline-none')
+      }
+    })
+  })
 })

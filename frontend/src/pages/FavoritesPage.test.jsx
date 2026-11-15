@@ -564,4 +564,17 @@ describe('FavoritesPage', () => {
       expect(screen.getByRole('dialog', { name: 'Arroz Branco Tipo 1' })).toBeInTheDocument()
     })
   })
+
+  describe('foco visível por teclado (nada de outline-none sem substituto)', () => {
+    it('os chips de categoria mostram um anel ao receber foco por teclado', async () => {
+      await renderizar()
+
+      const chips = screen.getAllByTitle(/^Filtrar favoritos em /)
+      expect(chips.length).toBeGreaterThan(0)
+      for (const chip of chips) {
+        expect(chip).toHaveClass('focus-visible:ring-2')
+        expect(chip).not.toHaveClass('outline-none')
+      }
+    })
+  })
 })

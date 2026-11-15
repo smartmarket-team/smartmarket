@@ -372,7 +372,7 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
               key={cat.id}
               type="button"
               onClick={() => onSelectCat(cat.id)}
-              className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition duration-200 outline-none"
+              className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition duration-200 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2"
               title={`Ver ${cat.label}`}
             >
               {/* Círculo Badge Verde Master Supermercados */}
@@ -1486,7 +1486,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 autoComplete="off"
                 value={mktFilter}
                 onChange={(e) => setMktFilter(e.target.value)}
-                className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus:outline-none cursor-pointer"
+                className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green cursor-pointer"
                 title="Filtrar por rede"
               >
                 <option value="todos">Todas as redes</option>
@@ -1504,7 +1504,7 @@ function CatalogPageConteudo({ produtos: DEFAULT_PRODUCTS }) {
                 autoComplete="off"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus:outline-none cursor-pointer max-w-full"
+                className="bg-white border border-brand-border/80 rounded-xl px-2.5 py-2 text-xs font-semibold text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green cursor-pointer max-w-full"
                 title="Critério de ordenação"
               >
                 <option value="relevancia">Relevância</option>

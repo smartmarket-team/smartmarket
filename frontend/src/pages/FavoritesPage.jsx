@@ -630,7 +630,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                       setSelectedCategory(cat.id)
                       setActiveTab("produtos")
                     }}
-                    className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition duration-200 outline-none"
+                    className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition duration-200 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2"
                     title={`Filtrar favoritos em ${cat.label}`}
                   >
                     <div
