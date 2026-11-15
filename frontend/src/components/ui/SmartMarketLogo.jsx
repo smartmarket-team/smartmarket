@@ -15,6 +15,8 @@ export function SmartMarketLogo({
     <img
       src={logo}
       alt="SmartMarket"
+      width={863}
+      height={196}
       className={cn("w-auto max-w-full object-contain", heights[size] || heights.md, className)}
     />
   )

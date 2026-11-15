@@ -137,7 +137,7 @@ export default function Layout() {
           <span />
         </button>
         <NavLink to="/" className="sm-shell-brand" title="Ir para a página inicial">
-          <img src={logoImg} alt="SmartMarket" />
+          <img src={logoImg} alt="SmartMarket" width={863} height={196} />
         </NavLink>
         <span className="sm-shell-avatar" aria-hidden="true">{initialLetter}</span>
       </header>

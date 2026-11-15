@@ -268,7 +268,7 @@ export default function AuthPage() {
           {/* Header Mobile */}
           <div className="md:hidden flex justify-center mb-6">
             <Link to="/">
-              <img src={logoImg} alt="SmartMarket" className="h-12 w-auto object-contain" />
+              <img src={logoImg} alt="SmartMarket" width={863} height={196} className="h-12 w-auto object-contain" />
             </Link>
           </div>
 
