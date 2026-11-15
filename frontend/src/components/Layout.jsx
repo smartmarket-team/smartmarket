@@ -251,7 +251,7 @@ export default function Layout() {
               <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 <span
                   style={{
-                    fontSize: "9px",
+                    fontSize: "11px",
                     fontWeight: 800,
                     padding: "1px 6px",
                     borderRadius: "6px",
