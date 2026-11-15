@@ -10,6 +10,7 @@ SmartMarket é um comparador de preços de supermercados do RS (Grupo 40, Trilha
 - `backend/` — Spring Boot 4.1 / Java 17 (API REST, JPA, JWT)
 - `scraper/` — Python: coletores por rede, normalização e carga no PostgreSQL
 - `docs/` — documentação técnica, modelagem ER, cenários de teste; `output/` guarda dados coletados
+  - Para quem não lê código (vibecoders): `docs/GUIA-PARA-INICIANTES.md` explica o projeto em palavras simples, e `docs/mapa-smartmarket.html` é o mapa clicável, gerado pelo plugin Floorplan (arquivo único, sem internet). Ao mudar a arquitetura, atualize o guia e peça "atualize o floorplan"; a pasta `floorplan/` fica fora do Git e só a cópia exportada em `docs/` é versionada. `docs/floorplan-smartmarket.html` é o mapa técnico antigo, de 11/11.
 
 Idioma do projeto: código de domínio, comentários, commits e documentação em PT-BR.
 

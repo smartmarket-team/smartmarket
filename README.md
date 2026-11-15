@@ -2,6 +2,14 @@
 
 Comparador de preços entre supermercados — Grupo 40, Trilha Dev Full Stack 2026.
 
+## Em palavras simples
+
+Robôs anotam os preços dos supermercados do Rio Grande do Sul, o servidor guarda tudo num banco de dados e o site mostra, para cada produto, **onde ele está mais barato** e **qual loja fica mais perto de você**.
+
+- **Primeira vez aqui?** Leia o [guia em palavras simples](docs/GUIA-PARA-INICIANTES.md): as peças do projeto, o caminho de um preço, o que não mexer e como pedir coisas ao Claude.
+- **Prefere ver?** Abra o [mapa do projeto](docs/mapa-smartmarket.html) no navegador (arquivo único, funciona sem internet).
+- **Precisa dos detalhes técnicos?** Continue lendo este arquivo e o [`CLAUDE.md`](CLAUDE.md).
+
 ## Estrutura
 
 - `/frontend` — React 19 + Tailwind CSS v4 + Vite (catálogo com ~9,4 mil produtos; fotos e catálogo vêm do Neon Object Storage em produção)
@@ -12,14 +20,14 @@ Comparador de preços entre supermercados — Grupo 40, Trilha Dev Full Stack 20
 
 ## Cobertura de Supermercados (Rio Grande do Sul)
 
-Coletores para as 8 principais redes gaúchas. A rotina diária coleta **6**: Zaffari e Rissul estão **suspensas** (o `robots.txt` delas proíbe `/api/`, que os coletores usam), então os preços dessas duas são históricos:
+Coletores para as 8 principais redes gaúchas. A rotina diária coleta **4**: Carrefour, Atacadão, Master e Stok. As outras quatro estão **suspensas** em `REDES_SUSPENSAS` (`scraper/rotina_carga.py`), então os preços delas são históricos: Zaffari e Rissul, porque o `robots.txt` delas proíbe `/api/`, que os coletores usam; Fort e Asun, porque o Cloudflare responde 403 ao coletor identificado (a Asun fica suspensa até haver autorização, já pedida pelo responsável).
 - **Zaffari / Bourbon** (VTEX Catalog System, suspensa)
 - **Supermercados Rissul** (VTEX Catalog System, suspensa)
-- **Asun Supermercados** (Sense / OSuper API)
+- **Asun Supermercados** (Sense / OSuper API, suspensa)
 - **Stok Center** (VipCommerce API)
 - **Atacadão RS** (VTEX Catalog System)
 - **Master Supermercados** (VipCommerce API)
-- **Fort Atacadista** (Sense / OSuper API)
+- **Fort Atacadista** (Sense / OSuper API, suspensa)
 - **Carrefour Mercado** (storefront headless, stream React Router)
 
 Documentação técnica completa da expansão: [docs/EXPANSAO_RS_SCRAPERS.md](docs/EXPANSAO_RS_SCRAPERS.md).
@@ -44,7 +52,7 @@ O CI (`.github/workflows/ci.yml`) roda as três suítes e o build do front em to
 - **Servidor Linux**: Shell script com logs rotacionados (`scraper/cron_coleta_diaria.sh`)
 - **Daemon Systemd**: Serviço contínuo em segundo plano (`scraper/agendador_servico.py`)
 
-A coleta real é feita por `scraper/rotina_carga.py` (nos dois últimos). Ela pula Zaffari e Rissul, só marca produtos como indisponíveis após coleta completa e exaustiva (nenhuma rede real é exaustiva hoje), manda registros inválidos para `quarentena.json` em vez de derrubar a carga da rede e recupera sozinha um lock órfão. Detalhes em [`scraper/ROTINA-DE-CARGA.md`](scraper/ROTINA-DE-CARGA.md).
+A coleta real é feita por `scraper/rotina_carga.py` (nos dois últimos). Ela pula as quatro redes suspensas (Zaffari, Rissul, Fort e Asun), só marca produtos como indisponíveis após coleta completa e exaustiva (nenhuma rede real é exaustiva hoje), manda registros inválidos para `quarentena.json` em vez de derrubar a carga da rede e recupera sozinha um lock órfão. Detalhes em [`scraper/ROTINA-DE-CARGA.md`](scraper/ROTINA-DE-CARGA.md).
 
 ## Produção
 
