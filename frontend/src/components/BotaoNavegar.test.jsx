@@ -519,4 +519,26 @@ describe('BotaoNavegar', () => {
       foco.mockRestore()
     })
   })
+
+  // O jsdom não faz layout: estas classes são a trava da revisão de acessibilidade (conferidas no navegador).
+  describe('acessibilidade: foco visível e alvo de toque', () => {
+    it('o anel de foco do botão e dos links é opaco (emerald-700), não o verde a 50% de antes', () => {
+      renderizar()
+      abrir()
+
+      for (const elemento of [gatilho(), ...within(screen.getByRole('group')).getAllByRole('link')]) {
+        expect(elemento.className).toContain('focus-visible:ring-emerald-700')
+        expect(elemento.className).not.toContain('ring-brand-green/50')
+      }
+    })
+
+    it.each([
+      ['completo', false],
+      ['compacto', true],
+    ])('o botão %s tem área de toque de pelo menos 24 px sem mudar o layout (py-1.5 com -my-1.5)', (_nome, compacto) => {
+      renderizar({ compacto })
+
+      expect(gatilho()).toHaveClass('py-1.5', '-my-1.5')
+    })
+  })
 })

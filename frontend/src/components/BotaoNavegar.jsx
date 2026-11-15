@@ -14,7 +14,7 @@ const CLASSE_BOTAO = {
 
 const CLASSE_LINK =
   "flex items-center min-h-11 px-3 rounded-lg text-sm font-bold text-emerald-900 hover:bg-emerald-50 " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/50"
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
 
 const Chevron = () => (
   <svg aria-hidden="true" viewBox="0 0 12 12" width="10" height="10" className="shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
@@ -170,7 +170,8 @@ export default function BotaoNavegar({ latitude, longitude, nomeLoja = "", compa
         aria-controls={aberto ? idDoPopover : undefined}
         aria-label={rotuloDaLoja}
         onClick={alternar}
-        className={`shrink-0 inline-flex items-center gap-1 font-bold text-emerald-900 underline underline-offset-2 hover:text-emerald-700 rounded cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/50 ${CLASSE_BOTAO[compacto ? "compacto" : "completo"]} ${className}`}
+        // py-1.5 com -my-1.5: a área de toque passa de 24 px (WCAG 2.5.8) sem mudar a altura da linha.
+        className={`shrink-0 inline-flex items-center gap-1 py-1.5 -my-1.5 font-bold text-emerald-900 underline underline-offset-2 hover:text-emerald-700 rounded cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 ${CLASSE_BOTAO[compacto ? "compacto" : "completo"]} ${className}`}
       >
         Navegar
         <Chevron />
