@@ -315,7 +315,7 @@ export function ProductDetailModal({
               )}
 
               {promoVerification?.comprovada && (
-                <span className="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-rose-600 text-white uppercase tracking-wider shadow-xs animate-pulse">
+                <span className="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-rose-600 text-white uppercase tracking-wider shadow-xs animate-pulso-curto">
                   Oferta -{promoVerification.descontoPerc}%
                 </span>
               )}

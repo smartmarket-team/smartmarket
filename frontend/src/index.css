@@ -219,6 +219,15 @@ html, body, #root {
   animation: pulseSoft 2.5s ease-in-out infinite;
 }
 
+/* Chama a atenção na abertura e para: 2 pulsos de 0,9 s (antes o selo de oferta pulsava para sempre). */
+@keyframes sm-pulso-curto {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.animate-pulso-curto {
+  animation: sm-pulso-curto 0.9s ease-in-out 2;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-soft-float,
   .animate-soft-float-delayed,
@@ -227,6 +236,7 @@ html, body, #root {
   .animate-fade-in-up-slow,
   .animate-shimmer,
   .animate-pulse-soft,
+  .animate-pulso-curto,
   .animate-pulse {
     animation: none !important;
     transform: none !important;

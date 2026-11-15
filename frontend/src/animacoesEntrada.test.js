@@ -25,3 +25,15 @@ describe('animações de entrada (animate-in, fade-in, zoom-in, slide-in)', () =
     expect(faltando).toEqual([])
   })
 })
+
+describe('selo de oferta do detalhe do produto', () => {
+  it('pulsa só duas vezes (não usa animate-pulse infinito) e respeita movimento reduzido', () => {
+    const css = fs.readFileSync(path.join(RAIZ, 'index.css'), 'utf8')
+    const modal = fs.readFileSync(path.join(RAIZ, 'components', 'ui', 'ProductDetailModal.jsx'), 'utf8')
+
+    expect(modal).toContain('animate-pulso-curto')
+    expect(modal).not.toMatch(/\banimate-pulse\b/)
+    expect(css).toMatch(/\.animate-pulso-curto\s*\{\s*animation:[^;]*\s2;/)
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{[^{}]*\.animate-pulso-curto[^{}]*\{[^}]*animation:\s*none/)
+  })
+})
