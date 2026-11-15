@@ -159,6 +159,31 @@ html, body, #root {
   to { opacity: 1; transform: translateX(0); }
 }
 
+/* Entradas usadas em modais, toasts e avisos (animate-in + fade-in/zoom-in-95/slide-in-from-*).
+   Antes eram classes de plugin que o projeto não instala, então nada animava. Aqui ficam só as 6 que
+   o app usa: sem dependência nova e sem custo no bundle além de ~1 KB de CSS. A duração vem do
+   duration-* do Tailwind (--tw-duration); sem ele, 150 ms. */
+@keyframes sm-entrada-fade { from { opacity: 0; } }
+@keyframes sm-entrada-zoom { from { opacity: 0; transform: scale(0.95); } }
+@keyframes sm-entrada-topo { from { opacity: 0; transform: translateY(-0.5rem); } }
+@keyframes sm-entrada-topo-curta { from { opacity: 0; transform: translateY(-0.25rem); } }
+@keyframes sm-entrada-base { from { opacity: 0; transform: translateY(0.75rem); } }
+
+@utility animate-in {
+  animation-duration: var(--tw-duration, 150ms);
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+@utility fade-in { animation-name: sm-entrada-fade; }
+@utility zoom-in-95 { animation-name: sm-entrada-zoom; }
+@utility slide-in-from-top { animation-name: sm-entrada-topo-curta; }
+@utility slide-in-from-top-2 { animation-name: sm-entrada-topo; }
+@utility slide-in-from-bottom-3 { animation-name: sm-entrada-base; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in { animation: none !important; }
+}
+
 .animate-soft-float {
   animation: softFloat 4s ease-in-out infinite;
 }
