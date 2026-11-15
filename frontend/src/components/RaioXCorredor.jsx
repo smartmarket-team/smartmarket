@@ -139,6 +139,7 @@ function LinhaDeTensao({ item, indice, setor, nomeDaRede, autenticado, caminhoCa
         <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-white">
           <ProductImage
             src={imagem.imageLocal || imagem.imageUrl}
+            /* alt vazio de propósito: o nome do produto vem em texto logo ao lado. */
             alt=""
             fallbackIcon={setor.icon}
             className="h-full w-full"

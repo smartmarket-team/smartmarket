@@ -580,6 +580,7 @@ export function Home() {
                           : "group-hover:bg-brand-green-light/70"
                       }`}
                     >
+                      {/* alt vazio de propósito: o nome da categoria aparece em texto logo abaixo. */}
                       <img
                         src={cat.img}
                         alt=""

@@ -178,6 +178,7 @@ function Cupom({ passo, entrou }) {
           return (
             <div key={p.id} className="sm-cupom__linha sm-cupom__item" style={{ "--i": i }}>
               <span className="sm-cupom__produto">
+                {/* alt vazio de propósito: o nome do produto vem em texto logo ao lado. */}
                 <img src={urlPublica(urlAsset(p.foto))} alt="" width="36" height="36" loading="lazy" decoding="async" />
                 <span>
                   <strong>{p.nome}</strong>
