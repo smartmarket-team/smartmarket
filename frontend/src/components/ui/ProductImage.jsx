@@ -53,6 +53,8 @@ export function ProductImage({
       <img
         src={urlFinal}
         alt={alt}
+        width={400}
+        height={400}
         loading="lazy"
         onLoad={() => setEstado({ src, falhou: false, carregada: true })}
         onError={() => setEstado({ src, falhou: true, carregada: true })}

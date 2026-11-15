@@ -644,5 +644,42 @@ describe('CatalogPage', () => {
       expect(screen.queryByRole('button', { name: /^Ver todos os produtos de / })).not.toBeInTheDocument()
     })
   })
-})
 
+  describe('carrossel de categoria carrega os cards aos poucos', () => {
+    const descritores = {}
+    let scrollLeftAtual = 0
+
+    beforeEach(() => {
+      scrollLeftAtual = 0
+      for (const [nome, get] of Object.entries({
+        clientWidth: () => 1000,
+        scrollWidth: () => 5000,
+        scrollLeft: () => scrollLeftAtual,
+      })) {
+        descritores[nome] = Object.getOwnPropertyDescriptor(HTMLElement.prototype, nome)
+          || Object.getOwnPropertyDescriptor(Element.prototype, nome)
+        Object.defineProperty(HTMLElement.prototype, nome, { configurable: true, get })
+      }
+    })
+
+    afterEach(() => {
+      for (const nome of Object.keys(descritores)) {
+        delete HTMLElement.prototype[nome]
+        if (descritores[nome]) Object.defineProperty(Element.prototype, nome, descritores[nome])
+      }
+    })
+
+    it('mostra os 8 primeiros da categoria e só monta o 9º ao rolar perto do fim', async () => {
+      await renderizar()
+
+      // Grãos tem 9 produtos (a Quinoa, vinda da API, é a 9ª): na prateleira só entram 8 no início.
+      expect(temCartao('Quinoa Real')).toBe(false)
+
+      const prateleira = screen.getByRole('heading', { level: 2, name: /Grãos/ }).closest('section').querySelector('.overflow-x-auto')
+      scrollLeftAtual = 4000
+      fireEvent.scroll(prateleira)
+
+      expect(temCartao('Quinoa Real')).toBe(true)
+    })
+  })
+})

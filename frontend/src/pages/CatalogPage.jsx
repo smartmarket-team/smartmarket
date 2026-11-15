@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback, useLayoutEffect } from "react";
 import { CATEGORIES, MARKETS as DEFAULT_MARKETS, REDES_COM_PRODUTOS } from "../catalogoResumo";
 import ComCatalogo from "../components/ComCatalogo";
 import { redesComEquivalenteConfirmado } from "../utils/equivalentes";
@@ -28,6 +28,7 @@ import { mesclarCatalogo } from "../utils/mesclarCatalogo"
 import { urlPublica } from "../utils/urlPublica"
 import { aplicarAlteracoes, criarRegistroDeAlteracoes, registrarAlteracao } from "../utils/alteracoesFavoritos"
 import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
+import { CARDS_INICIAIS, proximoLimite } from "../utils/carrosselProgressivo"
 
 const MARKET_LOGOS = {
   fort: logoFort,
@@ -385,6 +386,8 @@ function DepartmentVisualCarousel({ selectedCat, onSelectCat }) {
                 <img
                   src={cat.img}
                   alt={cat.label}
+                  width={96}
+                  height={96}
                   loading="lazy"
                   style={{ clipPath: "inset(0 0 8% 0)" }}
                   className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-108 pointer-events-none"
@@ -500,6 +503,8 @@ function FavMarketsStrip({ markets, selectedMkt, onSelectMkt, favs = [], onToggl
                   <img
                     src={logoSrc}
                     alt={m.name}
+                    width={120}
+                    height={40}
                     className={`w-full object-contain transition-transform duration-200 group-hover:scale-105 ${opticalClass}`}
                   />
                 ) : (
@@ -965,6 +970,7 @@ function CategoryShelf({
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [limite, setLimite] = useState(CARDS_INICIAIS);
 
   const meta = CATEGORY_META[category.id] || {
     banner: null,
@@ -977,9 +983,14 @@ function CategoryShelf({
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
     setCanScrollLeft(scrollLeft > 8);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 8);
+    // Carrega o próximo lote de cards ao chegar perto do fim da prateleira.
+    setLimite((atual) =>
+      proximoLimite({ limite: atual, total: products.length, scrollLeft, scrollWidth, clientWidth }),
+    );
   };
 
-  useEffect(() => {
+  // useLayoutEffect: mede a prateleira e libera o próximo lote antes da pintura (sem piscar cards).
+  useLayoutEffect(() => {
     updateScrollButtons();
     const el = scrollRef.current;
     if (el) {
@@ -990,7 +1001,7 @@ function CategoryShelf({
         window.removeEventListener("resize", updateScrollButtons);
       };
     }
-  }, [products]);
+  }, [products, limite]);
 
   const scroll = (direction) => {
     if (!scrollRef.current) return;
@@ -1081,6 +1092,8 @@ function CategoryShelf({
             <img
               src={meta.bannerVertical}
               alt={`Departamento ${category.label}`}
+              width={253}
+              height={453}
               loading="lazy"
               className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-103"
               onError={(e) => {
@@ -1097,7 +1110,7 @@ function CategoryShelf({
         )}
 
         {/* CARDS DE PRODUTOS DA CATEGORIA */}
-        {products.slice(0, 24).map((prod) => (
+        {products.slice(0, limite).map((prod) => (
           <ProductCard
             key={prod.id}
             product={prod}
