@@ -439,30 +439,167 @@ html, body, #root {
   }
 }
 
-/* Shell autenticado: sidebar no desktop, gaveta no tablet e no celular */
+/* Shell autenticado com navegacao em gaveta (hamburger drawer) em todas as telas,
+   liberando 100% da largura para visualizacao dos produtos e banners dos setores */
 .sm-shell {
   display: flex;
+  flex-direction: column;
   min-height: 100%;
   min-height: 100dvh;
   background: var(--color-brand-bg);
 }
 
-.sm-shell-top,
-.sm-shell-backdrop {
-  display: none;
+.sm-shell.is-menu-open {
+  overflow: hidden;
+}
+
+.sm-shell-top {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  height: 4rem;
+  padding: 0 0.875rem;
+  background: #fff;
+  border-bottom: 1px solid var(--color-brand-border);
+}
+
+@media (min-width: 1024px) {
+  .sm-shell-top {
+    padding: 0 1.5rem;
+    gap: 1rem;
+  }
+}
+
+.sm-shell-menu {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0.85rem;
+  background: transparent;
+  color: var(--color-brand-navy);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.sm-shell-menu span {
+  display: block;
+  width: 1.15rem;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform-origin: center;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), opacity 160ms ease;
+}
+
+.sm-shell-menu.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.sm-shell-menu.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.sm-shell-menu.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.sm-shell-menu:hover {
+  background: var(--color-brand-green-light);
+}
+
+.sm-shell-menu:focus-visible,
+.sm-shell-backdrop:focus-visible {
+  outline: 2px solid var(--color-brand-green);
+  outline-offset: 2px;
+}
+
+.sm-shell-brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+
+.sm-shell-brand img {
+  height: 2.4rem;
+  width: auto;
+  max-width: 10.5rem;
+  object-fit: contain;
+}
+
+.sm-shell-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--color-brand-green-light);
+  color: var(--color-brand-green);
+  font-size: 0.8rem;
+  font-weight: 800;
 }
 
 .sm-shell-aside {
-  width: 260px;
-  flex-shrink: 0;
+  position: fixed;
+  z-index: 50;
+  left: 0;
+  top: 4rem;
+  width: min(17.5rem, 86vw);
+  height: calc(100vh - 4rem);
+  height: calc(100dvh - 4rem);
   display: flex;
   flex-direction: column;
   padding: 18px 12px;
   background: #0D2137;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100dvh;
+  transform: translateX(-105%);
+  visibility: hidden;
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 280ms;
+}
+
+.sm-shell-aside.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0s;
+  box-shadow: 18px 0 40px -24px rgba(13, 33, 55, 0.55);
+}
+
+.sm-shell-backdrop {
+  display: none;
+}
+
+.sm-shell-backdrop.is-open {
+  display: block;
+  position: fixed;
+  top: 4rem;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 45;
+  border: 0;
+  padding: 0;
+  background: rgba(13, 33, 55, 0.42);
+  cursor: pointer;
+}
+
+.sm-shell.is-menu-open .sm-shell-main {
+  overflow: hidden;
 }
 
 .sm-shell-main {
@@ -477,165 +614,14 @@ html, body, #root {
   width: 100%;
 }
 
-.sm-shell-menu,
-.sm-shell-brand,
-.sm-shell-avatar {
-  display: none;
+/* Modal de produto dentro do shell: comeca abaixo da barra fixa (4rem, z-index 60), para o botao
+   de fechar nao ficar escondido, e nunca passa da altura visivel (dvh acompanha a barra do navegador). */
+.sm-shell .sm-modal-overlay {
+  padding-top: calc(4rem + 0.75rem);
 }
 
-@media (max-width: 1279px) {
-  /* Modal de produto dentro do shell: começa abaixo da barra fixa (4rem, z-index 60), para o botão
-     de fechar não ficar escondido, e nunca passa da altura visível (dvh acompanha a barra do navegador). */
-  .sm-shell .sm-modal-overlay {
-    padding-top: calc(4rem + 0.75rem);
-  }
-
-  .sm-shell .sm-modal-dialog {
-    max-height: calc(100dvh - 4rem - 1.5rem);
-  }
-
-  .sm-shell {
-    flex-direction: column;
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  .sm-shell-top {
-    position: relative;
-    z-index: 60;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-shrink: 0;
-    height: 4rem;
-    padding: 0 0.75rem;
-    background: #fff;
-    border-bottom: 1px solid var(--color-brand-border);
-  }
-
-  .sm-shell-menu {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    width: 2.75rem;
-    height: 2.75rem;
-    flex-shrink: 0;
-    padding: 0;
-    border: 0;
-    border-radius: 0.85rem;
-    background: transparent;
-    color: var(--color-brand-navy);
-    cursor: pointer;
-  }
-
-  .sm-shell-menu span {
-    display: block;
-    width: 1.15rem;
-    height: 2px;
-    border-radius: 999px;
-    background: currentColor;
-    transform-origin: center;
-    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), opacity 160ms ease;
-  }
-
-  .sm-shell-menu.is-open span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-
-  .sm-shell-menu.is-open span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .sm-shell-menu.is-open span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
-
-  .sm-shell-menu:hover {
-    background: var(--color-brand-green-light);
-  }
-
-  .sm-shell-menu:focus-visible,
-  .sm-shell-backdrop:focus-visible {
-    outline: 2px solid var(--color-brand-green);
-    outline-offset: 2px;
-  }
-
-  .sm-shell-brand {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-    flex: 1;
-  }
-
-  .sm-shell-brand img {
-    height: 2.4rem;
-    width: auto;
-    max-width: 10.5rem;
-    object-fit: contain;
-  }
-
-  .sm-shell-avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    flex-shrink: 0;
-    border-radius: 999px;
-    background: var(--color-brand-green-light);
-    color: var(--color-brand-green);
-    font-size: 0.8rem;
-    font-weight: 800;
-  }
-
-  .sm-shell-aside {
-    position: fixed;
-    z-index: 50;
-    left: 0;
-    top: 4rem;
-    width: min(17.5rem, 86vw);
-    height: calc(100dvh - 4rem);
-    transform: translateX(-105%);
-    visibility: hidden;
-    transition:
-      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 280ms;
-  }
-
-  .sm-shell-aside.is-open {
-    transform: translateX(0);
-    visibility: visible;
-    transition:
-      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 0s;
-    box-shadow: 18px 0 40px -24px rgba(13, 33, 55, 0.55);
-  }
-
-  .sm-shell-backdrop.is-open {
-    display: block;
-    position: fixed;
-    top: 4rem;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 45;
-    border: 0;
-    padding: 0;
-    background: rgba(13, 33, 55, 0.42);
-    cursor: pointer;
-  }
-
-  .sm-shell.is-menu-open .sm-shell-main {
-    overflow: hidden;
-  }
-
-  .sm-shell-main {
-    flex: 1;
-    min-height: 0;
-    overflow: auto;
-  }
+.sm-shell .sm-modal-dialog {
+  max-height: calc(100dvh - 4rem - 1.5rem);
 }
 
 /* ===== Headline da hero: palavras mascaradas + complemento rotativo ===== */
@@ -815,7 +801,15 @@ html, body, #root {
 .sm-cupom__passo strong { display: block; font-weight: 800; font-size: 1.05rem; }
 .sm-cupom__passo small { display: block; margin-top: 0.25rem; font-size: 0.85rem; line-height: 1.45; color: #5C7668; transition: color 300ms ease; }
 .sm-cupom__passo.is-ativo { opacity: 1; transform: scale(1.02); box-shadow: 0 18px 36px -22px rgba(11, 25, 44, 0.45); }
-.sm-cupom__passo--claro.is-ativo { background: #f1f7f3; border-color: #cfe2d6; }
+.sm-cupom__passo--claro.is-ativo {
+  background: #E8F8F0;
+  border-color: #10B981;
+  color: #064E3B;
+  box-shadow: 0 16px 36px -16px rgba(16, 185, 129, 0.4), 0 0 0 1.5px #10B981;
+}
+.sm-cupom__passo--claro.is-ativo .sm-cupom__num { color: #059669; }
+.sm-cupom__passo--claro.is-ativo strong { color: #064E3B; }
+.sm-cupom__passo--claro.is-ativo small { color: #047857; }
 .sm-cupom__passo--escuro.is-ativo { background: #0b192c; border-color: #0b192c; color: #fff; }
 .sm-cupom__passo--escuro.is-ativo .sm-cupom__num { color: #34d399; }
 .sm-cupom__passo--escuro.is-ativo small { color: rgba(255, 255, 255, 0.72); }
@@ -837,8 +831,9 @@ html, body, #root {
 .sm-cupom__linha { display: grid; grid-template-columns: minmax(0, 1.9fr) repeat(4, minmax(0, 1fr)); gap: 0.35rem; align-items: center; padding: 0.55rem 0; border-bottom: 1px dashed #e3ebe5; }
 .sm-cupom__linha--cab { font-weight: 700; color: #5C7668; font-size: 0.66rem; }
 .sm-cupom__linha--total { border-bottom: 0; padding-top: 0.8rem; font-weight: 800; }
-.sm-cupom__col { text-align: right; font-variant-numeric: tabular-nums; border-radius: 0.4rem; padding: 0.2rem 0.25rem; opacity: 0; transform: translateY(4px); transition: opacity 350ms ease var(--d, 0ms), transform 350ms ease var(--d, 0ms), background-color 300ms ease, color 300ms ease; }
-.sm-cupom__paper:not([data-passo="0"]) .sm-cupom__col { opacity: 1; transform: none; }
+.sm-cupom__col { text-align: right; font-variant-numeric: tabular-nums; border-radius: 0.4rem; padding: 0.2rem 0.25rem; opacity: 0.35; transform: none; transition: opacity 350ms ease var(--d, 0ms), transform 350ms ease var(--d, 0ms), background-color 300ms ease, color 300ms ease; }
+.sm-cupom__linha--cab .sm-cupom__col { opacity: 0.85; }
+.sm-cupom__paper:not([data-passo="0"]) .sm-cupom__col { opacity: 1; }
 .sm-cupom__paper:not([data-passo="0"]) .sm-cupom__preco.is-menor { background: #e8f8f0; color: #115c33; font-weight: 800; }
 .sm-cupom__paper[data-passo="2"] .sm-cupom__soma.is-vencedor { background: #0e7a46; color: #fff; }
 .sm-cupom__paper[data-passo="2"] .sm-cupom__linha--cab .is-vencedor { background: #0b192c; color: #fff; }

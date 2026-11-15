@@ -41,6 +41,17 @@ export default defineConfig(({ mode }) => ({
   define: { __CATALOGO_VERSAO__: JSON.stringify(versaoDoCatalogo()) },
   server: {
     port: 5174,
+    proxy: {
+      '/api': {
+        target: 'https://smartmarket-8xhq.onrender.com',
+        changeOrigin: true,
+        secure: true,
+        headers: {
+          Origin: 'https://smartmarket-team.github.io',
+          Referer: 'https://smartmarket-team.github.io/',
+        },
+      },
+    },
     watch: {
       ignored: ['**/templates/**', '**/*.zip'],
     },

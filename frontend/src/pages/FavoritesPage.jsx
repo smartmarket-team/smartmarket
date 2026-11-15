@@ -20,26 +20,84 @@ import { CATEGORIAS_VISUAIS } from "../utils/categoriasVisuais"
 // o configurador e o atalho "-10% de desconto" (antes o configurador sugeria 8%).
 const FATOR_PRECO_ALVO_SUGERIDO = 0.9
 
+const MARKET_ID_TO_SLUG = {
+  1: "fort",
+  2: "carrefour",
+  3: "asun",
+  4: "atacadao",
+  5: "master",
+  6: "zaffari",
+  7: "rissul",
+  8: "stok",
+};
+
 const MARKET_LOGOS = {
   fort: logoFort,
-  asun: logoAsun,
-  stok: logoStok,
-  atacadao: logoAtacadao,
+  1: logoFort,
   carrefour: logoCarrefour,
-  rissul: logoRissul,
-  zaffari: logoZaffari,
+  2: logoCarrefour,
+  asun: logoAsun,
+  3: logoAsun,
+  atacadao: logoAtacadao,
+  4: logoAtacadao,
   master: logoMaster,
+  5: logoMaster,
+  zaffari: logoZaffari,
+  6: logoZaffari,
+  rissul: logoRissul,
+  7: logoRissul,
+  stok: logoStok,
+  8: logoStok,
 }
 
 const MARKET_LOGO_OPTICAL_CLASS = {
   zaffari: "max-h-10 sm:max-h-11 scale-[1.18]",
+  6: "max-h-10 sm:max-h-11 scale-[1.18]",
   rissul: "max-h-11 sm:max-h-12 scale-[1.85]",
+  7: "max-h-11 sm:max-h-12 scale-[1.85]",
   asun: "max-h-10 sm:max-h-11 scale-[1.38]",
+  3: "max-h-10 sm:max-h-11 scale-[1.38]",
   stok: "max-h-10 sm:max-h-11 scale-[1.42]",
+  8: "max-h-10 sm:max-h-11 scale-[1.42]",
   atacadao: "max-h-9 sm:max-h-10 scale-[1.16]",
+  4: "max-h-9 sm:max-h-10 scale-[1.16]",
   master: "max-h-9 sm:max-h-10 scale-[1.18]",
+  5: "max-h-9 sm:max-h-10 scale-[1.18]",
   fort: "max-h-10 sm:max-h-11 scale-[1.48]",
+  1: "max-h-10 sm:max-h-11 scale-[1.48]",
   carrefour: "max-h-10 sm:max-h-11 scale-[1.48]",
+  2: "max-h-10 sm:max-h-11 scale-[1.48]",
+}
+
+function nameToMarketSlug(name) {
+  const n = String(name || "").toLowerCase();
+  if (n.includes("fort")) return "fort";
+  if (n.includes("carrefour")) return "carrefour";
+  if (n.includes("asun")) return "asun";
+  if (n.includes("atacad")) return "atacadao";
+  if (n.includes("master")) return "master";
+  if (n.includes("zaffari")) return "zaffari";
+  if (n.includes("rissul")) return "rissul";
+  if (n.includes("stok")) return "stok";
+  return "";
+}
+
+function getMarketLogo(m) {
+  if (!m) return null;
+  const mId = m.id !== undefined && m.id !== null ? String(m.id).toLowerCase() : "";
+  const slug = m.slug || MARKET_ID_TO_SLUG[mId] || nameToMarketSlug(m.name || m.nome) || mId;
+  return MARKET_LOGOS[slug] || MARKET_LOGOS[mId] || m.logoUrl || null;
+}
+
+function getMarketOpticalClass(m) {
+  if (!m) return "max-h-9 sm:max-h-10";
+  const mId = m.id !== undefined && m.id !== null ? String(m.id).toLowerCase() : "";
+  const slug = m.slug || MARKET_ID_TO_SLUG[mId] || nameToMarketSlug(m.name || m.nome) || mId;
+  return (
+    MARKET_LOGO_OPTICAL_CLASS[slug] ||
+    MARKET_LOGO_OPTICAL_CLASS[mId] ||
+    "max-h-9 sm:max-h-10"
+  );
 }
 
 
@@ -506,8 +564,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
         </div>
       )}
 
-      {/* TOPO COM LOGOS DAS REDES E BANNERS DOS SETORES */}
-      <header className="bg-white border-b border-brand-border/80 sticky top-0 z-30 shadow-xs">
+      {/* TOPO ESTÁTICO COM LOGOS DAS REDES E BANNERS DOS SETORES */}
+      <header className="bg-white border-b border-brand-border/80 relative z-10">
         <div className="w-full max-w-[1720px] mx-auto px-3 sm:px-6 lg:px-8 py-3.5 space-y-3">
           {/* Linha 1: Título, Busca e Ações */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -562,8 +620,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
               {MARKETS.map((m) => {
                 const isSelected = selectedMarketFilter === m.id
                 const isFavMkt = favMarketIds.includes(m.id)
-                const logoSrc = MARKET_LOGOS[m.id]
-                const opticalClass = MARKET_LOGO_OPTICAL_CLASS[m.id] || "max-h-9 sm:max-h-10"
+                const logoSrc = getMarketLogo(m)
+                const opticalClass = getMarketOpticalClass(m) || "max-h-9 sm:max-h-10"
                 return (
                   <div
                     key={m.id}
@@ -830,10 +888,6 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                               Oferta
                             </span>
                           )}
-
-                          <span className="absolute bottom-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
-                            {p.unit || "1 un"}
-                          </span>
                         </div>
 
                         {/* Categoria e Marca */}
@@ -841,9 +895,15 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           <span className="text-[11px] font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                             {p.category}
                           </span>
-                          <span className="text-xs text-brand-muted font-medium truncate">
-                            {p.brand || "Geral"}
-                          </span>
+                          <div className="flex items-center gap-1.5 text-xs text-brand-muted font-medium truncate">
+                            <span>{p.brand || "Geral"}</span>
+                            {p.unit && (
+                              <>
+                                <span aria-hidden="true">•</span>
+                                <span>{p.unit}</span>
+                              </>
+                            )}
+                          </div>
                         </div>
 
                         <h3 className="text-sm font-bold text-brand-navy mt-2 line-clamp-2 leading-snug group-hover:text-brand-green transition-colors">
@@ -1340,8 +1400,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
             {MARKETS.map((m) => {
               const isFav = favMarketIds.includes(m.id)
               const countCheapest = marketScores[m.id] || 0
-              const logoSrc = MARKET_LOGOS[m.id]
-              const opticalClass = MARKET_LOGO_OPTICAL_CLASS[m.id] || "max-h-10"
+              const logoSrc = getMarketLogo(m)
+              const opticalClass = getMarketOpticalClass(m) || "max-h-10"
 
               return (
                 <Card key={m.id} variant="elevated" className="p-6 flex flex-col justify-between">
