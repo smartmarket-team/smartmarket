@@ -1,4 +1,6 @@
-import { montarCsp, origemDe, pluginCsp } from './csp'
+import fs from 'fs'
+import path from 'path'
+import { HOSTS_DE_IMAGEM, montarCsp, origemDe, pluginCsp } from './csp'
 
 const diretiva = (csp, nome) => {
   const achada = csp.split(';').map((d) => d.trim()).find((d) => d.startsWith(`${nome} `))
@@ -50,10 +52,11 @@ describe('montarCsp', () => {
     expect(diretiva(csp, 'style-src')).toEqual(["'self'", "'unsafe-inline'"])
   })
 
-  it('libera fontes locais e data:, e imagens locais, data: e https (fotos dos mercados)', () => {
+  it('libera fontes locais e data:, e imagens locais, data: e só os CDNs de foto dos mercados', () => {
     const csp = montarCsp({})
     expect(diretiva(csp, 'font-src')).toEqual(["'self'", 'data:'])
-    expect(diretiva(csp, 'img-src')).toEqual(["'self'", 'data:', 'https:'])
+    expect(diretiva(csp, 'img-src')).toEqual(["'self'", 'data:', ...HOSTS_DE_IMAGEM])
+    expect(diretiva(csp, 'img-src')).not.toContain('https:')
   })
 
   it('não usa frame-ancestors, que o navegador ignora (e avisa) quando vem em <meta>', () => {
@@ -133,5 +136,26 @@ describe('pluginCsp', () => {
     const csp = metaCsp(saida)[1]
     expect(diretiva(csp, 'connect-src')).toEqual(["'self'", 'https://a.exemplo', 'https://c.exemplo'])
     expect(diretiva(csp, 'media-src')).toEqual(["'self'", 'https://f.exemplo'])
+  })
+})
+
+describe('img-src cobre as fotos que o catálogo realmente usa', () => {
+  // Lê o data.js como TEXTO (32 MB): só procura os hosts dos campos imageUrl/imageLocal, sem importá-lo.
+  const caminho = path.join(__dirname, '..', 'src', 'data.js')
+  const temData = fs.existsSync(caminho)
+
+  ;(temData ? it : it.skip)('todo host de imageUrl e imageLocal do data.js está liberado, e a lista não tem host sobrando', () => {
+    const texto = fs.readFileSync(caminho, 'utf8')
+    const usados = new Set()
+    for (const m of texto.matchAll(/"(?:imageUrl|imageLocal)":\s*"(https?:\/\/[^/"]+)/g)) usados.add(m[1])
+
+    const liberados = diretiva(montarCsp({}), 'img-src')
+    expect([...usados].filter((origem) => !liberados.includes(origem))).toEqual([])
+    expect(HOSTS_DE_IMAGEM.filter((origem) => !usados.has(origem))).toEqual([])
+  })
+
+  it('o host de foto das duas redes do Pages (bucket e CDN da Asun) continua liberado com as variáveis do deploy', () => {
+    const csp = montarCsp({ assetsUrl: 'https://bucket.exemplo/smartmarket-assets' })
+    expect(diretiva(csp, 'img-src')).toEqual(expect.arrayContaining(['https://bucket.exemplo', 'https://edge.osuper.com.br']))
   })
 })

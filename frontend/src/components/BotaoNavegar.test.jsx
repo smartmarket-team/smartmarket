@@ -65,8 +65,8 @@ describe('BotaoNavegar', () => {
       const compacto = gatilho().className
       rerender(<BotaoNavegar latitude={LAT} longitude={LON} nomeLoja="Carrefour Centro" />)
 
-      expect(compacto).toMatch(/text-\[10px\]/)
-      expect(gatilho().className).toMatch(/text-\[11px\]/)
+      expect(compacto).toMatch(/text-\[11px\]/)
+      expect(gatilho().className).toMatch(/text-xs/)
     })
   })
 

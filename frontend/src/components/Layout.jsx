@@ -137,7 +137,7 @@ export default function Layout() {
           <span />
         </button>
         <NavLink to="/" className="sm-shell-brand" title="Ir para a página inicial">
-          <img src={logoImg} alt="SmartMarket" />
+          <img src={logoImg} alt="SmartMarket" width={863} height={196} />
         </NavLink>
         <span className="sm-shell-avatar" aria-hidden="true">{initialLetter}</span>
       </header>
@@ -251,7 +251,7 @@ export default function Layout() {
               <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 <span
                   style={{
-                    fontSize: "9px",
+                    fontSize: "11px",
                     fontWeight: 800,
                     padding: "1px 6px",
                     borderRadius: "6px",

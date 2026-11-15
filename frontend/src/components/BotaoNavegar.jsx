@@ -8,8 +8,8 @@ import { posicaoDoPopover } from "../utils/posicaoDoPopover"
 const TAMANHO_DO_POPOVER = { largura: 200, altura: 104 }
 
 const CLASSE_BOTAO = {
-  completo: "text-[11px]",
-  compacto: "text-[10px]",
+  completo: "text-xs",
+  compacto: "text-[11px]",
 }
 
 const CLASSE_LINK =

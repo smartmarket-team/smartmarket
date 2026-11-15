@@ -38,11 +38,43 @@ describe('Home: números e redes sem inflar', () => {
     expect(dd).toHaveTextContent(/^2$/)
   })
 
+  it('a lista de definições do hero só tem dt e dd dentro de cada grupo', () => {
+    renderizar()
+
+    const dl = screen.getByText('Redes no catálogo').closest('dl')
+    for (const grupo of dl.children) {
+      for (const filho of grupo.children) expect(['DT', 'DD']).toContain(filho.tagName)
+    }
+  })
+
+  it('os títulos da página nunca pulam de nível (h1, h2, h3...)', () => {
+    renderizar()
+
+    let anterior = 0
+    for (const titulo of document.querySelectorAll('h1, h2, h3, h4, h5, h6')) {
+      const nivel = Number(titulo.tagName[1])
+      expect({ titulo: titulo.textContent.trim().slice(0, 40), salto: nivel - anterior <= 1 }).toEqual({
+        titulo: titulo.textContent.trim().slice(0, 40),
+        salto: true,
+      })
+      anterior = nivel
+    }
+  })
+
+  it('os links de navegação do rodapé têm altura de toque (py-1.5 sobre texto de 16 px, mínimo de 24 px do WCAG 2.5.8)', () => {
+    renderizar()
+
+    const rodape = screen.getByRole('contentinfo')
+    for (const nome of ['Catálogo de Produtos', 'Minha Lista de Compras', 'Comparador Inteligente', 'Meus Favoritos']) {
+      expect(within(rodape).getByRole('link', { name: nome })).toHaveClass('inline-block', 'py-1.5')
+    }
+  })
+
   it('a faixa de redes conta só as com coleta ativa (o Fort tem produtos, mas está suspenso no scraper)', () => {
     renderizar()
 
     expect(screen.getByText('redes com coleta ativa').previousSibling).toHaveTextContent('01')
-    const faixa = screen.getByRole('group', { name: 'Redes com coleta de preços' })
+    const faixa = screen.getByRole('list', { name: 'Redes com coleta de preços' })
     expect(faixa.querySelector('img[alt="Asun Supermercados"]')).toBeInTheDocument()
     expect(faixa.querySelector('img[alt="Fort Atacadista"]')).not.toBeInTheDocument()
   })

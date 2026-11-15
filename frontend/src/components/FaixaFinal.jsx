@@ -88,7 +88,7 @@ export function FaixaFinal({ redesAtivas }) {
         <div className="flex items-center justify-center bg-gradient-to-br from-[#16324F] to-brand-green-dark px-4 py-12 sm:px-10 lg:col-span-5">
           <div className="w-full max-w-sm drop-shadow-xl">
             <div className="rounded-t-2xl bg-white px-6 pt-6 pb-5 text-brand-navy">
-              <p className="text-center text-[11px] font-bold uppercase tracking-[0.2em] text-brand-muted">
+              <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-brand-muted">
                 SmartMarket · Seu cupom
               </p>
 
@@ -103,7 +103,7 @@ export function FaixaFinal({ redesAtivas }) {
                 </div>
               </div>
 
-              <p className="mt-3 text-center text-[11px] leading-snug text-brand-muted">
+              <p className="mt-3 text-center text-xs leading-snug text-brand-muted">
                 Preços coletados em {redesAtivas} redes com coleta ativa. Sem estimativa de economia.
               </p>
 

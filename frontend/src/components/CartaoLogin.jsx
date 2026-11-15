@@ -123,7 +123,7 @@ export default function CartaoLogin({ onFechar }) {
               <h3 className="text-sm font-semibold text-brand-navy">
                 {titulo}
                 {emBreve && (
-                  <span className="ml-1.5 rounded-full bg-slate-200 px-1.5 py-0.5 align-middle text-[10px] font-bold uppercase tracking-wide text-slate-700">
+                  <span className="ml-1.5 rounded-full bg-slate-200 px-1.5 py-0.5 align-middle text-xs font-bold uppercase tracking-wide text-slate-700">
                     Em breve
                   </span>
                 )}

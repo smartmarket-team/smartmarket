@@ -8,6 +8,7 @@ import logoImg from "../assets/logo.png"
 import { MARKETS, REDES_COM_PRODUTOS } from "../catalogoResumo"
 import { cepValido, mascararCep, somenteDigitosCep } from "../utils/cep"
 import { listarNomes, nomeCurtoRede, redesComProdutos } from "../utils/redesDoCatalogo"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 // Só as redes que têm produtos no catálogo (o Carrefour, por exemplo, tem 0 hoje).
 const NOMES_DAS_REDES = listarNomes(redesComProdutos(MARKETS, REDES_COM_PRODUTOS).map(nomeCurtoRede))
@@ -39,13 +40,13 @@ function PasswordStrengthIndicator({ password }) {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className={`flex-1 rounded-full transition-all duration-300 ${
+            className={`flex-1 rounded-full transition duration-300 ${
               i < score ? currentLevel.bar : "bg-slate-200"
             }`}
           />
         ))}
       </div>
-      <span className={`text-[11px] font-bold ${currentLevel.color.split(" ")[1]}`}>
+      <span className={`text-xs font-bold ${currentLevel.color.split(" ")[1]}`}>
         Segurança da Senha: {currentLevel.label}
       </span>
     </div>
@@ -53,6 +54,7 @@ function PasswordStrengthIndicator({ password }) {
 }
 
 export default function AuthPage() {
+  useTituloDaPagina("Entrar")
   const navigate = useNavigate()
   const location = useLocation()
   const { login, register, isLoading } = useAuth()
@@ -255,7 +257,7 @@ export default function AuthPage() {
           </div>
           <div>
             <p className="text-xs font-bold text-white">Projeto Acadêmico — Grupo 40</p>
-            <p className="text-[11px] text-slate-400">Codifica / +praTI · Dev Full Stack Jr 2026</p>
+            <p className="text-xs text-slate-400">Codifica / +praTI · Dev Full Stack Jr 2026</p>
           </div>
         </div>
       </div>
@@ -266,12 +268,12 @@ export default function AuthPage() {
           {/* Header Mobile */}
           <div className="md:hidden flex justify-center mb-6">
             <Link to="/">
-              <img src={logoImg} alt="SmartMarket" className="h-12 w-auto object-contain" />
+              <img src={logoImg} alt="SmartMarket" width={863} height={196} className="h-12 w-auto object-contain" />
             </Link>
           </div>
 
           <div className="mb-6 text-center md:text-left">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-brand-muted">
+            <p className="text-xs font-bold uppercase tracking-wider text-brand-muted">
               {tab === "login" ? "Bem-vindo de volta" : "Crie sua conta"}
             </p>
             <h2 className="text-2xl font-extrabold text-brand-navy tracking-tight mt-1">
@@ -289,7 +291,7 @@ export default function AuthPage() {
             <button
               type="button"
               onClick={() => handleSwitchTab("login")}
-              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${
+              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition ${
                 tab === "login"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy"
@@ -300,7 +302,7 @@ export default function AuthPage() {
             <button
               type="button"
               onClick={() => handleSwitchTab("cadastro")}
-              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${
+              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition ${
                 tab === "cadastro"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy"
@@ -316,7 +318,7 @@ export default function AuthPage() {
               <span className="text-sm shrink-0">⚠️</span>
               <div>
                 <p className="font-bold">E-mail ou senha inválidos</p>
-                <p className="text-[11px]">{errorMessage}</p>
+                <p className="text-xs">{errorMessage}</p>
               </div>
             </div>
           )}
@@ -326,7 +328,7 @@ export default function AuthPage() {
               <span className="text-sm shrink-0">✅</span>
               <div>
                 <p className="font-bold">Conta criada com sucesso!</p>
-                <p className="text-[11px]">{successMessage}</p>
+                <p className="text-xs">{successMessage}</p>
               </div>
             </div>
           )}
@@ -389,21 +391,21 @@ export default function AuthPage() {
                 {/* Atalhos Rápidos para Banca de Avaliação (somente DEV / modo demo) */}
                 {mostrarAtalhosDemo && (
                   <div className="pt-4 border-t border-slate-100">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted text-center mb-2">
+                    <p className="text-xs font-bold uppercase tracking-wider text-brand-muted text-center mb-2">
                       Acesso Rápido para Avaliação
                     </p>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
                         onClick={() => fillCredentials("admin")}
-                        className="py-1.5 px-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-[11px] font-bold text-brand-navy transition-colors text-center"
+                        className="py-1.5 px-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-bold text-brand-navy transition-colors text-center"
                       >
                         🛡️ Perfil Administrador
                       </button>
                       <button
                         type="button"
                         onClick={() => fillCredentials("user")}
-                        className="py-1.5 px-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-[11px] font-bold text-brand-navy transition-colors text-center"
+                        className="py-1.5 px-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-bold text-brand-navy transition-colors text-center"
                       >
                         👤 Perfil Usuário
                       </button>
@@ -496,7 +498,7 @@ export default function AuthPage() {
             )}
           </div>
 
-          <p className="text-center text-[11px] text-slate-400 mt-6 leading-relaxed">
+          <p className="text-center text-xs text-slate-400 mt-6 leading-relaxed">
             Ao continuar, você concorda com os{" "}
             <a href="#" className="underline text-brand-muted">
               Termos de Uso

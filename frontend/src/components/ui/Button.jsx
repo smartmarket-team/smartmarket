@@ -44,7 +44,7 @@ export function Button({
       type={type}
       disabled={isDisabled}
       className={cn(
-        "inline-flex items-center justify-center font-medium transition-all duration-150 select-none",
+        "inline-flex items-center justify-center font-medium transition-[color,background-color,border-color,box-shadow,scale,opacity] duration-150 select-none",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/50 focus-visible:ring-offset-2",
         "disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed",
         variantStyles[variant] || variantStyles.primary,

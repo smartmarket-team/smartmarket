@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { RadarColeta } from './RadarColeta'
 
 const MERCADOS = [
@@ -33,5 +33,11 @@ describe('RadarColeta', () => {
   it('não renderiza nada sem redes', () => {
     const { container } = render(<RadarColeta markets={[]} redesResumo={[]} selectedMarket="todos" />)
     expect(container).toBeEmptyDOMElement()
+  })
+
+  it('as redes formam uma lista de verdade (li dentro de ul sem papel que anule a lista)', () => {
+    render(<RadarColeta markets={MERCADOS} redesResumo={RESUMO} selectedMarket="todos" onSelect={() => {}} />)
+    const lista = screen.getByRole('list', { name: 'Redes com coleta de preços' })
+    expect(within(lista).getAllByRole('listitem')).toHaveLength(2)
   })
 })

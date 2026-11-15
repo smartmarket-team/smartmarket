@@ -315,7 +315,7 @@ export function ProductDetailModal({
               )}
 
               {promoVerification?.comprovada && (
-                <span className="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-rose-600 text-white uppercase tracking-wider shadow-xs animate-pulse">
+                <span className="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-rose-600 text-white uppercase tracking-wider shadow-xs animate-pulso-curto">
                   Oferta -{promoVerification.descontoPerc}%
                 </span>
               )}
@@ -348,14 +348,14 @@ export function ProductDetailModal({
                         type="button"
                         onClick={() => setViewMode("360")}
                         aria-label="Giro 360°"
-                        className={`w-12 h-12 rounded-xl border flex flex-col items-center justify-center p-1 transition-all cursor-pointer ${
+                        className={`w-12 h-12 rounded-xl border flex flex-col items-center justify-center p-1 transition cursor-pointer ${
                           viewMode === "360"
                             ? "border-red-500 ring-2 ring-red-500/20 bg-white shadow-xs"
                             : "border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700"
                         }`}
                         title="Giro 360°"
                       >
-                        <span className="text-[10px] font-black text-slate-800 leading-none">360°</span>
+                        <span className="text-xs font-black text-slate-800 leading-none">360°</span>
                         <svg
                           className="w-4.5 h-3 text-slate-700 mt-0.5"
                           viewBox="0 0 20 12"
@@ -380,7 +380,7 @@ export function ProductDetailModal({
                           setActiveImageIndex(idx)
                           setViewMode("photo")
                         }}
-                        className={`w-12 h-12 rounded-xl border p-1 bg-white shrink-0 overflow-hidden transition-all cursor-pointer ${
+                        className={`w-12 h-12 rounded-xl border p-1 bg-white shrink-0 overflow-hidden transition cursor-pointer ${
                           viewMode === "photo" && activeImageIndex === idx
                             ? "border-red-500 ring-2 ring-red-500/20 shadow-xs"
                             : "border-slate-200 opacity-70 hover:opacity-100"
@@ -432,7 +432,7 @@ export function ProductDetailModal({
                         </div>
 
                         {/* Indicador de Unidade */}
-                        <span className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-xs text-slate-800 font-bold text-[11px] px-2.5 py-0.5 rounded-md border border-slate-200 shadow-2xs pointer-events-none">
+                        <span className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-xs text-slate-800 font-bold text-xs px-2.5 py-0.5 rounded-md border border-slate-200 shadow-2xs pointer-events-none">
                           {currentProduct.unit || "1 un"}
                         </span>
                       </div>
@@ -451,7 +451,7 @@ export function ProductDetailModal({
                     >
                       <path d="M12 9a3 3 0 100 6 3 3 0 000-6zm-7-3h2.18l1.45-2h6.74l1.45 2H19a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2zm7 11a5 5 0 100-10 5 5 0 000 10z" />
                     </svg>
-                    <p className="text-[10px] leading-tight text-slate-400">
+                    <p className="text-xs leading-tight text-slate-400">
                       Proibida a cópia ou reprodução das imagens 360° do produto sem autorização da{" "}
                       <span className="font-bold text-slate-500">OSuper Sistemas Ltda</span>, detentora dos direitos.
                     </p>
@@ -564,7 +564,7 @@ export function ProductDetailModal({
                     onClick={() => {
                       if (onAddToList) onAddToList(currentProduct)
                     }}
-                    className="w-full sm:w-auto min-w-[260px] py-3 px-6 rounded-xl border-2 border-red-600 text-red-600 hover:bg-red-50 hover:border-red-700 font-black text-sm transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
+                    className="w-full sm:w-auto min-w-[260px] py-3 px-6 rounded-xl border-2 border-red-600 text-red-600 hover:bg-red-50 hover:border-red-700 font-black text-sm transition active:scale-98 motion-reduce:active:scale-100 motion-reduce:transition-none cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
                   >
                     <span>Adicionar ao carrinho</span>
                   </button>
@@ -640,7 +640,7 @@ export function ProductDetailModal({
                   <button
                     type="button"
                     onClick={() => setChartDisplayMode("preco")}
-                    className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
                       chartDisplayMode === "preco"
                         ? "bg-white text-slate-900 shadow-2xs font-extrabold"
                         : "text-slate-500 hover:text-slate-800"
@@ -651,7 +651,7 @@ export function ProductDetailModal({
                   <button
                     type="button"
                     onClick={() => setChartDisplayMode("diferenca")}
-                    className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
                       chartDisplayMode === "diferenca"
                         ? "bg-white text-slate-900 shadow-2xs font-extrabold"
                         : "text-slate-500 hover:text-slate-800"
@@ -690,7 +690,7 @@ export function ProductDetailModal({
                     return (
                       <div
                         key={`bar-${item.market.id}`}
-                        className={`p-2.5 rounded-xl border transition-all ${
+                        className={`p-2.5 rounded-xl border transition ${
                           isBest
                             ? "bg-emerald-50/90 border-emerald-300 shadow-2xs"
                             : "bg-white border-slate-200/80"
@@ -699,7 +699,7 @@ export function ProductDetailModal({
                         <div className="flex items-center justify-between gap-2 mb-1.5 text-xs">
                           <div className="flex items-center gap-2 min-w-0">
                             <span
-                              className={`w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center shrink-0 ${
+                              className={`w-5 h-5 rounded-full text-xs font-black flex items-center justify-center shrink-0 ${
                                 isBest
                                   ? "bg-emerald-600 text-white"
                                   : isWorst
@@ -713,14 +713,14 @@ export function ProductDetailModal({
                               {item.market.name}
                             </span>
                             {item.isClube && (
-                              <span className="text-[9px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-1.5 py-0.2 rounded shrink-0">
+                              <span className="text-[11px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-1.5 py-0.2 rounded shrink-0">
                                 🏷️ {item.clubeNome}
                               </span>
                             )}
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
                             {!isBest && (
-                              <span className="text-[11px] font-bold text-rose-600">
+                              <span className="text-xs font-bold text-rose-600">
                                 +R$ {diff.toFixed(2)}
                               </span>
                             )}
@@ -735,7 +735,7 @@ export function ProductDetailModal({
                         </div>
 
                         {item.equivalente && (
-                          <p className="text-[11px] text-slate-600 mb-1.5 truncate" title={item.equivalente.produto.name}>
+                          <p className="text-xs text-slate-600 mb-1.5 truncate" title={item.equivalente.produto.name}>
                             Equivalente nesta rede: <span className="font-semibold text-slate-800">{item.equivalente.produto.name}</span>
                           </p>
                         )}
@@ -747,7 +747,7 @@ export function ProductDetailModal({
                               transition:
                                 "width 800ms cubic-bezier(0.22, 1, 0.36, 1)",
                             }}
-                            className={`h-full rounded-md bg-gradient-to-r ${barColor} flex items-center justify-end pr-2 text-[10px] font-extrabold text-white whitespace-nowrap overflow-hidden`}
+                            className={`h-full rounded-md bg-gradient-to-r ${barColor} flex items-center justify-end pr-2 text-xs font-extrabold text-white whitespace-nowrap overflow-hidden`}
                           >
                             {chartDisplayMode === "preco"
                               ? isBest
@@ -781,12 +781,12 @@ export function ProductDetailModal({
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.market.color || "#0D2137" }} aria-hidden="true" />
                           <span className="text-xs font-bold text-slate-900">{item.market.name}</span>
-                          <span className="text-[10px] font-black text-amber-950 bg-amber-100 border border-amber-300 px-1.5 py-0.5 rounded">
+                          <span className="text-xs font-black text-amber-950 bg-amber-100 border border-amber-300 px-1.5 py-0.5 rounded">
                             {SELO_PROVAVEL}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-700 break-words">{item.equivalente.produto.name}</p>
-                        <p className="text-[11px] text-amber-900">{AVISO_PROVAVEL}</p>
+                        <p className="text-xs text-slate-700 break-words">{item.equivalente.produto.name}</p>
+                        <p className="text-xs text-amber-900">{AVISO_PROVAVEL}</p>
                       </div>
                       <span className="text-sm font-black text-slate-800 whitespace-nowrap">R$ {item.price.toFixed(2)}</span>
                     </div>
@@ -801,7 +801,7 @@ export function ProductDetailModal({
                   return (
                     <div
                       key={item.market.id}
-                      className={`p-3 rounded-xl border flex items-center justify-between transition-all ${
+                      className={`p-3 rounded-xl border flex items-center justify-between transition ${
                         isBest
                           ? "bg-emerald-50/90 border-emerald-300 ring-2 ring-emerald-200/80 shadow-2xs"
                           : "bg-white border-slate-200/90 hover:border-slate-300"
@@ -818,22 +818,22 @@ export function ProductDetailModal({
                               {item.market.name}
                             </span>
                             {item.isClube && (
-                              <span className="text-[9px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded shrink-0">
+                              <span className="text-[11px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-1 py-0.2 rounded shrink-0">
                                 🏷️ {item.clubeNome}
                               </span>
                             )}
                           </div>
                           {item.equivalente && (
-                            <span className="text-[10px] text-slate-600 block truncate" title={item.equivalente.produto.name}>
+                            <span className="text-xs text-slate-600 block truncate" title={item.equivalente.produto.name}>
                               {item.equivalente.produto.name}
                             </span>
                           )}
                           {isBest ? (
-                            <span className="text-[9px] font-black text-emerald-800 uppercase tracking-wider block">
+                            <span className="text-[11px] font-black text-emerald-800 uppercase tracking-wider block">
                               ★ Menor Preço
                             </span>
                           ) : (
-                            <span className="text-[9px] text-slate-400 font-medium block">
+                            <span className="text-[11px] text-slate-400 font-medium block">
                               +{((item.price - bestOffer.price) / bestOffer.price * 100).toFixed(0)}% vs melhor
                             </span>
                           )}
@@ -861,7 +861,7 @@ export function ProductDetailModal({
                         {m.name}
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-400 font-medium italic">
+                    <span className="text-xs text-slate-400 font-medium italic">
                       Indisponível
                     </span>
                   </div>
@@ -892,7 +892,7 @@ export function ProductDetailModal({
                         <button
                           type="button"
                           onClick={() => setRelatedTab("other_brands")}
-                          className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                          className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
                             relatedTab === "other_brands"
                               ? "bg-white text-slate-900 shadow-2xs font-extrabold"
                               : "text-slate-500 hover:text-slate-800"
@@ -905,7 +905,7 @@ export function ProductDetailModal({
                         <button
                           type="button"
                           onClick={() => setRelatedTab("same_brand")}
-                          className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                          className={`px-3 py-1.5 rounded-lg transition cursor-pointer ${
                             relatedTab === "same_brand"
                               ? "bg-white text-slate-900 shadow-2xs font-extrabold"
                               : "text-slate-500 hover:text-slate-800"
@@ -962,12 +962,12 @@ export function ProductDetailModal({
                               setInternalProduct(alt)
                             }
                           }}
-                          className="w-[160px] sm:w-[185px] shrink-0 bg-white rounded-2xl border border-slate-200/90 p-3 hover:border-slate-300 hover:shadow-lg transition-all duration-200 flex flex-col justify-between cursor-pointer group select-none relative focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                          className="w-[160px] sm:w-[185px] shrink-0 bg-white rounded-2xl border border-slate-200/90 p-3 hover:border-slate-300 hover:shadow-lg transition duration-200 flex flex-col justify-between cursor-pointer group select-none relative focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                         >
                           {/* Topo do card: Badges de Oferta e 360 */}
                           <div className="flex items-center justify-between w-full h-5 mb-1 pointer-events-none">
                             {isPromo ? (
-                              <span className="bg-[#dc2626] text-white text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-2xs">
+                              <span className="bg-[#dc2626] text-white text-xs font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-2xs">
                                 Oferta
                               </span>
                             ) : (
@@ -977,7 +977,7 @@ export function ProductDetailModal({
                             {altHas360 && (
                               <span
                                 title="Possui rotação 360°"
-                                className="bg-slate-900 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-2xs"
+                                className="bg-slate-900 text-white text-[11px] font-black px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-2xs"
                               >
                                 360°
                               </span>
@@ -999,7 +999,7 @@ export function ProductDetailModal({
                             {alt._lowestPrice !== null ? (
                               <div>
                                 {isPromo && alt.precoNormal && (
-                                  <div className="flex items-center gap-1.5 text-[11px] leading-none mb-0.5">
+                                  <div className="flex items-center gap-1.5 text-xs leading-none mb-0.5">
                                     {descontoPerc && (
                                       <span className="text-[#dc2626] font-bold">
                                         -{descontoPerc}%
@@ -1027,7 +1027,7 @@ export function ProductDetailModal({
                               {alt.name}
                             </h4>
                             {alt.unit && (
-                              <span className="text-[10px] text-slate-500 font-medium block mt-0.5">
+                              <span className="text-xs text-slate-500 font-medium block mt-0.5">
                                 {alt.unit}
                               </span>
                             )}
@@ -1040,7 +1040,7 @@ export function ProductDetailModal({
                               e.stopPropagation()
                               if (onAddToList) onAddToList(alt)
                             }}
-                            className="w-full py-1.5 px-3 rounded-full border border-red-500 text-red-600 hover:bg-red-50 text-xs font-extrabold transition-all active:scale-98 cursor-pointer mt-1 flex items-center justify-center"
+                            className="w-full py-1.5 px-3 rounded-full border border-red-500 text-red-600 hover:bg-red-50 text-xs font-extrabold transition active:scale-98 motion-reduce:active:scale-100 motion-reduce:transition-none cursor-pointer mt-1 flex items-center justify-center"
                           >
                             Adicionar
                           </button>
@@ -1058,7 +1058,7 @@ export function ProductDetailModal({
                       }
                     }}
                     aria-label="Avançar carrossel"
-                    className="absolute -right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-slate-200/90 shadow-md text-slate-700 hover:text-slate-900 hover:bg-slate-50 flex items-center justify-center z-10 transition-all cursor-pointer opacity-90 hover:opacity-100"
+                    className="absolute -right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-slate-200/90 shadow-md text-slate-700 hover:text-slate-900 hover:bg-slate-50 flex items-center justify-center z-10 transition cursor-pointer opacity-90 hover:opacity-100"
                   >
                     <span className="text-sm font-black">&gt;</span>
                   </button>
@@ -1085,7 +1085,7 @@ export function ProductDetailModal({
 
             <Button
               variant="primary"
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 active:scale-98 transition-all cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md shadow-emerald-600/20 active:scale-98 transition motion-reduce:transition-none motion-reduce:active:scale-100 cursor-pointer"
               onClick={() => {
                 if (onAddToList) onAddToList(currentProduct)
                 onClose()

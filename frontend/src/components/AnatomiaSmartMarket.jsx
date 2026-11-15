@@ -78,7 +78,7 @@ function EstadoColeta({ ativo }) {
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="flex flex-1 items-stretch">
-        <ul className="flex flex-col justify-between py-1 text-[11px] font-bold text-white">
+        <ul className="flex flex-col justify-between py-1 text-xs font-bold text-white">
           {fontes.map((f) => (
             <li key={f} className="rounded-md border border-white/20 bg-white/[0.06] px-2 py-1.5">
               {f}
@@ -95,7 +95,7 @@ function EstadoColeta({ ativo }) {
           {ativo && <span className="sm-bp-varredura absolute inset-x-0 top-0 h-0.5" style={{ background: DESTAQUE }} aria-hidden="true" />}
         </div>
       </div>
-      <p className="mt-3 text-[11px] leading-snug text-white/70">
+      <p className="mt-3 text-xs leading-snug text-white/80">
         {ativas} redes com coleta diária ativa hoje. Fontes identificadas, sem status em tempo real.
       </p>
     </div>
@@ -149,7 +149,7 @@ function EstadoVisualEsquematico() {
           <ChevronRight size={16} aria-hidden="true" />
         </button>
       </div>
-      <p className="mt-3 text-[11px] leading-snug text-white/70">
+      <p className="mt-3 text-xs leading-snug text-white/80">
         Efeito de perspectiva ilustrativo. No catálogo, os produtos com 360° giram ao passar o mouse.
       </p>
     </div>
@@ -227,7 +227,7 @@ function EstadoVisualReal({ produto, ativo }) {
             className="h-full w-full select-none object-contain p-2"
           />
           {tem360 && (
-            <span className="absolute left-2 top-2 rounded-md border border-slate-200 bg-slate-100/95 px-1.5 py-0.5 text-[10px] font-black leading-none text-slate-800">
+            <span className="absolute left-2 top-2 rounded-md border border-slate-200 bg-slate-100/95 px-1.5 py-0.5 text-xs font-black leading-none text-slate-800">
               360°
             </span>
           )}
@@ -242,7 +242,7 @@ function EstadoVisualReal({ produto, ativo }) {
           <ChevronRight size={16} aria-hidden="true" />
         </button>
       </div>
-      <p className="mt-3 text-[11px] leading-snug text-white/70">
+      <p className="mt-3 text-xs leading-snug text-white/80">
         {tem360
           ? `Fotos reais do catálogo (${nome}). Passe o mouse sobre a imagem ou use as setas para girar.`
           : `Foto real do catálogo (${nome}). Carregando a rotação 360°.`}
@@ -263,7 +263,7 @@ function EstadoComparacao({ ativo }) {
     <div className="flex h-full flex-col justify-between">
       <div className="space-y-5 pt-2">
         <div>
-          <p className="mb-1.5 text-[11px] font-bold text-white">Comparação por produto</p>
+          <p className="mb-1.5 text-xs font-bold text-white">Comparação por produto</p>
           <div className="flex gap-1">
             {porProduto.map((cor, i) => (
               <div key={i} className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/10">
@@ -271,20 +271,20 @@ function EstadoComparacao({ ativo }) {
               </div>
             ))}
           </div>
-          <p className="mt-1 text-[11px] text-white/60">O menor preço muda de rede item a item.</p>
+          <p className="mt-1 text-xs text-white/80">O menor preço muda de rede item a item.</p>
         </div>
         <div>
-          <p className="mb-1.5 text-[11px] font-bold text-white">Comparação da cesta completa</p>
+          <p className="mb-1.5 text-xs font-bold text-white">Comparação da cesta completa</p>
           <div className="h-3 overflow-hidden rounded-full bg-white/10">
             <div
               className={`h-full rounded-full ${transicao}`}
               style={{ width: ativo ? "100%" : "0%", background: VERDE, boxShadow: `inset -3px 0 0 ${DESTAQUE}`, transitionDelay: "350ms" }}
             />
           </div>
-          <p className="mt-1 text-[11px] text-white/60">O total da compra inteira define a rede mais vantajosa.</p>
+          <p className="mt-1 text-xs text-white/80">O total da compra inteira define a rede mais vantajosa.</p>
         </div>
       </div>
-      <p className="mt-3 text-[11px] leading-snug text-white/70">Ilustração conceitual, sem preços ou percentuais.</p>
+      <p className="mt-3 text-xs leading-snug text-white/80">Ilustração conceitual, sem preços ou percentuais.</p>
     </div>
   )
 }
@@ -334,7 +334,7 @@ function Conexoes({ ativa }) {
             strokeWidth={i === ativa ? 2 : 1}
             strokeLinejoin="round"
             stroke={i === ativa ? DESTAQUE : "rgba(255,255,255,0.16)"}
-            className={`transition-all duration-300 ${i === ativa ? "sm-bp-fluxo" : ""}`}
+            className={`transition duration-300 ${i === ativa ? "sm-bp-fluxo" : ""}`}
           />
         ))}
       </svg>
@@ -385,7 +385,7 @@ export function AnatomiaSmartMarket({ produto = null }) {
 
             {/* Núcleo central de inspeção */}
             <div className="relative z-10 flex flex-col overflow-hidden rounded-2xl border border-white/15 bg-brand-navy-dark sm:col-span-2 lg:col-span-1 lg:col-start-2 lg:row-span-2 lg:row-start-1">
-              <div className="flex items-center justify-between border-b border-white/10 px-5 py-3 font-mono text-[10px] font-bold uppercase tracking-widest text-white/60">
+              <div className="flex items-center justify-between border-b border-white/10 px-5 py-3 font-mono text-xs font-bold uppercase tracking-widest text-white/80">
                 <span>Núcleo de inspeção</span>
                 <span className="flex gap-1.5" aria-hidden="true">
                   {CAMADAS.map((c, i) => (
@@ -398,7 +398,7 @@ export function AnatomiaSmartMarket({ produto = null }) {
                 {ESTADOS.map((Estado, i) => (
                   <div
                     key={CAMADAS[i].rotulo}
-                    className={`col-start-1 row-start-1 min-h-64 p-5 transition-all duration-300 motion-reduce:transition-none ${
+                    className={`col-start-1 row-start-1 min-h-64 p-5 transition duration-300 motion-reduce:transition-none ${
                       i === ativa ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-1 opacity-0"
                     }`}
                     aria-hidden={i !== ativa}
@@ -423,7 +423,7 @@ export function AnatomiaSmartMarket({ produto = null }) {
               return (
                 <article
                   key={titulo}
-                  className={`relative z-10 rounded-2xl border p-5 transition-all duration-300 motion-reduce:transition-none ${POSICAO_LG[i]} ${
+                  className={`relative z-10 rounded-2xl border p-5 transition duration-300 motion-reduce:transition-none ${POSICAO_LG[i]} ${
                     lit ? "bg-[#1b3c5e]" : "bg-brand-navy-light opacity-90"
                   }`}
                   style={{ borderColor: lit ? DESTAQUE : "rgba(255,255,255,0.12)", boxShadow: lit ? `0 0 0 1px ${DESTAQUE}55` : "none" }}
@@ -435,7 +435,7 @@ export function AnatomiaSmartMarket({ produto = null }) {
                     >
                       <Icone size={20} strokeWidth={2} aria-hidden="true" />
                     </span>
-                    <span className="font-mono text-[11px] font-bold tracking-widest" style={{ color: lit ? DESTAQUE : "rgba(255,255,255,0.6)" }}>
+                    <span className="font-mono text-xs font-bold tracking-widest" style={{ color: lit ? DESTAQUE : "rgba(255,255,255,0.8)" }}>
                       {NUM(i)}
                     </span>
                   </div>
@@ -453,7 +453,7 @@ export function AnatomiaSmartMarket({ produto = null }) {
                   <p className="mt-1.5 text-sm leading-relaxed text-white/75">{texto}</p>
                   <p className="mt-3 flex flex-wrap gap-1.5" aria-hidden="true">
                     {chips.map((c) => (
-                      <span key={c} className="rounded-full border border-white/20 px-2.5 py-0.5 text-[11px] font-bold text-white/80">
+                      <span key={c} className="rounded-full border border-white/20 px-2.5 py-0.5 text-xs font-bold text-white/80">
                         {c}
                       </span>
                     ))}

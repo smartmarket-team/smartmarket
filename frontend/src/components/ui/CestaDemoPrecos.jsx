@@ -31,7 +31,7 @@ export function CestaDemoPrecos({ produtoId, markets = [] }) {
         <h3 id="cesta-demo-titulo" className="text-base font-black text-slate-900 tracking-tight">
           Cesta de demonstração
         </h3>
-        <span className="text-[11px] font-semibold text-slate-500">EAN {item.ean}</span>
+        <span className="text-xs font-semibold text-slate-500">EAN {item.ean}</span>
       </div>
       <p className="text-xs text-slate-500">
         Preços reais coletados nas redes, com a data e a hora de cada coleta (horário de Brasília).
@@ -50,7 +50,7 @@ export function CestaDemoPrecos({ produtoId, markets = [] }) {
             <span className="text-sm font-semibold text-slate-800 truncate">{market.name}</span>
             <span className="text-right shrink-0">
               <span className="block text-sm font-black text-slate-900">{formatarPreco(preco)}</span>
-              <span className="block text-[11px] text-slate-500">coletado em {formatarDataColeta(coletadoEm)}</span>
+              <span className="block text-xs text-slate-500">coletado em {formatarDataColeta(coletadoEm)}</span>
             </span>
           </li>
         ))}
@@ -61,7 +61,7 @@ export function CestaDemoPrecos({ produtoId, markets = [] }) {
             className="p-3 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 flex items-center justify-between gap-3"
           >
             <span className="text-xs text-slate-500 font-medium truncate">{market.name}</span>
-            <span className="text-[11px] text-slate-400 italic">sem preço nesta rede</span>
+            <span className="text-xs text-slate-400 italic">sem preço nesta rede</span>
           </li>
         ))}
       </ul>

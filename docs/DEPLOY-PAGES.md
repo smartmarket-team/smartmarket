@@ -22,12 +22,12 @@ Como o Pages não aceita cabeçalhos, a política vai numa `<meta http-equiv="Co
 | Diretiva | Recebe |
 | --- | --- |
 | `connect-src` | origem de `VITE_API_URL` e de `VITE_CATALOGO_URL` (só esquema + host, sem caminho) |
-| `img-src` | `'self' data: https:` (as fotos também vêm de URLs https dos próprios mercados) e a origem de `VITE_ASSETS_BASE_URL` |
+| `img-src` | `'self' data:`, a origem de `VITE_ASSETS_BASE_URL` e a lista fixa `HOSTS_DE_IMAGEM` do `csp.js` (CDNs das fotos dos mercados: `edge.osuper.com.br` e os demais que o `data.js` usa). Não há mais `https:` genérico; o `csp.test.js` falha se o `data.js` ganhar um host de foto fora da lista |
 | `media-src` | `'self'` e a origem de `VITE_ASSETS_BASE_URL` |
 
 Ao trocar o host da API, do catálogo ou do bucket, basta atualizar a variável do workflow: a política acompanha no próximo build. Um `fetch` para um host fora da lista aparece no console como violação de `connect-src`.
 
-**Regra para quem mexe no front:** origem externa nova (outra API, CDN, fonte, script, iframe) não funciona só por aparecer no código; ela precisa entrar na política. Se for uma das três já previstas, entra pela variável do build (`VITE_API_URL`, `VITE_CATALOGO_URL`, `VITE_ASSETS_BASE_URL`); se for outro tipo de origem, é preciso ampliar `montarCsp` em `frontend/vite-plugins/csp.js` (e o teste `csp.test.js`). Sem isso, o navegador bloqueia script externo, `eval` e `fetch`/WebSocket para host fora da lista (imagens https continuam liberadas).
+**Regra para quem mexe no front:** origem externa nova (outra API, CDN, fonte, script, iframe) não funciona só por aparecer no código; ela precisa entrar na política. Se for uma das três já previstas, entra pela variável do build (`VITE_API_URL`, `VITE_CATALOGO_URL`, `VITE_ASSETS_BASE_URL`); se for outro tipo de origem, é preciso ampliar `montarCsp` em `frontend/vite-plugins/csp.js` (e o teste `csp.test.js`). Sem isso, o navegador bloqueia script externo, `eval` e `fetch`/WebSocket para host fora da lista (foto de host fora de `HOSTS_DE_IMAGEM` também é bloqueada e o cartão mostra o ícone de fallback; inclui a URL de imagem digitada à mão no Admin).
 
 Limites de uma `<meta>`: `frame-ancestors` é ignorado, então o site pode ser embutido em iframe (clickjacking) até que o host envie `X-Frame-Options`/`frame-ancestors` por cabeçalho. O JWT continua em `localStorage` (`sm_token`); a CSP reduz o impacto de um XSS futuro, mas não o elimina.
 

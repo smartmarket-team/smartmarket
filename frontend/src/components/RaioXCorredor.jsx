@@ -37,7 +37,7 @@ export function RaioXCorredor({
         <div className="space-y-1.5">
           <h3 className="text-lg font-extrabold tracking-tight text-brand-navy sm:text-xl">{setor.label}</h3>
           {total > 0 && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-green-light px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-brand-green-dark">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-green-light px-2.5 py-1 text-xs font-extrabold uppercase tracking-wider text-brand-green-dark">
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#0e7a46]" />
               Comparação disponível · {numero(total)} {total === 1 ? "produto comparado" : "produtos comparados"}
             </span>
@@ -85,7 +85,7 @@ export function RaioXCorredor({
                 comparação confirmada.
               </p>
             )}
-            <p className="text-[11px] leading-relaxed text-brand-muted">
+            <p className="text-xs leading-relaxed text-brand-muted">
               A diferença é entre o menor e o maior preço encontrados para o mesmo produto nas redes do catálogo
               (percentual sobre o maior preço), na última coleta. Não é uma economia garantida na compra completa.
             </p>
@@ -139,6 +139,7 @@ function LinhaDeTensao({ item, indice, setor, nomeDaRede, autenticado, caminhoCa
         <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-white">
           <ProductImage
             src={imagem.imageLocal || imagem.imageUrl}
+            /* alt vazio de propósito: o nome do produto vem em texto logo ao lado. */
             alt=""
             fallbackIcon={setor.icon}
             className="h-full w-full"
@@ -152,7 +153,7 @@ function LinhaDeTensao({ item, indice, setor, nomeDaRede, autenticado, caminhoCa
 
       <div>
         <p className="mb-1 text-center">
-          <span className="inline-block rounded-full bg-brand-navy px-3 py-1 text-[11px] font-extrabold text-white sm:text-xs">
+          <span className="inline-block rounded-full bg-brand-navy px-3 py-1 text-xs font-extrabold text-white sm:text-xs">
             Economize {brl(economia)} · {percentual}% de diferença
           </span>
         </p>
@@ -186,16 +187,16 @@ function LinhaDeTensao({ item, indice, setor, nomeDaRede, autenticado, caminhoCa
         </div>
         <div className="mt-1 flex items-start justify-between gap-3">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted">Menor preço</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-brand-muted">Menor preço</p>
             <p className="text-lg font-black leading-tight text-brand-green-dark">{brl(menor.preco)}</p>
-            <p className="text-[11px] font-bold text-brand-muted">
+            <p className="text-xs font-bold text-brand-muted">
               {autenticado ? nomeDaRede(menor.rede) : "Rede Mais Barata 🔒"}
             </p>
           </div>
           <div className="text-right">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-brand-muted">Maior preço</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-brand-muted">Maior preço</p>
             <p className="text-lg font-black leading-tight text-[#b42318]">{brl(maior.preco)}</p>
-            <p className="text-[11px] font-bold text-brand-muted">em outra rede</p>
+            <p className="text-xs font-bold text-brand-muted">em outra rede</p>
           </div>
         </div>
       </div>

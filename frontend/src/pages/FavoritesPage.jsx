@@ -15,6 +15,7 @@ import logoRissul from "../../logo/logo-rissul,.png"
 import logoZaffari from "../../logo/zaffari-bourbon-logo.png"
 import logoMaster from "../../logo/mastersupermercados-logo.png"
 import { CATEGORIAS_VISUAIS } from "../utils/categoriasVisuais"
+import { useTituloDaPagina } from "../hooks/useTituloDaPagina"
 
 // Preço alvo sugerido ao criar um alerta: 10% abaixo do menor preço. Um único valor para o modal,
 // o configurador e o atalho "-10% de desconto" (antes o configurador sugeria 8%).
@@ -217,6 +218,7 @@ function evaluateAlertForProduct(product, alertEntry, favMarketIds = []) {
 
 // O catálogo (data.js) é carregado sob demanda; a tela só monta com os produtos em mãos.
 export default function FavoritesPage() {
+  useTituloDaPagina("Favoritos")
   return <ComCatalogo>{(produtos) => <FavoritesPageConteudo produtos={produtos} />}</ComCatalogo>
 }
 
@@ -527,6 +529,9 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
 
             <div className="relative flex-1 max-w-lg">
               <Input
+                id="favoritos-busca"
+                name="busca"
+                autoComplete="off"
                 isSearch
                 placeholder="Buscar em seus favoritos..."
                 value={search}
@@ -568,7 +573,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                   <div
                     key={m.id}
                     onClick={() => setSelectedMarketFilter(isSelected ? "todos" : m.id)}
-                    className={`group flex items-center justify-between gap-1.5 h-13 sm:h-14 px-2.5 sm:px-3 py-1.5 rounded-xl border transition-all duration-200 cursor-pointer select-none flex-1 min-w-[118px] sm:min-w-[130px] ${
+                    className={`group flex items-center justify-between gap-1.5 h-13 sm:h-14 px-2.5 sm:px-3 py-1.5 rounded-xl border transition duration-200 cursor-pointer select-none flex-1 min-w-[118px] sm:min-w-[130px] ${
                       isSelected
                         ? "bg-emerald-50/90 border-brand-green ring-2 ring-brand-green/35 shadow-xs"
                         : isFavMkt
@@ -625,11 +630,11 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                       setSelectedCategory(cat.id)
                       setActiveTab("produtos")
                     }}
-                    className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition-all duration-200 outline-none"
+                    className="group flex flex-col items-center shrink-0 cursor-pointer select-none transition duration-200 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2"
                     title={`Filtrar favoritos em ${cat.label}`}
                   >
                     <div
-                      className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 flex items-center justify-center rounded-2xl transition-all duration-300 ${
+                      className={`relative w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 flex items-center justify-center rounded-2xl transition duration-300 ${
                         isActive
                           ? "ring-3 ring-[#065417] ring-offset-2 scale-105 bg-emerald-50/70 shadow-sm"
                           : "group-hover:scale-105"
@@ -692,7 +697,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
             <button
               type="button"
               onClick={() => setActiveTab("produtos")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition cursor-pointer ${
                 activeTab === "produtos"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy hover:bg-slate-100"
@@ -708,7 +713,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
             <button
               type="button"
               onClick={() => setActiveTab("alertas")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition cursor-pointer ${
                 activeTab === "alertas"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy hover:bg-slate-100"
@@ -724,7 +729,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
             <button
               type="button"
               onClick={() => setActiveTab("mercados")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition cursor-pointer ${
                 activeTab === "mercados"
                   ? "bg-brand-green text-white shadow-xs"
                   : "text-brand-muted hover:text-brand-navy hover:bg-slate-100"
@@ -798,7 +803,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                     <div
                       key={p.id}
                       onClick={() => setSelectedProductDetail(p)}
-                      className="group relative bg-white rounded-3xl border border-brand-border/80 p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:border-brand-green/60 hover:-translate-y-0.5 cursor-pointer select-none w-full"
+                      className="group relative bg-white rounded-3xl border border-brand-border/80 p-4 sm:p-5 flex flex-col justify-between transition duration-200 hover:shadow-lg hover:border-brand-green/60 hover:-translate-y-0.5 cursor-pointer select-none w-full"
                     >
                       <div>
                         {/* Botão de Desfavoritar */}
@@ -826,19 +831,19 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           />
 
                           {p.promo && (
-                            <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
+                            <span className="absolute top-2.5 left-2.5 bg-brand-coral text-white text-xs font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider pointer-events-none">
                               Oferta
                             </span>
                           )}
 
-                          <span className="absolute bottom-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
+                          <span className="absolute bottom-2.5 right-2.5 bg-white/95 backdrop-blur-xs text-brand-navy text-xs font-bold px-2 py-0.5 rounded-lg border border-slate-200 pointer-events-none">
                             {p.unit || "1 un"}
                           </span>
                         </div>
 
                         {/* Categoria e Marca */}
                         <div className="flex items-start justify-between gap-2">
-                          <span className="text-[11px] font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                          <span className="text-xs font-bold text-brand-green bg-brand-green-light px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                             {p.category}
                           </span>
                           <span className="text-xs text-brand-muted font-medium truncate">
@@ -850,7 +855,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           {p.name}
                         </h3>
 
-                        <p className="line-clamp-2 text-[11px] text-brand-muted mt-1 min-h-[1.75rem]">
+                        <p className="line-clamp-2 text-xs text-brand-muted mt-1 min-h-[1.75rem]">
                           {p.descricao || p.name}
                         </p>
                       </div>
@@ -861,7 +866,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           <>
                             <div className="flex items-center justify-between p-3 rounded-2xl bg-brand-green-light/60 border border-brand-green/20 text-xs">
                               <div className="min-w-0">
-                                <span className="block text-[10px] font-semibold text-emerald-800 truncate">
+                                <span className="block text-xs font-semibold text-emerald-800 truncate">
                                   {pricing.totalMarkets > 1
                                     ? `Melhor Preço (${pricing.bestMarketName})`
                                     : `Preço no ${pricing.bestMarketName}`}
@@ -871,13 +876,13 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                                 </span>
                               </div>
                               {pricing.economia > 0 && (
-                                <span className="text-[10px] font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs shrink-0">
+                                <span className="text-xs font-black text-white bg-brand-green px-2 py-1 rounded-lg shadow-xs shrink-0">
                                   -R$ {pricing.economia.toFixed(2)}
                                 </span>
                               )}
                             </div>
 
-                            <div className="text-[11px] text-brand-muted flex items-center justify-between px-1">
+                            <div className="text-xs text-brand-muted flex items-center justify-between px-1">
                               <span>
                                 {pricing.totalMarkets > 1
                                   ? `Comparado em ${pricing.totalMarkets} mercados`
@@ -898,16 +903,16 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           const evalInfo = evaluateAlertForProduct(p, priceAlerts[p.id], favMarketIds)
                           if (!evalInfo) return null
                           return (
-                            <div
-                              onClick={(e) => e.stopPropagation()}
-                              className="px-2.5 py-1.5 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-2 text-[11px] text-amber-900"
-                            >
+                            <div className="px-2.5 py-1.5 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between gap-2 text-xs text-amber-900">
                               <span className="font-semibold truncate">
                                 🔔 Alvo: R$ {evalInfo.targetPrice.toFixed(2)} ({evalInfo.scopeLabel})
                               </span>
                               <button
                                 type="button"
-                                onClick={() => handleRemoveAlert(p.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  handleRemoveAlert(p.id)
+                                }}
                                 className="text-amber-700 hover:text-amber-900 text-xs font-bold shrink-0"
                                 title="Remover alerta"
                               >
@@ -917,11 +922,14 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           )
                         })()}
 
-                        <div className="flex gap-2 pt-1" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex gap-2 pt-1">
                           <button
                             type="button"
-                            onClick={() => addToList(p.id)}
-                            className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-brand-green text-white hover:bg-brand-green-hover transition-all shadow-xs cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              addToList(p.id)
+                            }}
+                            className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-brand-green text-white hover:bg-brand-green-hover transition shadow-xs cursor-pointer"
                           >
                             + Adicionar à Minha Lista
                           </button>
@@ -930,7 +938,10 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                             size="sm"
                             className="px-3 rounded-xl"
                             title="Definir alerta de preço"
-                            onClick={() => openAlertModal(p)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              openAlertModal(p)
+                            }}
                           >
                             🔔
                           </Button>
@@ -973,6 +984,9 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                 </label>
 
                 <Input
+                  id="alerta-busca-produto"
+                  name="busca-produto"
+                  autoComplete="off"
                   isSearch
                   placeholder="Pesquisar qualquer produto (ex: Arroz, Leite, Café, Chocolate em Pó)..."
                   value={alertSearchQuery}
@@ -981,7 +995,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                   className="h-11 text-xs sm:text-sm bg-brand-bg"
                 />
 
-                <div className="flex items-center justify-between text-[11px] font-semibold text-brand-muted pt-1">
+                <div className="flex items-center justify-between text-xs font-semibold text-brand-muted pt-1">
                   <span>
                     {alertSearchQuery.trim()
                       ? `Resultados encontrados para "${alertSearchQuery}":`
@@ -1008,7 +1022,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                         key={prod.id}
                         type="button"
                         onClick={() => selectInlineAlertProduct(prod)}
-                        className={`flex items-center gap-3 p-2.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                        className={`flex items-center gap-3 p-2.5 rounded-2xl border text-left transition cursor-pointer ${
                           isSelected
                             ? "bg-emerald-50/90 border-brand-green ring-2 ring-brand-green/30 shadow-xs"
                             : "bg-slate-50/70 border-brand-border/70 hover:bg-white hover:border-brand-green/50"
@@ -1025,11 +1039,11 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           <p className="text-xs font-extrabold text-brand-navy line-clamp-1">
                             {prod.name}
                           </p>
-                          <p className="text-[11px] text-brand-muted truncate">
+                          <p className="text-xs text-brand-muted truncate">
                             {prod.brand} · {prod.unit}
                           </p>
                           {pricing && (
-                            <p className="text-[11px] font-bold text-brand-green mt-0.5">
+                            <p className="text-xs font-bold text-brand-green mt-0.5">
                               Hoje: R$ {pricing.bestPrice.toFixed(2)} ({pricing.bestMarketName})
                             </p>
                           )}
@@ -1076,7 +1090,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                               )}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-green bg-brand-green-light px-2 py-0.5 rounded-full">
+                              <span className="text-xs font-bold uppercase tracking-wider text-brand-green bg-brand-green-light px-2 py-0.5 rounded-full">
                                 Produto Selecionado
                               </span>
                               <h3 className="text-sm font-extrabold text-brand-navy mt-1 line-clamp-2">
@@ -1100,6 +1114,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                               Em quais mercados conferir este preço?
                             </label>
                             <select
+                              name="escopo-mercados"
+                              autoComplete="off"
                               value={inlineMarketScope}
                               onChange={(e) => setInlineMarketScope(e.target.value)}
                               className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs sm:text-sm font-bold text-brand-navy focus:outline-none focus:border-brand-green cursor-pointer"
@@ -1126,7 +1142,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                           {/* Atalhos rápidos de desconto sobre o menor preço atual */}
                           {pricing && (
                             <div className="space-y-1.5">
-                              <span className="block text-[11px] font-bold text-brand-muted">
+                              <span className="block text-xs font-bold text-brand-muted">
                                 Sugestões rápidas de meta:
                               </span>
                               <div className="flex flex-wrap gap-2">
@@ -1159,6 +1175,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
 
                           <div>
                             <Input
+                              name="preco-alvo"
+                              autoComplete="off"
                               label="Avisar quando o preço chegar em (R$):"
                               type="number"
                               step="0.01"
@@ -1363,7 +1381,7 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                       <button
                         type="button"
                         onClick={() => toggleFavMarket(m.id)}
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all shrink-0 cursor-pointer ${
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition shrink-0 cursor-pointer ${
                           isFav
                             ? "bg-amber-100 text-amber-600 border border-amber-200"
                             : "bg-slate-100 text-slate-400 hover:bg-slate-200"
@@ -1435,6 +1453,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                     Onde monitorar este alerta?
                   </label>
                   <select
+                    name="escopo-mercados-modal"
+                    autoComplete="off"
                     value={modalMarketScope}
                     onChange={(e) => setModalMarketScope(e.target.value)}
                     className="w-full rounded-xl border border-brand-border bg-white px-3 py-2.5 text-xs sm:text-sm font-bold text-brand-navy focus:outline-none focus:border-brand-green cursor-pointer"
@@ -1459,6 +1479,8 @@ function FavoritesPageConteudo({ produtos: PRODUCTS }) {
                 </div>
 
                 <Input
+                  name="preco-alvo-modal"
+                  autoComplete="off"
                   label="Preço Alvo Desejado (R$)"
                   type="number"
                   step="0.01"

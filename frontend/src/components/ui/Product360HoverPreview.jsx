@@ -117,14 +117,14 @@ export function Product360HoverPreview({
 
       {/* Símbolo Oficial de 360° no Canto Superior Esquerdo (Estilo Oficial Asun) */}
       <div
-        className={`absolute top-2 left-2 w-8 h-8 rounded-lg border shadow-2xs flex flex-col items-center justify-center p-0.5 transition-all pointer-events-none z-10 ${
+        className={`absolute top-2 left-2 w-8 h-8 rounded-lg border shadow-2xs flex flex-col items-center justify-center p-0.5 transition pointer-events-none z-10 ${
           isHovered
             ? "bg-white border-slate-300 shadow-xs scale-105"
             : "bg-slate-100/95 backdrop-blur-xs border-slate-200/90"
         }`}
         title="Produto com rotação 360° disponível"
       >
-        <span className="text-[9px] font-black text-slate-800 leading-none">360°</span>
+        <span className="text-[11px] font-black text-slate-800 leading-none">360°</span>
         <svg
           className={`w-3.5 h-2.5 text-slate-800 mt-0.5 transition-transform duration-300 ${
             isHovered ? "rotate-[-20deg]" : ""

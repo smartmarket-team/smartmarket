@@ -61,7 +61,7 @@ export const Input = forwardRef(function Input(
           disabled={disabled}
           value={value}
           className={cn(
-            "w-full h-11 px-4 text-sm text-brand-navy bg-white border rounded-xl transition-all duration-150",
+            "w-full h-11 px-4 text-sm text-brand-navy bg-white border rounded-xl transition-[border-color,box-shadow,background-color] duration-150",
             "placeholder:text-brand-muted-light",
             "focus:outline-none focus:border-brand-green focus:ring-2 focus:ring-brand-green/20",
             leftIcon || isSearch ? "pl-10" : "",
