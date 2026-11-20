@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SmartMarket · Defesa</title>
+<meta name="description" content="Apresentação de defesa do SmartMarket, comparador de preços de supermercados do Rio Grande do Sul.">
+<style>
+:root{
+  --navy:#0c1a2b; --navy2:#13263c; --ink:#0c1a2b; --paper:#f5f3ec; --paper2:#ebe8de;
+  --green:#0f8a4b; --green-t:#065417; --green-d:#065417; --mint:#5eead4; --amber:#e0a22a; --mut:#5b6877; --line:rgba(12,26,43,.14);
+  --font:"Segoe UI Variable Display","Segoe UI",Inter,system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#050c15;overflow:hidden}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--mint);outline-offset:3px;border-radius:6px}
+
+/* palco 1920x1080 escalado */
+#viewport{position:fixed;inset:0;display:grid;place-items:center}
+#stage{position:relative;width:1920px;height:1080px;transform-origin:center center;flex:none;overflow:hidden;background:var(--navy)}
+.slide{position:absolute;inset:0;padding:96px 120px;opacity:0;visibility:hidden;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease,visibility 0s .55s}
+.slide.on{opacity:1;visibility:visible;transform:none;transition:opacity .55s ease,transform .55s ease}
+.slide.out{transform:translateY(-24px)}
+.dark{background:var(--navy);color:#fff}
+.light{background:var(--paper);color:var(--ink)}
+.reveal>*{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.on .reveal>*{opacity:1;transform:none}
+.on .reveal>*:nth-child(1){transition-delay:.12s}.on .reveal>*:nth-child(2){transition-delay:.24s}.on .reveal>*:nth-child(3){transition-delay:.36s}
+.on .reveal>*:nth-child(4){transition-delay:.48s}.on .reveal>*:nth-child(5){transition-delay:.6s}.on .reveal>*:nth-child(6){transition-delay:.72s}
+
+.kicker{font:600 22px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--green-t)}
+.dark .kicker{color:var(--mint)}
+h1,h2{font-weight:800;letter-spacing:-.035em;line-height:1.02}
+h2{font-size:104px}
+.lead{font-size:34px;line-height:1.35;color:var(--mut);max-width:1000px}
+.dark .lead{color:rgba(255,255,255,.78)}
+.tag{display:inline-block;font:600 19px var(--mono);letter-spacing:.06em;padding:10px 18px;border-radius:999px;border:1.5px solid currentColor}
+.t-ok{color:var(--green-t)} .t-part{color:#7a4e00} .t-prop{color:#4f3fb8}
+.src{font:500 18px var(--mono);color:var(--mut);letter-spacing:.02em}
+
+/* slide 1 */
+#s1{padding:0}
+#s1 .bg{position:absolute;inset:0;background:url(assets/home-desktop.png) 0 -125px/1920px auto no-repeat;filter:saturate(.9)}
+#s1 .shade{position:absolute;inset:0;background:linear-gradient(90deg,#0c1a2b 0%,#0c1a2b 50%,rgba(12,26,43,.55) 72%,rgba(12,26,43,.12) 100%)}
+#s1 .c{position:absolute;left:120px;bottom:130px;max-width:1100px}
+.wm{font-size:196px;font-weight:800;letter-spacing:-.05em;line-height:.9}
+.wm b{color:var(--mint);font-weight:800}
+#s1 .pos{font-size:52px;line-height:1.15;margin-top:36px;font-weight:500;color:rgba(255,255,255,.92);max-width:900px}
+#s1 .by{margin-top:56px;font:500 24px var(--mono);letter-spacing:.08em;color:rgba(255,255,255,.62);text-transform:uppercase}
+#s1 .top{position:absolute;left:120px;top:90px}
+
+/* slide 2 */
+.tabs{position:absolute;right:120px;top:130px;width:760px}
+.tab{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:22px 28px;margin-bottom:18px;display:flex;align-items:center;gap:22px;box-shadow:0 18px 40px -26px rgba(12,26,43,.5)}
+.tab:nth-child(2){margin-left:50px}.tab:nth-child(3){margin-left:100px}.tab:nth-child(4){margin-left:150px}
+.tab i{width:22px;height:22px;border-radius:50%;background:var(--paper2);flex:none}
+.tab span{font:500 26px var(--mono);color:var(--mut)}
+.tab em{margin-left:auto;font-style:normal;font-weight:700;font-size:28px;color:var(--ink)}
+.list{position:absolute;left:1090px;top:610px;font-size:46px;line-height:1.2;letter-spacing:-.02em;color:var(--mut);display:flex;flex-direction:column;gap:6px}
+.list b{color:var(--ink);font-weight:700}
+
+/* slide 3 */
+.steps{margin-top:56px;max-width:760px}
+.step{display:flex;gap:28px;padding:24px 0;border-top:1.5px solid var(--line)}
+.step b{font:800 44px var(--font);color:var(--green);letter-spacing:-.04em;min-width:70px}
+.step h3{font-size:34px;font-weight:700;letter-spacing:-.02em}
+.step p{font-size:25px;color:var(--mut);margin-top:6px;line-height:1.35}
+.frame{position:absolute;right:120px;top:120px;width:880px;border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 50px 90px -40px rgba(12,26,43,.55),0 0 0 1.5px var(--line)}
+.frame .bar{height:46px;background:var(--paper2);display:flex;align-items:center;gap:9px;padding:0 18px}
+.frame .bar i{width:13px;height:13px;border-radius:50%;background:#c9c5b8}
+.frame img{display:block;width:100%}
+.cap{position:absolute;right:120px;width:880px;font:500 19px var(--mono);color:var(--mut);line-height:1.45}
+.chips{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+.chips span{font:600 22px var(--font);padding:11px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--line)}
+
+/* slide 4 */
+#s4 .shot{position:absolute;left:120px;top:250px;width:1040px;border-radius:20px;overflow:hidden;box-shadow:0 40px 80px -30px #000,0 0 0 1.5px rgba(255,255,255,.14);background:#fff}
+#s4 .shot img{display:block;width:100%;aspect-ratio:1440/900;object-fit:cover;object-position:top}
+#s4 .side{position:absolute;right:120px;top:250px;width:560px}
+.btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:26px 32px;border-radius:18px;font-size:30px;font-weight:700;margin-bottom:18px;transition:transform .2s,background .2s;text-decoration:none}
+.btn:hover{transform:translateY(-2px)}
+.btn.pri{background:var(--mint);color:#06291f}
+.btn.sec{border:1.5px solid rgba(255,255,255,.3);color:#fff}
+.btn kbd{font:600 20px var(--mono);padding:4px 11px;border-radius:8px;background:rgba(0,0,0,.18)}
+.btn.sec kbd{background:rgba(255,255,255,.14)}
+.note{font-size:23px;line-height:1.45;color:rgba(255,255,255,.7);margin-top:22px}
+.shot-nav{position:absolute;left:120px;top:960px;display:flex;gap:12px;align-items:center;font:500 20px var(--mono);color:rgba(255,255,255,.7)}
+.shot-nav button{width:46px;height:46px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);font-size:22px}
+
+/* slide 5 */
+#s5{padding-top:80px}
+#s5 h2{font-size:84px}
+.dg{position:absolute;left:0;top:270px;width:1920px;height:470px}
+.tiles{position:absolute;left:120px;right:120px;bottom:70px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.tile{border-top:2px solid var(--mint);padding-top:16px}
+.tile h3{font-size:27px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px}
+.tile p{font-size:21px;line-height:1.4;color:rgba(255,255,255,.7)}
+
+/* slide 6 */
+.road{position:absolute;left:120px;right:120px;top:360px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink)}
+.col{padding:30px 34px 0 0}
+.col+.col{padding-left:34px;border-left:1.5px solid var(--line)}
+.col h3{font-size:44px;font-weight:800;letter-spacing:-.03em;margin:14px 0 6px}
+.col .when{font:600 20px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.col ul{list-style:none;margin-top:18px}
+.col li{font-size:27px;line-height:1.3;padding:13px 0;border-bottom:1.5px solid var(--line)}
+.col li small{display:block;font:500 18px var(--mono);color:var(--mut);margin-top:5px}
+.col.c1 h3{color:var(--green-t)}.col.c3 h3{color:#4f3fb8}
+
+/* slide 7 */
+.tl{position:absolute;left:120px;right:120px;top:350px}
+.rail{position:relative;height:2px;background:var(--ink);margin:36px 0 0}
+.nodes{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+.nd{position:relative;padding-top:34px}
+.nd::before{content:"";position:absolute;left:0;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--green)}
+.nd h3{font-size:32px;font-weight:800;letter-spacing:-.02em}
+.nd p{font-size:23px;line-height:1.4;color:var(--mut);margin-top:8px}
+.nd .src{display:block;margin-top:10px}
+.facts{position:absolute;left:120px;right:120px;bottom:96px;display:flex;gap:70px;align-items:flex-end}
+.fact b{display:block;font-size:92px;font-weight:800;letter-spacing:-.05em;line-height:1}
+.fact span{font-size:23px;color:var(--mut)}
+.mine{margin-left:auto;max-width:620px;font-size:24px;line-height:1.45;color:var(--mut)}
+.mine b{color:var(--ink)}
+
+/* slide 8 */
+#s8 .c{position:absolute;left:120px;right:120px;top:50%;transform:translateY(-52%)}
+#s8 h2{font-size:132px;max-width:1500px}
+#s8 h2 em{font-style:normal;color:var(--mint)}
+#s8 .lead{margin-top:44px;max-width:1100px}
+#s8 .q{position:absolute;left:120px;bottom:90px;font:600 26px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+
+/* chrome */
+#hud{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;align-items:center;gap:14px;padding:12px 20px;color:#fff;opacity:0;transition:opacity .3s;background:linear-gradient(0deg,rgba(5,12,21,.85),transparent)}
+body:hover #hud,#hud:focus-within,body.hud #hud{opacity:1}
+#hud button{width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);font-size:19px}
+#hud button:hover{background:rgba(255,255,255,.14)}
+#hud .txt{font:600 15px var(--mono);letter-spacing:.06em;min-width:70px}
+#hud .sp{flex:1}
+#hud .pill{width:auto;padding:0 16px;border-radius:999px;font:600 14px var(--mono);letter-spacing:.08em}
+#prog{position:fixed;left:0;top:0;height:4px;background:var(--mint);width:0;z-index:30;transition:width .45s ease}
+#ov{position:fixed;inset:0;z-index:40;background:rgba(5,12,21,.96);display:none;padding:60px;overflow:auto}
+#ov.open{display:block}
+#ov h5{color:#fff;font:600 16px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px;opacity:.7}
+#ov .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+#ov .g button{text-align:left;color:#fff;padding:26px;border-radius:18px;border:1.5px solid rgba(255,255,255,.18);min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+#ov .g button:hover,#ov .g button.cur{border-color:var(--mint);background:rgba(94,234,212,.07)}
+#ov .g b{font:600 17px var(--mono);color:var(--mint)}
+#ov .g span{font-size:24px;font-weight:700;letter-spacing:-.02em}
+#demo{position:fixed;inset:0;z-index:50;background:#06101c;display:none;flex-direction:column}
+#demo.open{display:flex}
+#demo header{display:flex;align-items:center;gap:12px;padding:12px 18px;color:#fff;border-bottom:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
+#demo header .t{font-weight:800;letter-spacing:-.02em;margin-right:8px}
+#demo header button,#demo header a{padding:9px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.28);color:#fff;font:600 14px var(--mono);letter-spacing:.05em;text-decoration:none}
+#demo header .act{background:var(--mint);color:#06291f;border-color:var(--mint)}
+#demo header .sp{flex:1}
+#demo .body{position:relative;flex:1;min-height:0}
+#demo iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+#demo .caps{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:12px;background:#06101c}
+#demo .caps img{max-width:100%;max-height:calc(100% - 70px);object-fit:contain;border-radius:10px;box-shadow:0 30px 60px -20px #000}
+#demo .caps .cc{display:flex;gap:14px;align-items:center;color:#fff;font:600 15px var(--mono)}
+#demo .caps .cc button{width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);font-size:19px;color:#fff}
+#demo.cap .caps{display:flex}
+#demo .msg{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:2;padding:10px 18px;border-radius:12px;background:rgba(224,162,42,.95);color:#2a1d00;font:600 15px var(--mono);display:none;max-width:92%;text-align:center}
+#demo.cap .msg{display:none!important}
+#rot{display:none;position:fixed;left:16px;right:16px;top:14px;z-index:35;padding:12px 16px;border-radius:12px;background:#5eead4;color:#06291f;font:600 14px var(--mono);text-align:center}
+@media (max-width:700px) and (orientation:portrait){#rot{display:block}}
+/* impressão / PDF: um slide por página */
+@page{size:1920px 1080px;margin:0}
+@media print{
+  html,body{height:auto;overflow:visible;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #viewport{position:static;display:block}
+  #stage{width:1920px;height:auto;transform:none!important;margin:0!important;overflow:visible;background:none}
+  .slide{position:relative;inset:auto;width:1920px;height:1080px;opacity:1!important;visibility:visible!important;transform:none!important;transition:none!important;break-after:page;page-break-after:always;overflow:hidden}
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  .reveal>*{opacity:1!important;transform:none!important;transition:none!important}
+  #hud,#ov,#demo,#prog,#rot{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.reveal>*{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="prog" role="progressbar" aria-label="Progresso da apresentação" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1"></div>
+<div id="rot" role="note">Gire o celular para o modo horizontal: a apresentação é em 16:9.</div>
+<div id="viewport"><div id="stage" role="region" aria-roledescription="apresentação" aria-label="SmartMarket, defesa">
+
+<!-- 01 -->
+<section class="slide dark on" id="s1" data-title="Abertura" aria-label="Slide 1: Abertura">
+  <div class="bg" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div>
+  <div class="top kicker">Defesa de projeto · 2026</div>
+  <div class="c reveal">
+    <h1 class="wm">Smart<b>Market</b></h1>
+    <p class="pos">Descubra em qual mercado do Rio Grande do Sul a sua compra custa menos.</p>
+    <p class="by">Grupo 40 · Trilha Dev Full Stack 2026 · Apresenta: Davi Cardozo</p>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="slide light" id="s2" data-title="O problema" aria-label="Slide 2: O problema">
+  <div class="reveal">
+    <p class="kicker">O problema</p>
+    <h2 style="margin-top:30px;max-width:900px">Comparar uma lista inteira dá trabalho.</h2>
+    <p class="lead" style="margin-top:36px;max-width:820px">Cada supermercado tem o seu site, o seu catálogo e o seu jeito de mostrar preço. Saber onde a <b style="color:var(--ink)">compra toda</b> sai mais barata exige abrir um por um e somar na mão.</p>
+  </div>
+  <div class="tabs reveal" aria-hidden="true">
+    <div class="tab"><i></i><span>site-da-rede-1 / arroz</span><em>R$ ?</em></div>
+    <div class="tab"><i></i><span>site-da-rede-2 / arroz</span><em>R$ ?</em></div>
+    <div class="tab"><i></i><span>site-da-rede-3 / arroz</span><em>R$ ?</em></div>
+    <div class="tab"><i></i><span>site-da-rede-4 / arroz</span><em>R$ ?</em></div>
+  </div>
+  <div class="list reveal"><span>E isso é só para <b>um</b> produto.</span><span>Uma lista de compras tem vários.</span></div>
+</section>
+
+<!-- 03 -->
+<section class="slide light" id="s3" data-title="A solução" aria-label="Slide 3: A solução">
+  <div class="reveal" style="max-width:800px">
+    <p class="kicker">A solução</p>
+    <h2 style="margin-top:30px;font-size:80px">Monte a lista.<br><span style="color:var(--green)">Veja o total por rede.</span></h2>
+    <p class="lead" style="margin-top:34px;font-size:30px">O SmartMarket cruza os preços do catálogo e mostra em qual rede a sua cesta fecha menor.</p>
+    <div class="steps" style="margin-top:44px">
+      <div class="step"><b>→</b><div><h3>Loja mais perto, pelo CEP</h3><p>Para cada rede, mostra a filial de referência e a distância aproximada.</p></div></div>
+      <div class="step"><b>→</b><div><h3>Botão Navegar</h3><p>Abre o Google Maps ou o Waze com o destino já preenchido.</p></div></div>
+      <div class="step"><b>→</b><div><h3>Favoritos e lista</h3><p>Guarda o que a pessoa compra sempre, para a próxima vez.</p></div></div>
+    </div>
+  </div>
+  <div class="frame reveal"><div class="bar"><i></i><i></i><i></i></div><img src="assets/como-funciona-desktop.png" alt="Captura do site: três passos e um cupom de exemplo comparando quatro mercados"></div>
+  <p class="cap" style="top:752px">Captura real do site publicado. Os valores do cupom são exemplo ilustrativo, e o site avisa isso.</p>
+</section>
+
+<!-- 04 -->
+<section class="slide dark" id="s4" data-title="Demonstração" aria-label="Slide 4: Demonstração">
+  <div class="reveal" style="position:absolute;left:120px;top:90px">
+    <p class="kicker">Demonstração</p>
+    <h2 style="margin-top:22px;font-size:84px">Funcionando, no ar.</h2>
+  </div>
+  <div class="shot reveal"><img id="shotimg" src="assets/home-desktop.png" alt="Página inicial do SmartMarket publicada"></div>
+  <div class="shot-nav"><button id="shotprev" aria-label="Captura anterior">←</button><span id="shotcap"></span><button id="shotnext" aria-label="Próxima captura">→</button></div>
+  <div class="side reveal">
+    <button class="btn pri" id="openDemo">Abrir demo ao vivo <kbd>D</kbd></button>
+    <a class="btn sec" href="https://smartmarket-team.github.io/smartmarket/" target="_blank" rel="noopener">Abrir em nova aba <kbd>↗</kbd></a>
+    <button class="btn sec" id="openCaps">Ver capturas (sem internet) <kbd>C</kbd></button>
+    <p class="note">Roteiro da demo: busca por um produto, comparação entre redes, loja mais perto e botão Navegar. A busca e o catálogo pedem conta; se a internet falhar, as capturas contam a mesma história.</p>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="slide dark" id="s5" data-title="Engenharia" aria-label="Slide 5: Bastidores de engenharia">
+  <div class="reveal"><p class="kicker">Bastidores de engenharia</p><h2 style="margin-top:20px">Do preço no site da rede<br>até a sua tela.</h2></div>
+  <svg class="dg" viewBox="0 0 1920 470" role="img" aria-label="Diagrama: sites das redes, robôs de coleta, arrumação com quarentena, banco de dados, servidor, site do usuário">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5eead4"/></marker></defs>
+    <g font-family="Segoe UI Variable Display,Segoe UI,Inter,system-ui,sans-serif" fill="#fff">
+      <g stroke="#5eead4" stroke-width="2.5" fill="none" marker-end="url(#ar)">
+        <path d="M370 200H410"/><path d="M650 200H690"/><path d="M930 200H970"/><path d="M1210 200H1250"/><path d="M1490 200H1530"/>
+      </g>
+      <rect x="120" y="120" width="250" height="160" rx="18" fill="#13263c" stroke="rgba(255,255,255,.22)"/>
+      <text x="145" y="172" font-size="28" font-weight="700">Sites das</text><text x="145" y="206" font-size="28" font-weight="700">redes</text>
+      <text x="145" y="248" font-size="17" fill="#8fa3b8" font-family="ui-monospace,Consolas,monospace">fontes públicas</text>
+
+      <rect x="410" y="120" width="240" height="160" rx="18" fill="#13263c" stroke="#5eead4"/>
+      <text x="435" y="172" font-size="28" font-weight="700">Robôs de</text><text x="435" y="206" font-size="28" font-weight="700">coleta</text>
+      <text x="435" y="248" font-size="17" fill="#5eead4" font-family="ui-monospace,Consolas,monospace">4 redes ativas</text>
+
+      <rect x="690" y="120" width="240" height="160" rx="18" fill="#13263c" stroke="#5eead4"/>
+      <text x="715" y="172" font-size="28" font-weight="700">Arrumação e</text><text x="715" y="206" font-size="28" font-weight="700">quarentena</text>
+      <text x="715" y="248" font-size="17" fill="#5eead4" font-family="ui-monospace,Consolas,monospace">pipeline.py</text>
+
+      <rect x="970" y="120" width="240" height="160" rx="18" fill="#13263c" stroke="#5eead4"/>
+      <text x="995" y="172" font-size="28" font-weight="700">Banco com</text><text x="995" y="206" font-size="28" font-weight="700">histórico</text>
+      <text x="995" y="248" font-size="17" fill="#5eead4" font-family="ui-monospace,Consolas,monospace">PostgreSQL · Neon</text>
+
+      <rect x="1250" y="120" width="240" height="160" rx="18" fill="#13263c" stroke="#5eead4"/>
+      <text x="1275" y="172" font-size="28" font-weight="700">Servidor</text><text x="1275" y="206" font-size="28" font-weight="700">principal</text>
+      <text x="1275" y="248" font-size="17" fill="#5eead4" font-family="ui-monospace,Consolas,monospace">Spring Boot</text>
+
+      <rect x="1530" y="120" width="270" height="160" rx="18" fill="#5eead4"/>
+      <text x="1555" y="172" font-size="28" font-weight="800" fill="#06291f">Site do</text><text x="1555" y="206" font-size="28" font-weight="800" fill="#06291f">usuário</text>
+      <text x="1555" y="248" font-size="17" fill="#06291f" font-family="ui-monospace,Consolas,monospace">React · Pages</text>
+
+      <g stroke-dasharray="7 7" fill="none" stroke-width="2">
+        <path d="M1370 280V340" stroke="#8fa3b8"/>
+        <path d="M810 120V62" stroke="#e0a22a"/>
+      </g>
+      <rect x="1250" y="340" width="240" height="84" rx="14" fill="none" stroke="#8fa3b8" stroke-dasharray="7 7"/>
+      <text x="1270" y="374" font-size="22" font-weight="600">CEP e mapas</text><text x="1270" y="402" font-size="16" fill="#8fa3b8" font-family="ui-monospace,Consolas,monospace">BrasilAPI · ViaCEP · OSM</text>
+      <rect x="690" y="14" width="240" height="48" rx="12" fill="none" stroke="#e0a22a" stroke-dasharray="7 7"/>
+      <text x="710" y="45" font-size="20" font-weight="600" fill="#e0a22a">Ainda não: outliers</text>
+    </g>
+  </svg>
+  <div class="tiles reveal">
+    <div class="tile"><h3>Quarentena, não parada</h3><p>Registro inválido vai para um relatório. O lote só falha se mais de 20% for rejeitado.</p></div>
+    <div class="tile"><h3>Um preço vigente por loja</h3><p>O próprio banco recusa dois preços valendo ao mesmo tempo.</p></div>
+    <div class="tile"><h3>Papel lido do banco</h3><p>Cada pedido confere se a pessoa ainda é administrador. O token sozinho não decide.</p></div>
+    <div class="tile"><h3>Testes no CI</h3><p>92 arquivos no site, 56 no servidor, 37 na coleta, com mínimo de 70% de cobertura.</p></div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="slide light" id="s6" data-title="Negócio" aria-label="Slide 6: Visão de negócio e escalabilidade">
+  <div class="reveal">
+    <p class="kicker">Negócio e escala</p>
+    <h2 style="margin-top:26px;font-size:88px;max-width:1500px">Do projeto acadêmico a um produto:<br>o que existe e o que falta.</h2>
+  </div>
+  <div class="road">
+    <div class="col c1 reveal"><span class="tag t-ok">IMPLEMENTADO</span><h3>Hoje</h3><div class="when">no ar e testado</div>
+      <ul><li>Catálogo com 9.277 anúncios<small>preço coletado, sem simulação</small></li>
+      <li>Comparação entre redes<small>191 produtos em 2 ou mais redes</small></li>
+      <li>Loja mais perto pelo CEP<small>82 filiais mapeadas</small></li></ul></div>
+    <div class="col c2 reveal"><span class="tag t-part">PRÓXIMO PASSO</span><h3>Evoluir</h3><div class="when">trabalho de engenharia</div>
+      <ul><li>Validação de preço fora da curva<small>hoje a validação é estrutural</small></li>
+      <li>Alertas que realmente avisam<small>hoje só guardam o valor</small></li>
+      <li>Mais redes, com autorização<small>quatro estão suspensas por bloqueio</small></li></ul></div>
+    <div class="col c3 reveal"><span class="tag t-prop">VISÃO</span><h3>Escalar</h3><div class="when">exige validação e investimento</div>
+      <ul><li>Inteligência de preços para varejistas<small>mercado B2B, ainda não testado</small></li>
+      <li>Assinatura e plano para empresas<small>exigiria cobrança e contas por cliente</small></li>
+      <li>Outros estados<small>depende de acordos com as redes</small></li></ul></div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="slide light" id="s7" data-title="Aprendizados" aria-label="Slide 7: Protagonismo e aprendizados">
+  <div class="reveal">
+    <p class="kicker">Aprendizados</p>
+    <h2 style="margin-top:26px;font-size:92px;max-width:1500px">Quando o site diz não,<br>a gente para e respeita.</h2>
+  </div>
+  <div class="tl reveal">
+    <div class="rail"></div>
+    <div class="nodes">
+      <div class="nd"><h3>Bloqueio</h3><p>Cloudflare barrou o robô e o robots.txt de duas redes proíbe a coleta.</p><span class="src">→ 4 redes suspensas, sem contornar</span></div>
+      <div class="nd"><h3>Servidor dormindo</h3><p>No plano grátis a primeira chamada leva de 1 a 3 minutos.</p><span class="src">→ aviso na tela e keep-alive</span></div>
+      <div class="nd"><h3>CEP impreciso</h3><p>36 CEPs de Porto Alegre caíam no mesmo ponto do mapa.</p><span class="src">→ refino pela rua, ou só cidade</span></div>
+      <div class="nd"><h3>Preço simulado</h3><p>O catálogo tinha valores simulados, que pareciam preço coletado.</p><span class="src">→ removidos; só preço coletado</span></div>
+    </div>
+  </div>
+  <div class="facts reveal">
+    <div class="fact"><b>795</b><span>commits desde 24/08</span></div>
+    <div class="fact"><b>173</b><span>pull requests</span></div>
+    <div class="fact"><b>6</b><span>pessoas com commits</span></div>
+    <p class="mine"><b>Minhas entregas recentes:</b> botão Navegar (PR #176), auditoria do frontend (PR #177) e guia e mapa do projeto (PR #179). Trabalho em equipe, com revisão em PR e IA como apoio, e eu respondo pelo que entrou.</p>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="slide dark" id="s8" data-title="Encerramento" aria-label="Slide 8: Encerramento">
+  <div class="c reveal">
+    <p class="kicker">Para levar</p>
+    <h2 style="margin-top:30px">O SmartMarket não promete economia.<br><em>Mostra onde ela está.</em></h2>
+    <p class="lead">Um problema real, um MVP no ar e um caminho honesto para crescer.</p>
+  </div>
+  <div class="q">Perguntas</div>
+</section>
+
+</div></div>
+
+<div id="hud" role="toolbar" aria-label="Controles da apresentação">
+  <button id="bPrev" aria-label="Slide anterior">←</button>
+  <span class="txt" id="num" aria-live="polite">01 / 08</span>
+  <button id="bNext" aria-label="Próximo slide">→</button>
+  <span class="sp"></span>
+  <button class="pill" id="bDemo" aria-label="Abrir demo (D)">DEMO</button>
+  <button class="pill" id="bOv" aria-label="Visão geral (Esc)">VISÃO GERAL</button>
+  <button class="pill" id="bFs" aria-label="Tela cheia (F)">TELA CHEIA</button>
+</div>
+
+<div id="ov" role="dialog" aria-modal="true" aria-label="Visão geral dos slides"><h5>Visão geral · clique para ir ao slide</h5><div class="g" id="grid"></div></div>
+
+<div id="demo" role="dialog" aria-modal="true" aria-label="Demonstração do SmartMarket">
+  <header>
+    <span class="t">SmartMarket · demo</span>
+    <button id="tabLive" class="act">Ao vivo</button>
+    <button id="tabCaps">Capturas</button>
+    <a href="https://smartmarket-team.github.io/smartmarket/" target="_blank" rel="noopener">Abrir em nova aba ↗</a>
+    <span class="sp"></span>
+    <button id="demoClose">Voltar à apresentação (Esc)</button>
+  </header>
+  <div class="body">
+    <div class="msg" id="demoMsg"></div>
+    <iframe id="frame" title="SmartMarket publicado" referrerpolicy="no-referrer"></iframe>
+    <div class="caps"><img id="capimg" src="assets/home-desktop.png" alt="Página inicial do SmartMarket"><div class="cc"><button id="capPrev" aria-label="Anterior">←</button><span id="capCap"></span><button id="capNext" aria-label="Próxima">→</button></div></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var slides=[].slice.call(document.querySelectorAll('.slide')), N=slides.length, cur=0;
+  var stage=$('#stage'), num=$('#num'), prog=$('#prog');
+  var SITE='https://smartmarket-team.github.io/smartmarket/';
+  var SHOTS=[
+    ['assets/home-desktop.png','Página inicial'],
+    ['assets/redes-desktop.png','Redes com coleta'],
+    ['assets/como-funciona-desktop.png','Como funciona'],
+    ['assets/sobre-desktop.png','Sobre o projeto'],
+    ['assets/login-desktop.png','Entrar'],
+    ['assets/home-mobile.png','Versão para celular']
+  ];
+  function fit(){var s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform='scale('+s+')';stage.style.margin=((1080*s-1080)/2)+'px '+((1920*s-1920)/2)+'px'}
+  addEventListener('resize',fit);fit();
+  function pad(n){return (n<10?'0':'')+n}
+  function go(i,force){
+    i=Math.max(0,Math.min(N-1,i)); if(i===cur&&!force)return;
+    slides.forEach(function(s,k){s.classList.toggle('on',k===i);s.classList.toggle('out',k<i);s.setAttribute('aria-hidden',k===i?'false':'true')});
+    cur=i;num.textContent=pad(i+1)+' / '+pad(N);
+    prog.style.width=((i+1)/N*100)+'%';prog.setAttribute('aria-valuenow',i+1);
+    try{history.replaceState(null,'','#'+(i+1))}catch(e){}
+    document.title='SmartMarket · '+slides[i].dataset.title;
+  }
+  var demo=$('#demo'),frame=$('#frame'),msg=$('#demoMsg'),capi=0,loadedT=null;
+  function showCap(){var c=SHOTS[capi];$('#capimg').src=c[0];$('#capimg').alt=c[1];$('#capCap').textContent=(capi+1)+' / '+SHOTS.length+' · '+c[1]}
+  function setTab(t){
+    var caps=t==='caps';
+    if(!caps&&!navigator.onLine){caps=true}
+    demo.classList.toggle('cap',caps);
+    $('#tabLive').classList.toggle('act',!caps);$('#tabCaps').classList.toggle('act',caps);
+    if(caps){showCap();return}
+    msg.style.display='none';
+    if(!frame.getAttribute('src')){
+      frame.src=SITE;clearTimeout(loadedT);
+      loadedT=setTimeout(function(){if(!frame.dataset.ok){msg.textContent='Carregando devagar. Se não abrir, use "Abrir em nova aba" ou as Capturas.';msg.style.display='block'}},9000);
+    }
+  }
+  function openDemo(mode){demo.classList.add('open');setTab(mode)}
+  frame.addEventListener('load',function(){frame.dataset.ok='1';msg.style.display='none'});
+  function closeDemo(){demo.classList.remove('open')}
+  var ov=$('#ov'),grid=$('#grid');
+  slides.forEach(function(s,k){var b=document.createElement('button');b.innerHTML='<b>'+pad(k+1)+'</b><span>'+s.dataset.title+'</span>';b.onclick=function(){go(k);ov.classList.remove('open')};b.dataset.k=k;grid.appendChild(b)});
+  function toggleOv(){ov.classList.toggle('open');if(ov.classList.contains('open')){[].forEach.call(grid.children,function(b){b.classList.toggle('cur',+b.dataset.k===cur)});grid.children[cur].focus()}}
+  function fs(){var d=document;if(d.fullscreenElement){d.exitFullscreen()}else if(d.documentElement.requestFullscreen){d.documentElement.requestFullscreen().catch(function(){})}}
+  var si=0;function shot(d){si=(si+SHOTS.length+d)%SHOTS.length;$('#shotimg').src=SHOTS[si][0];$('#shotcap').textContent=(si+1)+' / '+SHOTS.length+' · '+SHOTS[si][1]}
+  shot(0);
+  $('#shotprev').onclick=function(){shot(-1)};$('#shotnext').onclick=function(){shot(1)};
+  $('#openDemo').onclick=function(){openDemo('live')};$('#openCaps').onclick=function(){openDemo('caps')};
+  $('#bDemo').onclick=function(){openDemo('live')};$('#bOv').onclick=toggleOv;$('#bFs').onclick=fs;
+  $('#bPrev').onclick=function(){go(cur-1)};$('#bNext').onclick=function(){go(cur+1)};
+  $('#tabLive').onclick=function(){setTab('live')};$('#tabCaps').onclick=function(){setTab('caps')};
+  $('#demoClose').onclick=closeDemo;
+  $('#capPrev').onclick=function(){capi=(capi+SHOTS.length-1)%SHOTS.length;showCap()};
+  $('#capNext').onclick=function(){capi=(capi+1)%SHOTS.length;showCap()};
+  addEventListener('keydown',function(e){
+    var t=e.target,tag=(t&&t.tagName)||'';
+    if(/^(INPUT|TEXTAREA|SELECT)$/.test(tag)||(t&&t.isContentEditable)||e.ctrlKey||e.metaKey||e.altKey)return;
+    var k=e.key;
+    if(demo.classList.contains('open')){
+      if(k==='Escape'){closeDemo();e.preventDefault()}
+      else if(demo.classList.contains('cap')&&k==='ArrowRight'){$('#capNext').click()}
+      else if(demo.classList.contains('cap')&&k==='ArrowLeft'){$('#capPrev').click()}
+      return;
+    }
+    if(ov.classList.contains('open')){if(k==='Escape'){ov.classList.remove('open');e.preventDefault()}return}
+    if(k==='ArrowRight'||k==='PageDown'||(k===' '&&tag!=='BUTTON'&&tag!=='A')){go(cur+1);e.preventDefault()}
+    else if(k==='ArrowLeft'||k==='PageUp'){go(cur-1);e.preventDefault()}
+    else if(k==='Home'){go(0);e.preventDefault()}
+    else if(k==='End'){go(N-1);e.preventDefault()}
+    else if(k==='Escape'){toggleOv();e.preventDefault()}
+    else if(k==='d'||k==='D'){openDemo('live')}
+    else if(k==='c'||k==='C'){openDemo('caps')}
+    else if(k==='f'||k==='F'){fs()}
+    else if(/^[1-8]$/.test(k)){go(+k-1)}
+  });
+  var x0=null;stage.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  stage.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));x0=null});
+  var ht;addEventListener('mousemove',function(){document.body.classList.add('hud');clearTimeout(ht);ht=setTimeout(function(){document.body.classList.remove('hud')},2200)});
+  var h=parseInt(location.hash.slice(1),10);go(isNaN(h)?0:h-1,true);
+})();
+</script>
+</body>
+</html>
