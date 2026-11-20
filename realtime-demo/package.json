@@ -4,9 +4,9 @@
   "type": "module",
   "description": "Demonstração de live query com Neon Realtime (tabela realtime_demo)",
   "dependencies": {
-    "@neon/realtime": "^0.2.0",
+    "@neon/realtime": "^0.2.1",
     "@neondatabase/serverless": "^1.2.0",
-    "ws": "^8.22.1"
+    "ws": "^8.23.0"
   },
   "scripts": {
     "servidor": "node --env-file=../.env.local servidor.mjs",
